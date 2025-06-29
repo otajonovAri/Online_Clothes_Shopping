@@ -20,8 +20,4 @@
     <ProjectReference Include="..\EducationApp.Core\EducationApp.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Database\Persistence\Configuration\" />
-  </ItemGroup>
-
 </Project>
