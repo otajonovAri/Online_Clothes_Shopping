@@ -15,4 +15,8 @@ public class Group
     public DateTime EndDate { get; set; }
 
     public string Schedule { get; set; }
+    public Room Room { get; set; }
+    public Staff Staff { get; set; }
+    public ICollection<GroupRoom> GroupRooms { get; set; } = new List<GroupRoom>();
+    public ICollection<GroupSubject> GroupSubjects { get; set; } = new List<GroupSubject>();
 }

@@ -1,4 +1,6 @@
-﻿using EducationApp.Core.Enums;
+﻿using EducationApp.Application.Entities;
+using EducationApp.Core.Enums;
+using Role = EducationApp.Application.Entities.Role;
 
 namespace EducationApp.Core.Entities;
 
@@ -14,4 +16,7 @@ public class User
     public DateTime BirthDate { get; set; }
     public Gender Gender { get; set; }
     public Role Role { get; set; }
+    public ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
+    public ICollection<Student> Students { get; set; } = new List<Student>();
+    public ICollection<Staff> Staffs { get; set; } = new List<Staff>();
 }

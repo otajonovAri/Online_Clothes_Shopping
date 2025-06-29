@@ -10,4 +10,5 @@ public class Payment
     public DateTime PaymentDate { get; set; }
     public PaymentType PaymentType { get; set; }
     public string Note { get; set; } = "";
+    public Student Student { get; set; }
 }

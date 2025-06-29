@@ -14,4 +14,7 @@ public class Student
     public string? PasswordHash { get; set; }
     public string PasswordSolt { get; set; } = "";
     public string? RefreshToken { get; set; }
+    public User User { get; set; }
+    public Group Group { get; set; }
+    public ICollection<Payment> Payments { get; set; } = new List<Payment>();
 }

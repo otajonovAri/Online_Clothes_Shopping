@@ -5,6 +5,7 @@ namespace EducationApp.Core.Entities;
 public class Staff
 {
     public int Id { get; set; }
+    public int UserId { get; set; }
     public string? FullName { get; set; }
     public string? Position { get; set; }
     public string? PhoneNumber { get; set; }
@@ -12,4 +13,6 @@ public class Staff
     public DateTime BirthDate { get; set; }
     public Gender Gender { get; set; }
     public decimal Salary { get; set; }
+    public ICollection<Group> Groups { get; set; } = new List<Group>();
+    public User User{ get; set; }
 }
