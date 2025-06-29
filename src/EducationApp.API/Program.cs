@@ -2,7 +2,6 @@ using EducationApp.DataAccess.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
 builder.Services.AddDatabase(builder.Configuration);
 
 builder.Services.AddControllers();
