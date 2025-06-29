@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\EducationApp.DataAccess\EducationApp.DataAccess.csproj" />
+  </ItemGroup>
+
 </Project>

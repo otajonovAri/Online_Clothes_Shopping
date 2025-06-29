@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata;
-using System.Security;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Reflection;
 using EducationApp.Application.Entities;
 using EducationApp.Core.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
 
 namespace EducationApp.DataAccess.Database
 {
@@ -30,91 +23,8 @@ namespace EducationApp.DataAccess.Database
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<GroupRoom>(builder =>
-            {
-                builder.HasOne(r => r.Group)
-                .WithMany(r => r.GroupRooms)
-                .HasForeignKey(r => r.GroupId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-                builder.HasOne(r => r.Room)
-                .WithMany(r => r.GroupRooms)
-                .HasForeignKey(r => r.RoomId)
-                .OnDelete(DeleteBehavior.Cascade);
-            });
-
-            modelBuilder.Entity<Group>(builder =>
-            {
-                builder.HasOne(r => r.Staff)
-                .WithMany(r => r.Groups)
-                .HasForeignKey(r => r.TeacherId)
-                .OnDelete(DeleteBehavior.Cascade);
-            });
-
-            modelBuilder.Entity<GroupSubject>(builder =>
-            {
-                builder.HasOne(r => r.Group)
-                .WithMany(r => r.GroupSubjects)
-                .HasForeignKey(r => r.GroupId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-                builder.HasOne(r => r.Subject)
-                .WithMany(r => r.GroupSubjects)
-                .HasForeignKey(r => r.SubjectId)
-                .OnDelete(DeleteBehavior.Cascade);
-            });
-
-            modelBuilder.Entity<Student>(builder =>
-            {
-                builder.HasOne(r => r.User)
-                .WithMany(r => r.Students)
-                .HasForeignKey(r => r.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
-            });
-
-            modelBuilder.Entity<Payment>(builder =>
-            {
-                builder.HasOne(r => r.Student)
-                .WithMany(r => r.Payments)
-                .HasForeignKey(r => r.StudentId)
-                .OnDelete(DeleteBehavior.Cascade);
-            });
-
-            modelBuilder.Entity<Staff>(builder =>
-            {
-                builder.HasOne(r => r.User)
-                .WithMany(r => r.Staffs)
-                .HasForeignKey(r => r.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
-            });
-
-            modelBuilder.Entity<RolePermission>(builder =>
-            {
-                builder.HasOne(r => r.Role)
-                .WithMany(r => r.RolePermissions)
-                .HasForeignKey(r => r.RoleId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-                builder.HasOne(r => r.Permission)
-                .WithMany(r => r.RolePermissions)
-                .HasForeignKey(r => r.PermissionId)
-                .OnDelete(DeleteBehavior.Cascade);
-            });
-
-            modelBuilder.Entity<UserRole>(builder =>
-            {
-                builder.HasOne(r => r.User)
-                .WithMany(r => r.UserRoles)
-                .HasForeignKey(r => r.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-                builder.HasOne(r => r.Role)
-                .WithMany(r => r.UserRoles)
-                .HasForeignKey(r => r.RoleId)
-                .OnDelete(DeleteBehavior.Cascade);
-            });
-
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
             base.OnModelCreating(modelBuilder);
-        }
+        }   
     }
 }
