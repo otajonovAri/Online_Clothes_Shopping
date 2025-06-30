@@ -1,0 +1,9 @@
+﻿using EducationApp.Application.Entities;
+using EducationApp.Application.Repositories.Interfaces;
+using EducationApp.DataAccess.Database;
+
+namespace EducationApp.Application.Repositories;
+
+public class RoleRepository(EduDbContext context) : Repository<Role>(context), IRoleRepository
+{
+}
