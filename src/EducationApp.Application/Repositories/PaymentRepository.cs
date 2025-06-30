@@ -4,6 +4,6 @@ using EducationApp.DataAccess.Database;
 
 namespace EducationApp.Application.Repositories;
 
-public class PaymentRrepository(EduDbContext context) : Repository<Payment>(context) , IPaymentRepository
+public class PaymentRepository(EduDbContext context) : Repository<Payment>(context) , IPaymentRepository
 {
 }
