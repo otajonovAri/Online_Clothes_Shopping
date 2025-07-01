@@ -17,5 +17,5 @@ public class User
     public Gender Gender { get; set; }
     public ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
     public ICollection<Staff> Staffs { get; set; } = new List<Staff>();
-    public Student Student { get; set; }
+    public Student Student { get; set; } = new Student();
 }

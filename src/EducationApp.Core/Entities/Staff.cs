@@ -13,6 +13,8 @@ public class Staff
     public DateTime BirthDate { get; set; }
     public Gender Gender { get; set; }
     public decimal Salary { get; set; }
+
+    public ICollection<StaffSubject> StaffSubjects { get; set; } = new List<StaffSubject>();
     public ICollection<Group> Groups { get; set; } = new List<Group>();
-    public User User{ get; set; }
+    public ICollection<GroupSubject> GroupSubjects { get; set; } = new List<GroupSubject>();
 }
