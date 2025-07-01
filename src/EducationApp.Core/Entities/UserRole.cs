@@ -1,9 +1,10 @@
-﻿using EducationApp.Core.Entities;
+﻿using EducationApp.Application.Entities;
 
-namespace EducationApp.Application.Entities;
+namespace EducationApp.Core.Entities;
 
 public class UserRole
 {
+    public int Id { get; set; }
 	public int UserId { get; set; }
     public User User { get; set; }
 

@@ -1,6 +1,6 @@
-﻿using EducationApp.Core.Entities;
+﻿using EducationApp.Application.Entities;
 
-namespace EducationApp.Application.Entities;
+namespace EducationApp.Core.Entities;
 
 public class Permission
 {

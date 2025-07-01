@@ -10,11 +10,7 @@ public static class DependencyInjection
 {
     public static IServiceCollection ServiceContainer(this IServiceCollection services)
     {
-        services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-
         services.AddScoped<IGroupRepository , GroupRepository>();
-
-        services.AddScoped<IGroupRoomRepository , GroupRoomRepository>();
 
         services.AddScoped<IGroupSubjectRepository , GroupSubjectRepository>();
 
@@ -23,8 +19,6 @@ public static class DependencyInjection
         services.AddScoped<IStudentRepository , StudentRepository>();
 
         services.AddScoped<ISubjectRepository , SubjectRepository>();
-
-        services.AddScoped<IRoomRepository , RoomRepository>();
 
         services.AddScoped<IUserRoleRepository , UserRoleRepository>();
 

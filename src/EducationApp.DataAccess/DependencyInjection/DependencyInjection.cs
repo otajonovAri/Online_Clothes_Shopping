@@ -17,6 +17,5 @@ namespace EducationApp.DataAccess.DependencyInjection
 
             return services;
         }
-
     }
 }
