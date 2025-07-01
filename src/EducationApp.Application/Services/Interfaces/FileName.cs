@@ -8,5 +8,6 @@ namespace EducationApp.Application.Services.Interfaces
 {
 	internal class FileName
 	{
+
 	}
 }
