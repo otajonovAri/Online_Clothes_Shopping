@@ -14,9 +14,6 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(u => u.Password).HasMaxLength(200);
         builder.Property(u => u.PhoneNumber).HasMaxLength(20);
 
-        builder.HasOne(u => u.Role)
-            .WithMany()
-            .HasForeignKey("RoleId")
-            .OnDelete(DeleteBehavior.Restrict);
+        
     }
 }
