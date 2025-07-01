@@ -15,8 +15,7 @@ public class User
     public string? Address { get; set; }
     public DateTime BirthDate { get; set; }
     public Gender Gender { get; set; }
-    public Role Role { get; set; }
     public ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
-    public ICollection<Student> Students { get; set; } = new List<Student>();
     public ICollection<Staff> Staffs { get; set; } = new List<Staff>();
+    public Student Student { get; set; } = new Student();
 }

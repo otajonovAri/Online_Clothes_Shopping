@@ -7,4 +7,6 @@ public class GroupSubject
 
     public int SubjectId { get; set; }
     public Subject Subject { get; set; }
+
+    public ICollection<Room> Rooms { get; set; } = new List<Room>();
 }
