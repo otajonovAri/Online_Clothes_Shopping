@@ -1,6 +1,4 @@
-﻿using EducationApp.Application.Entities;
-
-namespace EducationApp.Core.Entities;
+﻿namespace EducationApp.Core.Entities;
 
 public class UserRole
 {

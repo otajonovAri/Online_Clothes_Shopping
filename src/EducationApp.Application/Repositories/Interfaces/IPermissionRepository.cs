@@ -1,5 +1,4 @@
-﻿using EducationApp.Application.Entities;
-using EducationApp.Core.Entities;
+﻿using EducationApp.Core.Entities;
 
 namespace EducationApp.Application.Repositories.Interfaces;
 

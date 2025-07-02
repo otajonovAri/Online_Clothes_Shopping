@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using EducationApp.Application.Entities;
 using EducationApp.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 

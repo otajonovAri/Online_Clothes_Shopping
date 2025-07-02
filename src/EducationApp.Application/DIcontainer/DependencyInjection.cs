@@ -1,10 +1,8 @@
 ﻿using EducationApp.Application.Repositories;
 using EducationApp.Application.Repositories.Interfaces;
-using EducationApp.DataAccess.Database;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace EducationApp.Application.DIcontainer;
+namespace EducationApp.Application.DIContainer;
 
 public static class DependencyInjection
 {
@@ -31,6 +29,8 @@ public static class DependencyInjection
         services.AddScoped<IPermissionRepository , PermissionRepository>();
 
         services.AddScoped<IRolePermissionRepository , RolePermissionRepository>();
+
+        services.AddScoped<IStaffSubjectRepository, StaffSubjectRepository>();
 
         return services;
     }

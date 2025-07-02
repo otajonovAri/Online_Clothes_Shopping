@@ -1,10 +1,9 @@
 ﻿using EducationApp.Core.Enums;
 
-namespace EducationApp.Core.Entities;
+namespace EducationApp.Core.DTOs;
 
-public class Staff
+public class CreateStaffDto
 {
-    public int Id { get; set; }
     public int UserId { get; set; }
     public string FullName { get; set; }
     public string Position { get; set; }
@@ -13,11 +12,4 @@ public class Staff
     public DateTime BirthDate { get; set; }
     public Gender Gender { get; set; }
     public decimal Salary { get; set; }
-    
-    public User User { get; set; } 
-
-
-    public ICollection<StaffSubject> StaffSubjects { get; set; }
-    public ICollection<Group> Groups { get; set; }
-    public ICollection<GroupSubject> GroupSubjects { get; set; } 
 }

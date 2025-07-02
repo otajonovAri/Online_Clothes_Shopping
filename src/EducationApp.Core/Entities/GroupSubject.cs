@@ -9,7 +9,7 @@ public class GroupSubject
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
 
-    public Group Group { get; set; }
+    public Group Group { get; set; } 
     public Subject Subjects { get; set; }
-    public Staff Staffs { get; set; }
+    public Staff Staffs { get; set; } 
 }

@@ -1,6 +1,4 @@
-﻿using EducationApp.Core.Entities;
-
-namespace EducationApp.Application.Entities;
+﻿namespace EducationApp.Core.Entities;
 
 public class Role
 {
@@ -8,7 +6,7 @@ public class Role
 
 	public string Name { get; set; }
 
-    public ICollection<RolePermission> RolePermissions { get; set; } = new List<RolePermission>();
+    public ICollection<RolePermission> RolePermissions { get; set; }
 
-    public ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
+    public ICollection<UserRole> UserRoles { get; set; }
 }
