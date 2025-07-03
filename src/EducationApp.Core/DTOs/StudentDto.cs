@@ -15,10 +15,4 @@ public class StudentDto
     public DateTime JoinDate { get; set; }
 
     public string Note { get; set; }
-
-    public string PasswordHas { get; set; }
-
-    public string PasswordSold { get; set; }
-
-    public string RefreshToken { get; set; }
 }
