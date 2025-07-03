@@ -1,5 +1,7 @@
 using EducationApp.Application.DIContainer;
+using EducationApp.DataAccess.Database;
 using EducationApp.DataAccess.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,9 +22,14 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+if(builder.Environment.IsProduction() && builder.Configuration.GetValue<int?>("PORT") is not null)
+    builder.WebHost.UseUrls($"http://*:{builder.Configuration.GetValue<int>("PORT")}");
+
+var context = app.Services.CreateScope().ServiceProvider.GetRequiredService<EduDbContext>();
+await context.Database.MigrateAsync();
 // Configure the HTTP request pipeline.
 
-    app.UseSwagger();
+app.UseSwagger();
     app.UseSwaggerUI();
 
 
