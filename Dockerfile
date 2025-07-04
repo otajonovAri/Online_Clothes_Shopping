@@ -7,7 +7,6 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
-
 COPY ["src/EducationApp.API/EducationApp.API.csproj", "src/EducationApp.API/"]
 COPY ["src/EducationApp.Application/EducationApp.Application.csproj", "src/EducationApp.Application/"]
 COPY ["src/EducationApp.DataAccess/EducationApp.DataAccess.csproj", "src/EducationApp.DataAccess/"]
@@ -17,7 +16,8 @@ RUN dotnet restore "src/EducationApp.API/EducationApp.API.csproj"
 
 COPY . .
 
-WORKDIR "/src/src/EducationApp.API"
+
+WORKDIR "/src/EducationApp.API"
 
 RUN dotnet build "EducationApp.API.csproj" -c Release -o /app/build
 
