@@ -8,5 +8,6 @@ namespace EducationApp.Core.Enums
 {
     public enum RoomType
     {
+        Online, Offline, Hybrid
     }
 }
