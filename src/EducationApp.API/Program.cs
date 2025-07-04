@@ -17,6 +17,19 @@ builder.Services.AddControllers()
         x.JsonSerializerOptions.WriteIndented = true;
     });
 
+
+// Allow Frontend CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", builder =>
+    {
+        builder.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+});
+
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -31,6 +44,12 @@ await context.Database.MigrateAsync();
 
 app.UseSwagger();
     app.UseSwaggerUI();
+
+
+
+// Allow CORS for all origins, methods, and headers
+app.UseCors("AllowAll");
+
 
 
 app.UseHttpsRedirection();
