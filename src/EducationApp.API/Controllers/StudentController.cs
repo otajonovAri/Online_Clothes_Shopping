@@ -38,9 +38,6 @@ public class StudentController(IStudentRepository repo) : ControllerBase
             Status = dto.Status,
             JoinDate = dto.JoinDate,
             Note = dto.Note,
-            PasswordHas = dto.PasswordHas,
-            PasswordSold = dto.PasswordSold,
-            RefreshToken = dto.RefreshToken
         };
 
         await repo.AddAsync(student);
@@ -63,9 +60,6 @@ public class StudentController(IStudentRepository repo) : ControllerBase
         student.Status = dto.Status;
         student.JoinDate = dto.JoinDate;
         student.Note = dto.Note;
-        student.PasswordHas = dto.PasswordHas;
-        student.PasswordSold = dto.PasswordSold;
-        student.RefreshToken = dto.RefreshToken;
 
         repo.Update(student);
         await repo.SaveChangesAsync();
