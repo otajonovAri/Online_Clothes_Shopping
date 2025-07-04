@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -30,7 +30,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EducationApp.Application\EducationApp.Application.csproj" />
+	  <ProjectReference Include="..\EducationApp.Application\EducationApp.Application.csproj" />
+	  <ProjectReference Include="..\EducationApp.Core\EducationApp.Core.csproj" />
+	  <ProjectReference Include="..\EducationApp.DataAccess\EducationApp.DataAccess.csproj" />
   </ItemGroup>
 
 </Project>
