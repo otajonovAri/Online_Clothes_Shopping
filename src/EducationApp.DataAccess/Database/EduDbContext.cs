@@ -18,5 +18,7 @@ namespace EducationApp.DataAccess.Database
         public DbSet<Subject> Subjects { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
+        public DbSet<Room> Rooms { get; set; }
+        public DbSet<GroupRoom> GroupRooms { get; set; }
     }
 }
