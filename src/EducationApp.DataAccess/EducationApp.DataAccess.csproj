@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Database\Persistence\**" />
+    <EmbeddedResource Remove="Database\Persistence\**" />
+    <None Remove="Database\Persistence\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.17">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -20,10 +26,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\EducationApp.Core\EducationApp.Core.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Database\Persistence\" />
   </ItemGroup>
 
 </Project>
