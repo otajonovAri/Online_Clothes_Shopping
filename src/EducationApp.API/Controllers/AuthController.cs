@@ -1,4 +1,5 @@
-﻿using EducationApp.Application.Models;
+﻿using EducationApp.Application.Auth;
+using EducationApp.Application.Models;
 using EducationApp.Application.Models.Dtos;
 using EducationApp.Application.Services.Interfaces;
 using Microsoft.AspNetCore.Http;

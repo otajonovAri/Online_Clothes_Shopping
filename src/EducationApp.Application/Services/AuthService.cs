@@ -32,7 +32,7 @@ namespace EducationApp.Application.Services
                 return ApiResult<LoginResponseDto>.Failure(new[] { "Foydalanuvchi topilmadi" });
             }
 
-            if (!passwordHasher.Verify(user.PasswordHasher, loginDto.Password, user.PasswordSalt))
+            if (!passwordHasher.Verify(user.PasswordHash, loginDto.Password, user.PasswordSolt))
                 return ApiResult<LoginResponseDto>.Failure(new[] { "Parol noto‘g‘ri" });
 
             //if (!user.IsVerified)
@@ -71,8 +71,9 @@ namespace EducationApp.Application.Services
                 FirstName = firstname,
                 LastName = lastname,
                 Email = email,
-                PasswordHasher = hash,
-                PasswordSalt = salt,
+                PasswordHash = hash,
+                PasswordSolt = salt,
+                Password = password,
                 //CreatedAt = DateTime.Now,
                 //IsVerified = false // Yangi foydalanuvchilar odatda tasdiqlanmagan holda boshlanadi
             };
@@ -101,7 +102,7 @@ namespace EducationApp.Application.Services
             //var otp = await _otpService.GenerateAndSaveOtpAsync(user.Id);
             //await _emailService.SendOtpAsync(email, otp);
 
-            return ApiResult<string>.Success("Ro'yxatdan o'tdingiz. Email orqali tasdiqlang.");
+            return ApiResult<string>.Success("Ro'yxatdan o'tdingiz."); // Email orqali tasdiqlash qo'shish
         }
     }
 }

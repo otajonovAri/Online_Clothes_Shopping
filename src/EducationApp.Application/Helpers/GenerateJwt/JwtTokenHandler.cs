@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using EducationApp.Core.Entities;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
-using EducationApp.Core.Entities;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
 
 namespace EducationApp.Application.Helpers.GenerateJwt
 {
@@ -24,12 +20,12 @@ namespace EducationApp.Application.Helpers.GenerateJwt
         public string GenerateAccessToken(User user, string token)
         {
             var claims = new List<Claim>()
-        {
-            new Claim(CustomClaimNames.Id, user.Id.ToString()),
-            new Claim(CustomClaimNames.Email, user.Email), 
-            //new Claim(CustomClaimNames.Role, user.Role.ToString()), 
-            new Claim(CustomClaimNames.Token, token)
-        };
+            {
+                new Claim(CustomClaimNames.Id, user.Id.ToString()),
+                new Claim(CustomClaimNames.Email, user.Email), 
+                //new Claim(CustomClaimNames.Role, user.Role.ToString()), 
+                new Claim(CustomClaimNames.Token, token)
+            };
 
             if (user.UserRoles != null && user.UserRoles.Any())
             {
@@ -42,14 +38,11 @@ namespace EducationApp.Application.Helpers.GenerateJwt
                         foreach (var rolePermission in userRole.Role.RolePermissions)
                         {
                             // CustomClaimNames.Permission nomli claim turini ishlatish
-                            claims.Add(new Claim(CustomClaimNames.Permissions, rolePermission.Permission.Description));
+                            claims.Add(new Claim(CustomClaimNames.Permissions, rolePermission.Permission.Name));
                         }
                     }
                 }
-
-
             }
-
 
             var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOption.SecretKey));
 
