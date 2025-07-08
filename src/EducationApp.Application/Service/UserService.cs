@@ -34,7 +34,7 @@ public class UserService(IUserRepository repo, IMapper mapper) : IUserService
         await repo.AddAsync(entity);
         await repo.SaveChangesAsync();
 
-        return new ApiResult<object>("User created successfully", true, "Created");
+        return new ApiResult<object>("User created successfully", true, entity);
     }
 
     public async Task<ApiResult<object>> UpdateAsync(int id, UserDto dto)

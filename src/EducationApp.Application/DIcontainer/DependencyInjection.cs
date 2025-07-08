@@ -56,6 +56,10 @@ public static class DependencyInjection
 
         services.AddScoped<IGroupSubjectService, GroupSubjectService>();
 
+        services.AddScoped<IStaffSubjectService, StaffSubjectService>();
+
+        services.AddScoped<ISubjectService, SubjectService>();
+
         return services;
     }
 }

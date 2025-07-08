@@ -4,6 +4,7 @@ namespace EducationApp.Core.DTOs;
 
 public class StaffDto
 {
+    public int Id { get; set; }
     public int UserId { get; set; }
     public string FullName { get; set; }
     public Position Position { get; set; } = Position.Other;

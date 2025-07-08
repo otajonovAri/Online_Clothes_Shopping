@@ -2,6 +2,7 @@
 
 public class GroupSubjectDto
 {
+    public int Id { get; set; }
     public int GroupId { get; set; }
     public int SubjectId { get; set; }
     public int StaffId { get; set; }

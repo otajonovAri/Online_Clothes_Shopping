@@ -14,5 +14,6 @@ public class MappingProfile : Profile
         CreateMap<PaymentDto, Payment>().ReverseMap();
         CreateMap<StudentDto, Student>().ReverseMap();
         CreateMap<StaffDto , Staff>().ReverseMap();
+        CreateMap<SubjectDto, Subject>().ReverseMap();
     }
 }
