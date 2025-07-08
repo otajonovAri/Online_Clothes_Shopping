@@ -1,4 +1,6 @@
-﻿namespace EducationApp.Core.DTOs;
+﻿using EducationApp.Core.Enums;
+
+namespace EducationApp.Core.DTOs;
 
 public class StudentDto
 {
@@ -8,11 +10,10 @@ public class StudentDto
 
     public string LastName { get; set; }
 
-    public string Address { get; set; }
+    public string Email { get; set; }
 
-    public string Status { get; set; }
+    public Status Status { get; set; }
+    public Gender Gender { get; set; }
 
     public DateTime JoinDate { get; set; }
-
-    public string Note { get; set; }
 }

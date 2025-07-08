@@ -34,10 +34,10 @@ public class StudentController(IStudentRepository repo) : ControllerBase
             UserId = dto.UserId,
             FirstName = dto.FirstName,
             LastName = dto.LastName,
-            Address = dto.Address,
+            Email = dto.Email,
             Status = dto.Status,
             JoinDate = dto.JoinDate,
-            Note = dto.Note,
+            Gender = dto.Gender,
         };
 
         await repo.AddAsync(student);
@@ -56,10 +56,9 @@ public class StudentController(IStudentRepository repo) : ControllerBase
         student.UserId = dto.UserId;
         student.FirstName = dto.FirstName;
         student.LastName = dto.LastName;
-        student.Address = dto.Address;
+        student.Email = dto.Email;
         student.Status = dto.Status;
         student.JoinDate = dto.JoinDate;
-        student.Note = dto.Note;
 
         repo.Update(student);
         await repo.SaveChangesAsync();

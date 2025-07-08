@@ -35,7 +35,6 @@ public class PaymentController(IPaymentRepository repo) : ControllerBase
             Amount = dto.Amount,
             PaymentDate = dto.PaymentDate,
             PaymentType = dto.PaymentType,
-            Note = dto.Note
         };
 
         await repo.AddAsync(payment);
@@ -55,7 +54,6 @@ public class PaymentController(IPaymentRepository repo) : ControllerBase
         payment.Amount = dto.Amount;
         payment.PaymentDate = dto.PaymentDate;
         payment.PaymentType = dto.PaymentType;
-        payment.Note = dto.Note;
 
         repo.Update(payment);
         await repo.SaveChangesAsync();
