@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EducationApp.Application.Services
+namespace EducationApp.Application.Models.Dtos
 {
-	internal class FileName
-	{
-	}
+    internal class UserRequestDto
+    {
+    }
 }
