@@ -10,5 +10,6 @@ public class Payment
     public decimal Amount { get; set; }
     public DateTime PaymentDate { get; set; }
     public PaymentType PaymentType { get; set; }
-    public string? Note { get; set; } 
+    public string PaymentImgUrl { get; set; }
+    public string Description { get; set; } 
 }
