@@ -1,4 +1,6 @@
-﻿namespace EducationApp.Application.Repositories.Interfaces;
+﻿using System.Linq.Expressions;
+
+namespace EducationApp.Application.Repositories.Interfaces;
 
 public interface IRepository<TEntity>
 {
@@ -19,4 +21,8 @@ public interface IRepository<TEntity>
     int SaveChanges();
 
     Task<int> SaveChangesAsync();
+
+    // Query search : Gender , Name , Region , email , 
+
+    IQueryable<TEntity> GetByCondition(Expression<Func<TEntity, bool>> predicate);
 }

@@ -1,78 +1,67 @@
-using EducationApp.Application.Repositories.Interfaces;
+﻿using EducationApp.Application.Service.Interface;
 using EducationApp.Core.DTOs;
-using EducationApp.Core.Entities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace EducationApp.API.Controllers;
-
-[Route("api/[controller]")]
-[ApiController]
-public class PaymentController(IPaymentRepository repo) : ControllerBase
+namespace EducationApp.API.Controllers
 {
-    [HttpGet("get-all")]
-    public IActionResult GetAll()
+    [Route("api/[controller]")]
+    [ApiController]
+    public class PaymentController(IPaymentService service) : ControllerBase
     {
-        var payments = repo.GetAll();
-        return Ok(payments);
-    }
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+            => Ok(await service.GetAll());
 
-    [HttpGet("get-by-id/{id}")]
-    public async Task<IActionResult> GetById(int id)
-    {
-        var payment = await repo.GetByIdAsync(id);
-        if (payment is null)
-            return NotFound($"Payment with ID {id} not found.");
-
-        return Ok(payment);
-    }
-
-    [HttpPost("create")]
-    public async Task<IActionResult> Create([FromBody] PaymentDto dto)
-    {
-        var payment = new Payment
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
         {
-            StudentId = dto.StudentId,
-            Amount = dto.Amount,
-            PaymentDate = dto.PaymentDate,
-            PaymentType = dto.PaymentType,
-            Note = dto.Note
-        };
+            var result = await service.GetByIdAsync(id);
 
-        await repo.AddAsync(payment);
-        await repo.SaveChangesAsync();
+            if (!result.Success)
+                return NotFound(result.Message);
 
-        return Ok(payment.Id);
-    }
+            return Ok(result);
+        }
 
-    [HttpPut("update/{id}")]
-    public async Task<IActionResult> Update(int id, [FromBody] PaymentDto dto)
-    {
-        var payment = await repo.GetByIdAsync(id);
-        if (payment is null)
-            return NotFound($"Payment with ID {id} not found.");
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] PaymentDto dto)
+        {
+            var result = await service.CreateAsync(dto);
 
-        payment.StudentId = dto.StudentId;
-        payment.Amount = dto.Amount;
-        payment.PaymentDate = dto.PaymentDate;
-        payment.PaymentType = dto.PaymentType;
-        payment.Note = dto.Note;
+            if (!result.Success)
+                return BadRequest(result.Message);
 
-        repo.Update(payment);
-        await repo.SaveChangesAsync();
+            return Ok(result);
+        }
 
-        return Ok("Updated successfully.");
-    }
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, [FromBody] PaymentDto dto)
+        {
+            var result = await service.UpdateAsync(id, dto);
+            if (!result.Success)
+                return NotFound(result.Message);
+            return Ok(result);
+        }
 
-    [HttpDelete("delete/{id}")]
-    public async Task<IActionResult> Delete(int id)
-    {
-        var payment = await repo.GetByIdAsync(id);
-        if (payment is null)
-            return NotFound($"Payment with ID {id} not found.");
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var result = await service.DeleteAsync(id);
+            if (!result.Success)
+                return NotFound(result.Message);
+            return Ok(result);
+        }
 
-        repo.Delete(payment);
-        await repo.SaveChangesAsync();
+        [HttpGet("BankTransfer")]
+        public async Task<IActionResult> GetBankTransferPayments(string bankTransfer)
+        {
+            var result = await service.GetByCondition(bankTransfer);
+            
+            if (!result.Success)
+                return NotFound(result.Message);
 
-        return Ok("Deleted successfully.");
+            return Ok(result);
+        }
     }
 }

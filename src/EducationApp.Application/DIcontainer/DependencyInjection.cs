@@ -1,5 +1,7 @@
 ﻿using EducationApp.Application.Repositories;
 using EducationApp.Application.Repositories.Interfaces;
+using EducationApp.Application.Service;
+using EducationApp.Application.Service.Interface;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace EducationApp.Application.DIContainer;
@@ -31,6 +33,28 @@ public static class DependencyInjection
         services.AddScoped<IRolePermissionRepository , RolePermissionRepository>();
 
         services.AddScoped<IStaffSubjectRepository, StaffSubjectRepository>();
+
+        services.AddScoped<IRoomRepository, RoomRepository>();
+
+        services.AddScoped<IPaymentService , PaymentService>();
+
+
+        // Services
+        services.AddScoped<IGroupService, GroupService>();
+
+        services.AddScoped<IUserService, UserService>();
+
+        services.AddScoped<IRoomService , RoomService>();
+
+        services.AddScoped<IPaymentService , PaymentService>();
+
+        services.AddScoped<IStudentService , StudentService>();
+
+        services.AddScoped<IRoomService , RoomService>();
+
+        services.AddScoped<IStaffService, StaffService>();
+
+        services.AddScoped<IGroupSubjectService, GroupSubjectService>();
 
         return services;
     }

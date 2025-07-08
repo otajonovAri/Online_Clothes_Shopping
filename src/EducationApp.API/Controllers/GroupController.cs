@@ -1,78 +1,59 @@
-using EducationApp.Application.Repositories.Interfaces;
+﻿using EducationApp.Application.Service.Interface;
 using EducationApp.Core.DTOs;
-using EducationApp.Core.Entities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace EducationApp.API.Controllers;
-
-[Route("api/[controller]")]
-[ApiController]
-public class GroupController(IGroupRepository repo) : ControllerBase
+namespace EducationApp.API.Controllers
 {
-    [HttpGet("get-all-groups")]
-    public IActionResult GetAllGroups()
+    [Route("api/[controller]")]
+    [ApiController]
+    public class GroupController(IGroupService service) : ControllerBase
     {
-        var groups = repo.GetAll();
-        return Ok(groups);
-    }
-    
-    [HttpGet("get-group-by-id/{id}")]
-    public async Task<IActionResult> GetGroupById([FromRoute] int id)
-    {
-        var group = await repo.GetByIdAsync(id);
-        if (group == null)
-            return NotFound($"Group with ID {id} not found");
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+            => Ok(await service.GetAllAsync());
 
-        return Ok(group);
-    }
-    
-    [HttpPost("create-group")]
-    public async Task<IActionResult> CreateGroup([FromBody] GroupDto dto)
-    {
-        var group = new Group
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
         {
-            Name = dto.Name,
-            SubjectId = dto.SubjectId,
-            StartDate = dto.StartDate,
-            EndDate = dto.EndDate,
-            Schedule = dto.Schedule
-        };
+            var result = await service.GetByIdAsync(id);
 
-        await repo.AddAsync(group);
-        await repo.SaveChangesAsync();
+            if (!result.Success)
+                return NotFound(result.Message);
 
-        return Ok(group.Id);
-    }
-    
-    [HttpPut("update-group/{id}")]
-    public async Task<IActionResult> UpdateGroup([FromRoute] int id, [FromBody] GroupDto dto)
-    {
-        var group = await repo.GetByIdAsync(id);
-        if (group == null)
-            return NotFound($"Group with ID {id} not found");
+            return Ok(result);
+        }
 
-        group.Name = dto.Name;
-        group.SubjectId = dto.SubjectId;
-        group.StartDate = dto.StartDate;
-        group.EndDate = dto.EndDate;
-        group.Schedule = dto.Schedule;
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] GroupDto dto)
+        {
+            var result = await service.CreateAsync(dto);
 
-        repo.Update(group);
-        await repo.SaveChangesAsync();
+            if (!result.Success)
+                return BadRequest(result.Message);
 
-        return Ok("Group updated successfully");
-    }
+            return Ok(result);
+        }
 
-    [HttpDelete("delete-group/{id}")]
-    public async Task<IActionResult> DeleteGroup([FromRoute] int id)
-    {
-        var group = await repo.GetByIdAsync(id);
-        if (group == null)
-            return NotFound($"Group with ID {id} not found");
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, [FromBody] GroupDto dto)
+        {
+            var result = await service.UpdateAsync(id, dto);
 
-        repo.Delete(group);
-        await repo.SaveChangesAsync();
+            if (!result.Success)
+                return NotFound(result.Message);
 
-        return Ok("Group deleted successfully");
+            return Ok(result);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var result = await service.DeleteAsync(id);
+
+            if (!result.Success)
+                return NotFound(result.Message);
+            return Ok(result);
+        }
     }
 }

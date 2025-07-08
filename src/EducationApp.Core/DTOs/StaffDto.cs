@@ -6,10 +6,12 @@ public class StaffDto
 {
     public int UserId { get; set; }
     public string FullName { get; set; }
-    public string Position { get; set; }
+    public Position Position { get; set; } = Position.Other;
     public string PhoneNumber { get; set; }
     public string Email { get; set; }
-    public DateTime BirthDate { get; set; }
+    public string Password { get; set; }
+    public DateTime DateBirth { get; set; }
     public Gender Gender { get; set; }
-    public decimal Salary { get; set; }
+    public Decimal Salary { get; set; }
+    public string StaffImgUrl { get; set; }
 }

@@ -1,6 +1,8 @@
-﻿using System;
-using EducationApp.Application.Repositories.Interfaces;
+﻿using EducationApp.Application.Repositories.Interfaces;
 using EducationApp.DataAccess.Database;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq.Expressions;
 
 namespace EducationApp.Application.Repositories;
 
@@ -16,12 +18,12 @@ public abstract class Repository<TEntity>(EduDbContext context) : IRepository<TE
         => context.Set<TEntity>().Update(entity);
 
     public IEnumerable<TEntity> GetAll()
-        => context.Set<TEntity>().AsQueryable();
+        => context.Set<TEntity>().AsNoTracking();
 
-    public TEntity GetById(int id)
+    public TEntity GetById(int id) 
         => context.Set<TEntity>().Find(id);
 
-    public async Task<TEntity> GetByIdAsync(int id)
+    public async Task<TEntity> GetByIdAsync(int id) 
         => await context.Set<TEntity>().FindAsync(id);
 
     public void Delete(TEntity entity)
@@ -32,4 +34,7 @@ public abstract class Repository<TEntity>(EduDbContext context) : IRepository<TE
 
     public async Task<int> SaveChangesAsync()
         => await context.SaveChangesAsync();
+
+    public IQueryable<TEntity> GetByCondition(Expression<Func<TEntity, bool>> predicate)
+        => context.Set<TEntity>().AsNoTracking().Where(predicate);
 }

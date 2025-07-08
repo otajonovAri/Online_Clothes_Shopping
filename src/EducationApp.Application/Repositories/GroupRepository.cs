@@ -4,6 +4,6 @@ using EducationApp.DataAccess.Database;
 
 namespace EducationApp.Application.Repositories;
 
-public class GroupRepository(EduDbContext context) : Repository<Group>(context) , IGroupRepository
+public class GroupRepository(EduDbContext context) : Repository<Group>(context), IGroupRepository
 {
 }

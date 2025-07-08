@@ -1,11 +1,14 @@
-﻿namespace EducationApp.Core.Entities;
+﻿using EducationApp.Core.Common;
 
-public class StaffSubject
+namespace EducationApp.Core.Entities;
+
+public class StaffSubject : BaseEntity
 {
-    public int Id { get; set; }
+    // (Child Class) Staff
     public int StaffId { get; set; }
-    public int SubjectId { get; set; }
+    public Staff Staff { get; set; }
 
-    public Staff Staff { get; set; } 
-    public ICollection<Subject> Subjects { get; set; } 
-}   
+    // (Child Class) Subject
+    public int SubjectId { get; set; }
+    public Subject Subject { get; set; }
+}

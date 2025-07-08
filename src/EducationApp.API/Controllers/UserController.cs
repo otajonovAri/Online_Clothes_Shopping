@@ -1,88 +1,69 @@
-using EducationApp.Application.Repositories.Interfaces;
+﻿using EducationApp.Application.Service.Interface;
 using EducationApp.Core.DTOs;
-using EducationApp.Core.Entities;
-using EducationApp.Core.Enums;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace EducationApp.API.Controllers;
-
-[Route("api/[controller]")]
-[ApiController]
-public class UserController(IUserRepository repo) : ControllerBase
+namespace EducationApp.API.Controllers
 {
-    [HttpGet("get-all-users")]
-    public IActionResult GetAllUsers()
+    [Route("api/[controller]")]
+    [ApiController]
+    public class UserController(IUserService service) : ControllerBase
     {
-        return Ok(repo.GetAll());
-    }
-    
-    [HttpGet("get-user-by-id/{id}")]
-    public async Task<IActionResult> GetUserById(int id)
-    {
-        var user = await repo.GetByIdAsync(id);
-        if (user is null)
-            return NotFound($"User with ID {id} not found");
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+            => Ok(await service.GetAllAsync());
 
-        return Ok(user);
-    }
-    
-    [HttpPost("create-user")]
-    public async Task<IActionResult> CreateUser([FromBody] UserDto dto)
-    {
-        if (!Enum.TryParse<Gender>(dto.Gender, true, out var gender))
-            return BadRequest("Invalid gender value. Use: Male or Female");
-
-        var user = new User
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
         {
-            FirstName = dto.FirstName,
-            LastName = dto.LastName,
-            PhoneNumber = dto.PhoneNumber,
-            Email = dto.Email,
-            Password = dto.Password,
-            BirthDate = dto.BirthDate,
-            Gender = gender
-        };
+            var result = await service.GetByIdAsync(id);
+            if (!result.Success)
+                return NotFound(result.Message);
 
-        await repo.AddAsync(user);
-        await repo.SaveChangesAsync();
+            return Ok(result);
+        }
 
-        return Ok(user.Id);
-    }
-    
-    [HttpPut("update-user/{id}")]
-    public async Task<IActionResult> UpdateUser(int id, [FromBody] UserDto dto)
-    {
-        var user = await repo.GetByIdAsync(id);
-        if (user is null)
-            return NotFound($"User with ID {id} not found");
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] UserDto dto)
+        {
+            var result = await service.CreateAsync(dto);
 
-        if (!Enum.TryParse<Gender>(dto.Gender, true, out var gender))
-            return BadRequest("Invalid gender value. Use: Male or Female");
+            if (!result.Success)
+                return BadRequest(result.Message);
 
-        user.FirstName = dto.FirstName;
-        user.LastName = dto.LastName;
-        user.PhoneNumber = dto.PhoneNumber;
-        user.Email = dto.Email;
-        user.Password = dto.Password;
-        user.BirthDate = dto.BirthDate;
-        user.Gender = gender;
+            return Ok(result);
+        }
 
-        repo.Update(user);
-        await repo.SaveChangesAsync();
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, [FromBody] UserDto dto)
+        {
+            var result = await service.UpdateAsync(id, dto);
 
-        return Ok("User updated successfully");
-    }
+            if (!result.Success)
+                return NotFound(result.Message);
 
-    [HttpDelete("delete-user/{id}")]
-    public async Task<IActionResult> DeleteUser(int id)
-    {
-        var user = await repo.GetByIdAsync(id);
-        if (user is null)
-            return NotFound($"User with ID {id} not found");
+            return Ok(result);
+        }
 
-        repo.Delete(user);
-        await repo.SaveChangesAsync();
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var result = await service.DeleteAsync(id);
 
-        return Ok("User deleted successfully");
+            if (!result.Success)
+                return NotFound(result.Message);
+            return Ok(result);
+        }
+
+        [HttpGet("search")]
+        public async Task<IActionResult> GetGender()
+        {
+            var result = await service.GetByUserGender(); 
+
+            if (!result.Success)
+                return NotFound(result.Message);
+
+            return Ok(result);
+        }
     }
 }

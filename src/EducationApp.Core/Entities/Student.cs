@@ -1,19 +1,24 @@
-﻿namespace EducationApp.Core.Entities;
+﻿using EducationApp.Core.Common;
+using EducationApp.Core.Enums;
 
-public class Student
+namespace EducationApp.Core.Entities;
+
+public class Student : BaseEntity
 {
-    public int Id { get; set; }
+    // Parent class User 
     public int UserId { get; set; }
-    public User User { get; set; } 
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
-    public string Address { get; set; }
-    public string Status { get; set; }
-    public DateTime JoinDate { get; set; }
-    public string Note { get; set; }
-    public string PasswordHas { get; set; }
-    public string PasswordSold { get; set; }
-    public string RefreshToken { get; set; }
+    public User User { get; set; }
 
-    public ICollection<Payment> Payments { get; set; } 
+    public string? FirstName { get; set; }
+    public string? LastName { get; set; }
+    public string Email { get; set; } = null!;
+    public string PhoneNumber { get; set; } = null!;
+    public string Password { get; set; } = null!;
+    public Status Status { get; set; }
+    public Gender Gender { get; set; }
+    public DateTime JoinStudentDateTime { get; set; }
+
+    //(Navigation properties) Payment 
+    public ICollection<Payment> Payments { get; set; }
+    public ICollection<Attendance> Attendances { get; set; }
 }

@@ -1,14 +1,22 @@
-﻿namespace EducationApp.Core.Entities;
+﻿using EducationApp.Core.Common;
 
-public class Group
+namespace EducationApp.Core.Entities;
+
+public class Group : BaseEntity
 {
-    public int Id { get; set; }
-    public string Name { get; set; } 
-    public int SubjectId { get; set; }
-    public DateTime StartDate { get; set; } 
-    public DateTime EndDate { get; set; }
-    public Subject Subject { get; set; } 
-    public string Schedule { get; set; }
+    public string Name { get; set; }
 
-    public ICollection<GroupSubject> GroupSubjects { get; set; } 
+    // (parent Class) Staff 
+    public int StaffId { get; set; }
+    public Staff Staff { get; set; }
+
+
+    public DateTime StartDate { get; set; }
+    public DateTime EndDate { get; set; }
+    public string Schedule { get; set; }
+    public string GroupDescription { get; set; }
+
+    // (Navigation properties)
+    public ICollection<GroupSubject> GroupSubjects { get; set; } = new HashSet<GroupSubject>();
+    public ICollection<Attendance> Attendances { get; set; } = new HashSet<Attendance>();
 }

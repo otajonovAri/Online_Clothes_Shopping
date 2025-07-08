@@ -1,18 +1,23 @@
-﻿using EducationApp.Core.Enums;
+﻿using EducationApp.Core.Common;
+using EducationApp.Core.Enums;
 
 namespace EducationApp.Core.Entities;
 
-public class User
+public class User : BaseEntity
 {
-    public int Id { get; set; }
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
-
-    public string PhoneNumber { get; set; }
-    public string Email { get; set; }
-    public string Password { get; set; }
-    public DateTime BirthDate { get; set; }
+    public string? FirstName { get; set; }
+    public string? LastName { get; set; }
+    public string PhoneNumber { get; set; } = null!;
+    public string Email { get; set; } = null!;
+    public string Password { get; set; } = null!;
+    public DateTime DateBirth { get; set; } = DateTime.UtcNow;
     public Gender Gender { get; set; }
+    public string PasswordHash { get; set; } = null!;
+    public string PasswordSolt { get; set; } = null!;
+    public string RefreshToken { get; set; } = null!;
 
-    public ICollection<Student> Students { get; set; }
+    //(Navigation properties) 
+    public ICollection<UserRole> UserRoles  { get; set; } = new List<UserRole>();
+    public ICollection<Student> Students { get; set; } = new List<Student>();
+    public ICollection<Staff> Staffs { get; set; } = new List<Staff>();
 }

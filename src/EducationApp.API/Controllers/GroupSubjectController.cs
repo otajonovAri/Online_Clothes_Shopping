@@ -1,78 +1,52 @@
-using EducationApp.Application.Repositories.Interfaces;
+﻿using EducationApp.Application.Service.Interface;
 using EducationApp.Core.DTOs;
-using EducationApp.Core.Entities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace EducationApp.API.Controllers;
-
-[Route("api/[controller]")]
-[ApiController]
-public class GroupSubjectController(IGroupSubjectRepository repo) : ControllerBase
+namespace EducationApp.API.Controllers
 {
-    [HttpGet("get-all")]
-    public IActionResult GetAll()
+    [Route("api/[controller]")]
+    [ApiController]
+    public class GroupSubjectController(IGroupSubjectService service) : ControllerBase
     {
-        var groupSubjects = repo.GetAll();
-        return Ok(groupSubjects);
-    }
+        [HttpGet]
+        public async Task<IActionResult> GetAll() 
+                => Ok(await service.GetAllRoom());
 
-    [HttpGet("get-by-id/{id}")]
-    public async Task<IActionResult> GetById([FromRoute] int id)
-    {
-        var entity = await repo.GetByIdAsync(id);
-        if (entity == null)
-            return NotFound($"GroupSubject with ID {id} not found");
-    
-        return Ok(entity);
-    }
-
-    [HttpPost("create")]
-    public async Task<IActionResult> Create([FromBody] GroupSubjectDto dto)
-    {
-        var entity = new GroupSubject
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
         {
-            GroupId = dto.GroupId,
-            SubjectId = dto.SubjectId,
-            StaffId = dto.StaffId,
-            StartDate = dto.StartDate,
-            EndDate = dto.EndDate
-        };
+            var result = await service.GetByIdAsync(id);
+            if (!result.Success)
+                return NotFound(result.Message);
+            return Ok(result);
+        }
 
-        await repo.AddAsync(entity);
-        await repo.SaveChangesAsync();
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] GroupSubjectDto dto)
+        {
+            var result = await service.CreateAsync(dto);
+            if (!result.Success)
+                return BadRequest(result.Message);
+            return Ok(result);
+        }
 
-        return Ok(entity.Id);
-    }
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, [FromBody] GroupSubjectDto dto)
+        {
+            var result = await service.UpdateAsync(id, dto);
+            if (!result.Success)
+                return NotFound(result.Message);
+            return Ok(result);
+        }
 
-    [HttpPut("update/{id}")]
-    public async Task<IActionResult> Update([FromRoute] int id, [FromBody] GroupSubjectDto dto)
-    {
-        var entity = await repo.GetByIdAsync(id);
-        if (entity == null)
-            return NotFound($"GroupSubject with ID {id} not found");
-
-        entity.GroupId = dto.GroupId;
-        entity.SubjectId = dto.SubjectId;
-        entity.StaffId = dto.StaffId;
-        entity.StartDate = dto.StartDate;
-        entity.EndDate = dto.EndDate;
-
-        repo.Update(entity);
-        await repo.SaveChangesAsync();
-
-        return Ok("Updated successfully");
-    }
-
-    [HttpDelete("delete/{id}")]
-    public async Task<IActionResult> Delete([FromRoute] int id)
-    {
-        var entity = await repo.GetByIdAsync(id);
-        if (entity == null)
-            return NotFound($"GroupSubject with ID {id} not found");
-
-        repo.Delete(entity);
-        await repo.SaveChangesAsync();
-
-        return Ok("Deleted successfully");
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var result = await service.DeleteAsync(id);
+            if (!result.Success)
+                return NotFound(result.Message);
+            return Ok(result);
+        }
     }
 }

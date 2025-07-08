@@ -1,10 +1,14 @@
-﻿namespace EducationApp.Core.Entities;
+﻿using EducationApp.Core.Common;
 
-public class RolePermission
+namespace EducationApp.Core.Entities;
+
+public class RolePermission : BaseEntity
 {
-    public int Id { get; set; }
-	public int RoleId { get; set; }
+    //(Parent class) Role
+    public int RoleId { get; set; }
     public Role Role { get; set; }
+
+    //(Parent class) Permission
     public int PermissionId { get; set; }
     public Permission Permission { get; set; }
 }

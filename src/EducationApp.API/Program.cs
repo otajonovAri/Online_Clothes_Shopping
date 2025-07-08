@@ -1,7 +1,9 @@
 using EducationApp.Application.DIContainer;
+using EducationApp.Application.MappingProfiles;
 using EducationApp.DataAccess.Database;
 using EducationApp.DataAccess.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,13 +11,19 @@ builder.Services.AddDatabase(builder.Configuration)
     .ServiceContainer();
 
 
-// Json Ignore
+// Json Ignore Reference Loop Handling
 builder.Services.AddControllers()
-    .AddJsonOptions(x =>
+    .AddNewtonsoftJson(options =>
     {
-        x.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
-        x.JsonSerializerOptions.WriteIndented = true;
+        options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
     });
+
+
+// Add services to the container.
+builder.Services.AddAutoMapper(typeof(MappingProfile));
+
+
+
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

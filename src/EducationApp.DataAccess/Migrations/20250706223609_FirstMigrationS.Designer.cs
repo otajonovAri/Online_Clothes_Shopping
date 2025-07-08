@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EducationApp.DataAccess.Migrations
 {
     [DbContext(typeof(EduDbContext))]
-    [Migration("20250629150307_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20250706223609_FirstMigrationS")]
+    partial class FirstMigrationS
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,7 @@ namespace EducationApp.DataAccess.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("EducationApp.Application.Entities.Permission", b =>
+            modelBuilder.Entity("EducationApp.Core.Entities.Attendance", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -33,67 +33,39 @@ namespace EducationApp.DataAccess.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("character varying(250)");
+                    b.Property<DateTime>("AttendanceDate")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                    b.Property<int>("GroupId")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("IsPresent")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Note")
+                        .HasColumnType("text");
+
+                    b.Property<int>("Participation")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Preparedness")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("StudentId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("SubjectId")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Permissions");
-                });
+                    b.HasIndex("GroupId");
 
-            modelBuilder.Entity("EducationApp.Application.Entities.Role", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                    b.HasIndex("StudentId");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    b.HasIndex("SubjectId");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Roles");
-                });
-
-            modelBuilder.Entity("EducationApp.Application.Entities.RolePermission", b =>
-                {
-                    b.Property<int>("RoleId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("PermissionId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("RoleId", "PermissionId");
-
-                    b.HasIndex("PermissionId");
-
-                    b.ToTable("RolePermissions");
-                });
-
-            modelBuilder.Entity("EducationApp.Application.Entities.UserRole", b =>
-                {
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("RoleId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("UserId", "RoleId");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("UserRoles");
+                    b.ToTable("Attendances");
                 });
 
             modelBuilder.Entity("EducationApp.Core.Entities.Group", b =>
@@ -107,75 +79,84 @@ namespace EducationApp.DataAccess.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("GroupDescription")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<int>("RoomId")
-                        .HasColumnType("integer");
+                        .HasColumnType("text");
 
                     b.Property<string>("Schedule")
                         .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
+                        .HasColumnType("text");
 
-                    b.Property<int?>("StaffId")
+                    b.Property<int>("StaffId")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("TeacherId")
-                        .HasColumnType("integer");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("RoomId");
-
                     b.HasIndex("StaffId");
-
-                    b.HasIndex("TeacherId");
 
                     b.ToTable("Groups");
                 });
 
             modelBuilder.Entity("EducationApp.Core.Entities.GroupRoom", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
                     b.Property<int>("GroupId")
                         .HasColumnType("integer");
 
                     b.Property<int>("RoomId")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("RoomId1")
-                        .HasColumnType("integer");
+                    b.HasKey("Id");
 
-                    b.HasKey("GroupId", "RoomId");
+                    b.HasIndex("GroupId");
 
                     b.HasIndex("RoomId");
-
-                    b.HasIndex("RoomId1");
 
                     b.ToTable("GroupRooms");
                 });
 
             modelBuilder.Entity("EducationApp.Core.Entities.GroupSubject", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<int>("GroupId")
                         .HasColumnType("integer");
+
+                    b.Property<int>("StaffId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("SubjectId")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("SubjectId1")
-                        .HasColumnType("integer");
+                    b.HasKey("Id");
 
-                    b.HasKey("GroupId", "SubjectId");
+                    b.HasIndex("GroupId");
+
+                    b.HasIndex("StaffId");
 
                     b.HasIndex("SubjectId");
-
-                    b.HasIndex("SubjectId1");
 
                     b.ToTable("GroupSubjects");
                 });
@@ -189,14 +170,16 @@ namespace EducationApp.DataAccess.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("numeric");
 
-                    b.Property<string>("Note")
-                        .IsRequired()
+                    b.Property<string>("Description")
                         .HasColumnType("text");
 
                     b.Property<DateTime>("PaymentDate")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("PaymentImgUrl")
+                        .HasColumnType("text");
 
                     b.Property<int>("PaymentType")
                         .HasColumnType("integer");
@@ -211,6 +194,67 @@ namespace EducationApp.DataAccess.Migrations
                     b.ToTable("Payments");
                 });
 
+            modelBuilder.Entity("EducationApp.Core.Entities.Permission", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Permissions");
+                });
+
+            modelBuilder.Entity("EducationApp.Core.Entities.Role", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Roles");
+                });
+
+            modelBuilder.Entity("EducationApp.Core.Entities.RolePermission", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("PermissionId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PermissionId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("RolePermissions");
+                });
+
             modelBuilder.Entity("EducationApp.Core.Entities.Room", b =>
                 {
                     b.Property<int>("Id")
@@ -219,13 +263,23 @@ namespace EducationApp.DataAccess.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Capacity")
+                    b.Property<int>("NumberOfChairs")
                         .HasColumnType("integer");
 
+                    b.Property<int>("NumberOfDesks")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("RoomCapacity")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("RoomDescription")
+                        .HasColumnType("text");
+
                     b.Property<string>("RoomName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("text");
+
+                    b.Property<string>("RoomNumber")
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -240,28 +294,37 @@ namespace EducationApp.DataAccess.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Address")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("BirthDate")
+                    b.Property<DateTime>("DateBirth")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("FullName")
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<int>("Gender")
                         .HasColumnType("integer");
 
-                    b.Property<string>("PhoneNumber")
+                    b.Property<string>("Password")
+                        .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Position")
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Position")
+                        .HasColumnType("integer");
 
                     b.Property<decimal>("Salary")
                         .HasColumnType("numeric");
+
+                    b.Property<string>("StaffImgUrl")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
@@ -270,7 +333,30 @@ namespace EducationApp.DataAccess.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Staffs");
+                    b.ToTable("Staves");
+                });
+
+            modelBuilder.Entity("EducationApp.Core.Entities.StaffSubject", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("StaffId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("SubjectId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StaffId");
+
+                    b.HasIndex("SubjectId");
+
+                    b.ToTable("StaffSubjects");
                 });
 
             modelBuilder.Entity("EducationApp.Core.Entities.Student", b =>
@@ -281,43 +367,37 @@ namespace EducationApp.DataAccess.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Address")
+                    b.Property<string>("Email")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("FirstName")
                         .HasColumnType("text");
 
-                    b.Property<int>("GroupId")
+                    b.Property<int>("Gender")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime>("JoinDate")
+                    b.Property<DateTime>("JoinStudentDateTime")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("LastName")
                         .HasColumnType("text");
 
-                    b.Property<string>("Note")
-                        .HasColumnType("text");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("text");
-
-                    b.Property<string>("PasswordSolt")
+                    b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("RefreshToken")
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Status")
-                        .HasColumnType("text");
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
 
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("GroupId");
 
                     b.HasIndex("UserId");
 
@@ -332,14 +412,13 @@ namespace EducationApp.DataAccess.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Description")
+                    b.Property<string>("SubjectDescription")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("SubjectName")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -354,15 +433,12 @@ namespace EducationApp.DataAccess.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Address")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("BirthDate")
+                    b.Property<DateTime>("DateBirth")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Email")
-                        .HasMaxLength(150)
-                        .HasColumnType("character varying(150)");
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("FirstName")
                         .HasColumnType("text");
@@ -374,80 +450,87 @@ namespace EducationApp.DataAccess.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Password")
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("PasswordSolt")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("PhoneNumber")
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)");
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("RefreshToken")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("EducationApp.Core.Entities.UserRole", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("RoleId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("UserId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("Users");
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserRoles");
                 });
 
-            modelBuilder.Entity("EducationApp.Application.Entities.RolePermission", b =>
+            modelBuilder.Entity("EducationApp.Core.Entities.Attendance", b =>
                 {
-                    b.HasOne("EducationApp.Application.Entities.Permission", "Permission")
-                        .WithMany("RolePermissions")
-                        .HasForeignKey("PermissionId")
+                    b.HasOne("EducationApp.Core.Entities.Group", "Group")
+                        .WithMany("Attendances")
+                        .HasForeignKey("GroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("EducationApp.Application.Entities.Role", "Role")
-                        .WithMany("RolePermissions")
-                        .HasForeignKey("RoleId")
+                    b.HasOne("EducationApp.Core.Entities.Student", "Student")
+                        .WithMany("Attendances")
+                        .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Permission");
-
-                    b.Navigation("Role");
-                });
-
-            modelBuilder.Entity("EducationApp.Application.Entities.UserRole", b =>
-                {
-                    b.HasOne("EducationApp.Application.Entities.Role", "Role")
-                        .WithMany("UserRoles")
-                        .HasForeignKey("RoleId")
+                    b.HasOne("EducationApp.Core.Entities.Subject", "Subject")
+                        .WithMany("Attendances")
+                        .HasForeignKey("SubjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("EducationApp.Core.Entities.User", "User")
-                        .WithMany("UserRoles")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Group");
 
-                    b.Navigation("Role");
+                    b.Navigation("Student");
 
-                    b.Navigation("User");
+                    b.Navigation("Subject");
                 });
 
             modelBuilder.Entity("EducationApp.Core.Entities.Group", b =>
                 {
-                    b.HasOne("EducationApp.Core.Entities.Room", "Room")
-                        .WithMany()
-                        .HasForeignKey("RoomId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("EducationApp.Core.Entities.Staff", null)
-                        .WithMany("Groups")
-                        .HasForeignKey("StaffId");
-
                     b.HasOne("EducationApp.Core.Entities.Staff", "Staff")
-                        .WithMany()
-                        .HasForeignKey("TeacherId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .WithMany("Groups")
+                        .HasForeignKey("StaffId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Room");
 
                     b.Navigation("Staff");
                 });
@@ -461,14 +544,10 @@ namespace EducationApp.DataAccess.Migrations
                         .IsRequired();
 
                     b.HasOne("EducationApp.Core.Entities.Room", "Room")
-                        .WithMany()
+                        .WithMany("GroupRooms")
                         .HasForeignKey("RoomId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("EducationApp.Core.Entities.Room", null)
-                        .WithMany("GroupRooms")
-                        .HasForeignKey("RoomId1");
 
                     b.Navigation("Group");
 
@@ -483,17 +562,21 @@ namespace EducationApp.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("EducationApp.Core.Entities.Staff", "Staff")
+                        .WithMany("GroupSubjects")
+                        .HasForeignKey("StaffId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("EducationApp.Core.Entities.Subject", "Subject")
-                        .WithMany()
+                        .WithMany("GroupSubjects")
                         .HasForeignKey("SubjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("EducationApp.Core.Entities.Subject", null)
-                        .WithMany("GroupSubjects")
-                        .HasForeignKey("SubjectId1");
-
                     b.Navigation("Group");
+
+                    b.Navigation("Staff");
 
                     b.Navigation("Subject");
                 });
@@ -509,6 +592,25 @@ namespace EducationApp.DataAccess.Migrations
                     b.Navigation("Student");
                 });
 
+            modelBuilder.Entity("EducationApp.Core.Entities.RolePermission", b =>
+                {
+                    b.HasOne("EducationApp.Core.Entities.Permission", "Permission")
+                        .WithMany("RolePermissions")
+                        .HasForeignKey("PermissionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EducationApp.Core.Entities.Role", "Role")
+                        .WithMany("RolePermissions")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Permission");
+
+                    b.Navigation("Role");
+                });
+
             modelBuilder.Entity("EducationApp.Core.Entities.Staff", b =>
                 {
                     b.HasOne("EducationApp.Core.Entities.User", "User")
@@ -520,53 +622,74 @@ namespace EducationApp.DataAccess.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("EducationApp.Core.Entities.Student", b =>
+            modelBuilder.Entity("EducationApp.Core.Entities.StaffSubject", b =>
                 {
-                    b.HasOne("EducationApp.Core.Entities.Group", "Group")
-                        .WithMany()
-                        .HasForeignKey("GroupId")
+                    b.HasOne("EducationApp.Core.Entities.Staff", "Staff")
+                        .WithMany("StaffSubjects")
+                        .HasForeignKey("StaffId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("EducationApp.Core.Entities.Subject", "Subject")
+                        .WithMany()
+                        .HasForeignKey("SubjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Staff");
+
+                    b.Navigation("Subject");
+                });
+
+            modelBuilder.Entity("EducationApp.Core.Entities.Student", b =>
+                {
                     b.HasOne("EducationApp.Core.Entities.User", "User")
                         .WithMany("Students")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Group");
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("EducationApp.Core.Entities.UserRole", b =>
+                {
+                    b.HasOne("EducationApp.Core.Entities.Role", "Role")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EducationApp.Core.Entities.User", "User")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("EducationApp.Core.Entities.User", b =>
+            modelBuilder.Entity("EducationApp.Core.Entities.Group", b =>
                 {
-                    b.HasOne("EducationApp.Application.Entities.Role", "Role")
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                    b.Navigation("Attendances");
 
-                    b.Navigation("Role");
+                    b.Navigation("GroupRooms");
+
+                    b.Navigation("GroupSubjects");
                 });
 
-            modelBuilder.Entity("EducationApp.Application.Entities.Permission", b =>
+            modelBuilder.Entity("EducationApp.Core.Entities.Permission", b =>
                 {
                     b.Navigation("RolePermissions");
                 });
 
-            modelBuilder.Entity("EducationApp.Application.Entities.Role", b =>
+            modelBuilder.Entity("EducationApp.Core.Entities.Role", b =>
                 {
                     b.Navigation("RolePermissions");
 
                     b.Navigation("UserRoles");
-                });
-
-            modelBuilder.Entity("EducationApp.Core.Entities.Group", b =>
-                {
-                    b.Navigation("GroupRooms");
-
-                    b.Navigation("GroupSubjects");
                 });
 
             modelBuilder.Entity("EducationApp.Core.Entities.Room", b =>
@@ -576,16 +699,24 @@ namespace EducationApp.DataAccess.Migrations
 
             modelBuilder.Entity("EducationApp.Core.Entities.Staff", b =>
                 {
+                    b.Navigation("GroupSubjects");
+
                     b.Navigation("Groups");
+
+                    b.Navigation("StaffSubjects");
                 });
 
             modelBuilder.Entity("EducationApp.Core.Entities.Student", b =>
                 {
+                    b.Navigation("Attendances");
+
                     b.Navigation("Payments");
                 });
 
             modelBuilder.Entity("EducationApp.Core.Entities.Subject", b =>
                 {
+                    b.Navigation("Attendances");
+
                     b.Navigation("GroupSubjects");
                 });
 

@@ -1,11 +1,14 @@
-﻿namespace EducationApp.Core.Entities;
+﻿using EducationApp.Core.Common;
 
-public class UserRole
+namespace EducationApp.Core.Entities;
+
+public class UserRole : BaseEntity
 {
-    public int Id { get; set; }
-	public int UserId { get; set; }
-    public User User { get; set; }
+    // Represents the many-to-many relationship between User 
+    public int UserId { get; set; }
+    public User User { get; set; } = new User();
 
+    // Represents the many-to-many relationship between Role
     public int RoleId { get; set; }
-    public Role Role { get; set; }
+    public Role Role { get; set; } = new Role();
 }

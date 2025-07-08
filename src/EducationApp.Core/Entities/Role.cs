@@ -1,12 +1,12 @@
-﻿namespace EducationApp.Core.Entities;
+﻿using EducationApp.Core.Common;
 
-public class Role
+namespace EducationApp.Core.Entities;
+
+public class Role : BaseEntity
 {
-	public int Id { get; set; }
-
 	public string Name { get; set; }
 
-    public ICollection<RolePermission> RolePermissions { get; set; }
-
-    public ICollection<UserRole> UserRoles { get; set; }
+    //(Navigation properties)
+    public ICollection<RolePermission> RolePermissions { get; set; } = new List<RolePermission>();
+    public ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
 }
