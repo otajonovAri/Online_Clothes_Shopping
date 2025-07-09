@@ -43,7 +43,7 @@ public class StaffService(IStaffRepository repo , IMapper mapper) : IStaffServic
         mapper.Map(dto, existing);
         repo.Update(existing);
         await repo.SaveChangesAsync();
-        return new ApiResult<object>("Staff updated successfully", true, $"{existing.FullName}");
+        return new ApiResult<object>("Staff updated successfully", true, $"{existing.FirstName}");
     }
 
     public async Task<ApiResult<object>> DeleteAsync(int id)
@@ -53,7 +53,7 @@ public class StaffService(IStaffRepository repo , IMapper mapper) : IStaffServic
             return new ApiResult<object>("Staff not found", false, null!);
         repo.Delete(existing);
         await repo.SaveChangesAsync();
-        return new ApiResult<object>("Staff deleted successfully", true, $"{existing.FullName}");
+        return new ApiResult<object>("Staff deleted successfully", true, $"{existing.FirstName}");
     }
 
     /*

@@ -1,14 +1,15 @@
-﻿using EducationApp.Core.Common;
+﻿using System.ComponentModel.DataAnnotations;
+using EducationApp.Core.Common;
 
 namespace EducationApp.Core.Entities;
 
 public class StaffSubject : BaseEntity
 {
     // (Child Class) Staff
-    public int StaffId { get; set; }
-    public Staff Staff { get; set; }
+    [Required] public int StaffId { get; set; }
+    [Required] public Staff Staff { get; set; } = null!;
 
     // (Child Class) Subject
-    public int SubjectId { get; set; }
-    public Subject Subject { get; set; }
+    [Required] public int SubjectId { get; set; }
+    [Required] public Subject Subject { get; set; } = null!;
 }

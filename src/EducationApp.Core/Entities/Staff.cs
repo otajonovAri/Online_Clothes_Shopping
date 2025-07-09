@@ -1,24 +1,13 @@
-﻿using EducationApp.Core.Common;
+﻿using System.ComponentModel.DataAnnotations;
+using EducationApp.Core.Common;
 using EducationApp.Core.Enums;
 
 namespace EducationApp.Core.Entities;
 
-public class Staff : BaseEntity
+public class Staff : User
 {
-    //(parent Class) User
-    public int UserId { get; set; }
-    public User User { get; set; }
-
-
-    public string FullName { get; set; }
-    public Position Position { get; set; } = Position.Other;
-    public string PhoneNumber { get; set; }
-    public string Email { get; set; }
-    public string Password { get; set; }
-    public DateTime DateBirth { get; set; }
-    public Gender Gender { get; set; }
-    public Decimal Salary { get; set; }
-    public string StaffImgUrl { get; set; }
+    [Required] public Position Position { get; set; } = Position.Other;
+    [Required,Range(0 , double.MaxValue)] public Decimal Salary { get; set; }
 
     // Navigation properties
     public ICollection<Group> Groups { get; set; } = new HashSet<Group>();

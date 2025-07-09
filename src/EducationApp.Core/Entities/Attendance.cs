@@ -1,4 +1,6 @@
-﻿using EducationApp.Core.Common;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Runtime.CompilerServices;
+using EducationApp.Core.Common;
 using EducationApp.Core.Enums;
 
 namespace EducationApp.Core.Entities;
@@ -6,20 +8,18 @@ namespace EducationApp.Core.Entities;
 public class Attendance : BaseEntity
 {
     // (parent class) Student
-    public int StudentId { get; set; }
-    public Student Student { get; set; } 
+    [Required] public int StudentId { get; set; }
+    [Required] public Student Student { get; set; } = null!;
 
-    // (parent class) Group
-    public int GroupId { get; set; }
-    public Group Group { get; set; } 
 
-    // (parent class) Subject 
-    public int SubjectId { get; set; }
-    public Subject Subject { get; set; } 
+    //(parent class) Group Subject
+    [Required] public int GroupSubjectId { get; set; }
+    [Required] public GroupSubject GroupSubject { get; set; } = null!;
 
-    public DateTime AttendanceDate { get; set; }
-    public bool IsPresent { get; set; }
-    public PreparednessLevel Preparedness { get; set; } = PreparednessLevel.Average;
-    public ParticipationLevel Participation { get; set; } = ParticipationLevel.Passive;
-    public string? Note { get; set; } // student's note about the attendance
+    [Required] public DateTime AttendanceDate { get; set; }
+
+    [Required] public bool IsPresent { get; set; }
+    public PreparednessLevel? Preparedness { get; set; }
+    public ParticipationLevel? Participation { get; set; } 
+    [StringLength(500 , MinimumLength = 5)] public string? Note { get; set; } 
 }

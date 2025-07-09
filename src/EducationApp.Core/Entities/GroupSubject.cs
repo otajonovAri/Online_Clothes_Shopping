@@ -1,25 +1,27 @@
-﻿using EducationApp.Core.Common;
+﻿using System.ComponentModel.DataAnnotations;
+using EducationApp.Core.Common;
 
 namespace EducationApp.Core.Entities;
 
 public class GroupSubject : BaseEntity
 {
     // (parent Class) Group
-    public int GroupId { get; set; }
-    public Group Group { get; set; }
+    [Required] public int GroupId { get; set; }
+    [Required] public Group Group { get; set; } = null!;
 
     // (parent Class) Subject
-    public int SubjectId { get; set; }
-    public Subject Subject { get; set; }
+    [Required] public int SubjectId { get; set; }
+    [Required] public Subject Subject { get; set; } = null!;
 
     // (parent Class) Staff
-    public int StaffId { get; set; }
-    public Staff Staff { get; set; }
+    [Required] public int StaffId { get; set; }
+    [Required] public Staff Staff { get; set; } = null!;
 
     //(parent class) Room
-    public int RoomId { get; set; }
-    public Room Room { get; set; }
+    [Required] public int RoomId { get; set; }
+    [Required] public Room Room { get; set; } = null!;
 
-    public DateTime StartDate { get; set; }
-    public DateTime EndDate { get; set; }
+    [Required] public DateTime SessionDate { get; set; }
+    [Required] public TimeSpan StartTime { get; set; }
+    [Required] public TimeSpan EndTime { get; set; }   
 }

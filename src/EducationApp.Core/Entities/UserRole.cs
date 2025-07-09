@@ -1,14 +1,15 @@
-﻿using EducationApp.Core.Common;
+﻿using System.ComponentModel.DataAnnotations;
+using EducationApp.Core.Common;
 
 namespace EducationApp.Core.Entities;
 
 public class UserRole : BaseEntity
 {
     // Represents the many-to-many relationship between User 
-    public int UserId { get; set; }
-    public User User { get; set; } = new User();
+    [Required] public int UserId { get; set; }
+    [Required] public User User { get; set; } = null!;
 
     // Represents the many-to-many relationship between Role
-    public int RoleId { get; set; }
-    public Role Role { get; set; } = new Role();
+    [Required] public int RoleId { get; set; }
+    [Required] public Role Role { get; set; } = null!;
 }
