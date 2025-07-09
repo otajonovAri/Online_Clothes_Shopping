@@ -15,5 +15,6 @@ public class MappingProfile : Profile
         CreateMap<StudentDto, Student>().ReverseMap();
         CreateMap<StaffDto , Staff>().ReverseMap();
         CreateMap<SubjectDto, Subject>().ReverseMap();
+        CreateMap<GroupSubject, GroupSubjectDto>().ReverseMap();
     }
 }
