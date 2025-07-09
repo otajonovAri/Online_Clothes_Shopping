@@ -58,6 +58,10 @@ public static class DependencyInjection
 
         services.AddScoped<IStaffSubjectService, StaffSubjectService>();
 
+
+
+        services.AddScoped<IStaffSubjectService, StaffSubjectService>();
+
         services.AddScoped<ISubjectService, SubjectService>();
 
         return services;
