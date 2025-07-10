@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EducationApp.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class Databasecheck : Migration
+    public partial class DeploymentAuth : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -54,7 +54,7 @@ namespace EducationApp.DataAccess.Migrations
                     Gender = table.Column<int>(type: "integer", nullable: false),
                     PasswordHash = table.Column<string>(type: "text", nullable: false),
                     PasswordSolt = table.Column<string>(type: "text", nullable: false),
-                    RefreshToken = table.Column<string>(type: "text", nullable: false)
+                    RefreshToken = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {

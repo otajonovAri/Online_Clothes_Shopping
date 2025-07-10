@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EducationApp.DataAccess.Migrations
 {
     [DbContext(typeof(EduDbContext))]
-    [Migration("20250710092806_RefreshTokenBugFix")]
-    partial class RefreshTokenBugFix
+    [Migration("20250710112153_DeploymentAuth")]
+    partial class DeploymentAuth
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
