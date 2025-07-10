@@ -29,4 +29,11 @@ public class PermissionService : IPermissionService
 		_context.Permissions.Add(permission);
 		await _context.SaveChangesAsync();
 	}
+
+	public List<Permission> GetAll()
+	{
+		var permissions = _context.Permissions.ToList();
+
+		return permissions;
+    }
 }

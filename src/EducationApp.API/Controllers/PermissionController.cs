@@ -21,4 +21,11 @@ public class PermissionController : ControllerBase
 		await _permissionService.CreateAsync(dto);
 		return Ok("Permission created");
 	}
+
+	[HttpGet("get-all-permissions")]
+	public IActionResult GetAllPermissions()
+	{
+		var permissions = _permissionService.GetAll();
+		return Ok(permissions);
+    }
 }
