@@ -66,6 +66,38 @@ namespace EducationApp.Application.Services
             var salt = Guid.NewGuid().ToString();
             var hash = passwordHasher.Encrypt(password, salt);
 
+            // --- Rolni isAdminSite ga qarab belgilash ---
+            string roleName = isAdminSite ? "Admin" : "User";
+
+            if(isAdminSite == false)
+            {
+                var role = new Role()
+                {
+                    Name = roleName
+                };
+
+                await context.Roles.AddAsync(role);
+                await context.SaveChangesAsync();
+            }
+            else
+            {
+                var role = new Role()
+                {
+                    Name = roleName
+                };
+
+                await context.Roles.AddAsync(role);
+                await context.SaveChangesAsync();
+            }
+
+                var defaultRole = await context.Roles.FirstOrDefaultAsync(r => r.Name == roleName);
+
+            if (defaultRole == null)
+            {
+                // Agar kerakli rol topilmasa, xato qaytaramiz
+                return ApiResult<string>.Failure(new[] { $"Tizimda '{roleName}' roli topilmadi. Admin bilan bog'laning." });
+            }
+
             var user = new User
             {
                 FirstName = firstname,
@@ -79,16 +111,6 @@ namespace EducationApp.Application.Services
 
             await context.Users.AddAsync(user);
             await context.SaveChangesAsync();
-
-            // --- Rolni isAdminSite ga qarab belgilash ---
-            string roleName = isAdminSite ? "Admin" : "User";
-            var defaultRole = await context.Roles.FirstOrDefaultAsync(r => r.Name == roleName);
-
-            if (defaultRole == null)
-            {
-                // Agar kerakli rol topilmasa, xato qaytaramiz
-                return ApiResult<string>.Failure(new[] { $"Tizimda '{roleName}' roli topilmadi. Admin bilan bog'laning." });
-            }
 
             context.UserRoles.Add(new UserRole
             {

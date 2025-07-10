@@ -32,7 +32,6 @@ public class GroupController(IGroupRepository repo) : ControllerBase
         var group = new Group
         {
             Name = dto.Name,
-            SubjectId = dto.SubjectId,
             StartDate = dto.StartDate,
             EndDate = dto.EndDate,
             Schedule = dto.Schedule
@@ -52,7 +51,6 @@ public class GroupController(IGroupRepository repo) : ControllerBase
             return NotFound($"Group with ID {id} not found");
 
         group.Name = dto.Name;
-        group.SubjectId = dto.SubjectId;
         group.StartDate = dto.StartDate;
         group.EndDate = dto.EndDate;
         group.Schedule = dto.Schedule;

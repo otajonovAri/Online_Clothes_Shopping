@@ -36,9 +36,8 @@ public class UserController(IUserRepository repo) : ControllerBase
         {
             FirstName = dto.FirstName,
             LastName = dto.LastName,
-            PhoneNumber = dto.PhoneNumber,
+            //PhoneNumber = dto.PhoneNumber,
             Email = dto.Email,
-            Password = dto.Password,
             BirthDate = dto.BirthDate,
             Gender = gender
         };
@@ -61,9 +60,8 @@ public class UserController(IUserRepository repo) : ControllerBase
 
         user.FirstName = dto.FirstName;
         user.LastName = dto.LastName;
-        user.PhoneNumber = dto.PhoneNumber;
+        //user.PhoneNumber = dto.PhoneNumber;
         user.Email = dto.Email;
-        user.Password = dto.Password;
         user.BirthDate = dto.BirthDate;
         user.Gender = gender;
 

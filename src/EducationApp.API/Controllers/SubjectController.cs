@@ -27,7 +27,6 @@ public class SubjectController(ISubjectRepository repo) : ControllerBase
         {
             Name = dto.Name,
             Description = dto.Description,
-            StaffId = dto.StaffId,
         };
 
         await repo.AddAsync(subject);
@@ -47,7 +46,6 @@ public class SubjectController(ISubjectRepository repo) : ControllerBase
             Id = id,
             Name = dto.Name,
             Description = dto.Description,
-            StaffId = dto.StaffId,
         };
 
         repo.Update(subject);

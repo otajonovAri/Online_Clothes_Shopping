@@ -32,9 +32,9 @@ builder.Services.AddSwaggerGen(c =>
         // API haqida umumiy ma'lumotlar
         c.SwaggerDoc("v1", new OpenApiInfo
         {
-            Title = "Secure Login API",
+            Title = "Education API",
             Version = "v1",
-            Description = "SecureLoginApp uchun API hujjatlari",
+            Description = "Education API hujjatlari",
             Contact = new OpenApiContact
             {
                 Name = "Your Name",
