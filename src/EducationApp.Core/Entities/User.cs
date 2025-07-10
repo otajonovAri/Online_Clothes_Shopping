@@ -1,5 +1,4 @@
-﻿using System.Reflection.PortableExecutable;
-using EducationApp.Core.Enums;
+﻿using EducationApp.Core.Enums;
 
 namespace EducationApp.Core.Entities;
 

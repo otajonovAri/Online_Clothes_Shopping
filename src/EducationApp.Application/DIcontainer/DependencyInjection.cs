@@ -2,10 +2,10 @@
 using EducationApp.Application.Helpers.PasswordHasher;
 using EducationApp.Application.Repositories;
 using EducationApp.Application.Repositories.Interfaces;
-using EducationApp.Application.Services.Interfaces;
 using EducationApp.Application.Services;
-using Microsoft.Extensions.DependencyInjection;
+using EducationApp.Application.Services.Interfaces;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace EducationApp.Application.DIContainer;
 

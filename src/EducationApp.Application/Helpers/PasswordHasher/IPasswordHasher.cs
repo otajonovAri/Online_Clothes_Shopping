@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace EducationApp.Application.Helpers.PasswordHasher;
 
-namespace EducationApp.Application.Helpers.PasswordHasher
+public interface IPasswordHasher
 {
-    public interface IPasswordHasher
-    {
-        string GenerateSalt();
-        string Encrypt(string password, string salt);
-        bool Verify(string hash, string password, string salt);
-    }
+    string GenerateSalt();
+    string Encrypt(string password, string salt);
+    bool Verify(string hash, string password, string salt);
 }
