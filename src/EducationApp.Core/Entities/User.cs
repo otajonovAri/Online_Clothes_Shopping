@@ -1,5 +1,4 @@
-﻿using System.Reflection.PortableExecutable;
-using EducationApp.Core.Enums;
+﻿using EducationApp.Core.Enums;
 
 namespace EducationApp.Core.Entities;
 
@@ -15,7 +14,7 @@ public class User
     public Gender Gender { get; set; }
     public string PasswordHash { get; set; }
     public string PasswordSolt { get; set; }
-    public string RefreshToken { get; set; }
+    public string? RefreshToken { get; set; }
 
     public ICollection<Student> Students { get; set; }
     public ICollection<UserRole> UserRoles { get; set; }   

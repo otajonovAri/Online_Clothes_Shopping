@@ -1,3 +1,4 @@
+using EducationApp.Application.Auth;
 using EducationApp.Application.Repositories.Interfaces;
 using EducationApp.Core.DTOs;
 using EducationApp.Core.Entities;
@@ -10,6 +11,7 @@ namespace EducationApp.API.Controllers;
 public class GroupController(IGroupRepository repo) : ControllerBase
 {
     [HttpGet("get-all-groups")]
+    [PermissionAuthorize(Core.Permission.GetAllGroupPermission)]
     public IActionResult GetAllGroups()
     {
         var groups = repo.GetAll();

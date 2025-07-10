@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EducationApp.Application.Helpers.GenerateJwt;
+﻿using EducationApp.Application.Helpers.GenerateJwt;
 using EducationApp.Application.Helpers.PasswordHasher;
 using EducationApp.Application.Models;
 using EducationApp.Application.Models.Dtos;
@@ -25,6 +20,8 @@ namespace EducationApp.Application.Services
             var user = await context.Users
                 .Include(x => x.UserRoles)
                 .ThenInclude(u => u.Role)
+                .ThenInclude(u => u.RolePermissions)
+                .ThenInclude(u => u.Permission)
                 .FirstOrDefaultAsync(r => r.Email == loginDto.Email);
 
             if(user == null)
@@ -57,23 +54,26 @@ namespace EducationApp.Application.Services
             });
         }
 
-        public async Task<ApiResult<string>> RegisterAsync(string firstname, string lastname, string email, string password, bool isAdminSite)
+        public async Task<ApiResult<string>> RegisterAsync(RegisterRequestDto requestDto)
         {
-            var existingUser = await context.Users.FirstOrDefaultAsync(u => u.Email == email);
+            var existingUser = await context.Users.FirstOrDefaultAsync(u => u.Email == requestDto.Email);
             if (existingUser != null)
                 return ApiResult<string>.Failure(new[] { "Email allaqachon mavjud" });
 
             var salt = Guid.NewGuid().ToString();
-            var hash = passwordHasher.Encrypt(password, salt);
+            var hash = passwordHasher.Encrypt(requestDto.Password, salt);
 
             var user = new User
             {
-                FirstName = firstname,
-                LastName = lastname,
-                Email = email,
+                FirstName = requestDto.FirstName,
+                LastName = requestDto.LastName,
+                Email = requestDto.Email,
                 PasswordHash = hash,
                 PasswordSolt = salt,
-                Password = password,
+                Password = requestDto.Password,
+                PhoneNumber = requestDto.PhoneNumber,
+                BirthDate = requestDto.BirthDate,
+                Gender = requestDto.Gender,
                 //CreatedAt = DateTime.Now,
                 //IsVerified = false // Yangi foydalanuvchilar odatda tasdiqlanmagan holda boshlanadi
             };
@@ -82,7 +82,7 @@ namespace EducationApp.Application.Services
             await context.SaveChangesAsync();
 
             // --- Rolni isAdminSite ga qarab belgilash ---
-            string roleName = isAdminSite ? "Admin" : "User";
+            string roleName = requestDto.isadminSite ? "Admin" : "User";
             var defaultRole = await context.Roles.FirstOrDefaultAsync(r => r.Name == roleName);
 
             if (defaultRole == null)

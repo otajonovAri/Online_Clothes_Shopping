@@ -86,8 +86,8 @@ var app = builder.Build();
 if (builder.Environment.IsProduction() && builder.Configuration.GetValue<int?>("PORT") is not null)
     builder.WebHost.UseUrls($"http://*:{builder.Configuration.GetValue<int>("PORT")}");
 
-var context = app.Services.CreateScope().ServiceProvider.GetRequiredService<EduDbContext>();
-await context.Database.MigrateAsync();
+//var context = app.Services.CreateScope().ServiceProvider.GetRequiredService<EduDbContext>();
+//await context.Database.MigrateAsync();
 
 app.UseSwagger();
 app.UseSwaggerUI();
