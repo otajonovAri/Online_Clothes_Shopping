@@ -2,11 +2,19 @@ using EducationApp.Application.DIContainer;
 using EducationApp.Application.Helpers;
 using EducationApp.Application.Helpers.GenerateJwt;
 using EducationApp.Application.Helpers.Seeder;
+using EducationApp.Application.Services.Interfaces;
+using EducationApp.Application.Services;
 using EducationApp.DataAccess.Database;
 using EducationApp.DataAccess.DependencyInjection;
 using Microsoft.OpenApi.Models;
+using EducationApp.Application.Settings;
+using Microsoft.Extensions.Options;
+using Minio;
+using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var configuration = builder.Configuration;
 
 builder.Services.AddDatabase(builder.Configuration)
     .ServiceContainer()
@@ -39,6 +47,28 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.Configure<JwtOption>(builder.Configuration.GetSection("JwtOption"));
+
+// Minio
+builder.Services.AddSingleton<IFileStorageService, MinioFileStorageService>();
+builder.Services.Configure<MinioSettings>(configuration.GetSection("MinioSettings"));
+
+builder.Services.AddSingleton<IMinioClient>(sp =>
+{
+	var minioSettings = sp.GetRequiredService<IOptions<MinioSettings>>().Value;
+
+	// MinioClient obyektini yaratish
+	var client = new MinioClient()
+		.WithEndpoint(minioSettings.Endpoint)
+		.WithCredentials(minioSettings.AccessKey, minioSettings.SecretKey);
+
+	// Agar SSL yoqilgan bo'lsa
+	if (minioSettings.UseSSL)
+	{
+		client = client.WithSSL();
+	}
+
+	return client.Build(); // MinioClient ni qurish
+});
 
 builder.Services.AddSwaggerGen(c =>
 {
