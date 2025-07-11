@@ -1,76 +1,64 @@
-using EducationApp.Application.Repositories.Interfaces;
-using EducationApp.Core.DTOs;
-using EducationApp.Core.Entities;
+﻿using EducationApp.Application.DTOs.PaymentDto;
+using EducationApp.Application.Service.PaymentServices;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EducationApp.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class PaymentController(IPaymentRepository repo) : ControllerBase
+public class PaymentController(IPaymentService service) : ControllerBase
 {
-    [HttpGet("get-all")]
-    public IActionResult GetAll()
+    [HttpGet]
+    public async Task<IActionResult> GetAll()
     {
-        var payments = repo.GetAll();
-        return Ok(payments);
+        var result = await service.GetAllAsync();
+        return Ok(result);
     }
-
-    [HttpGet("get-by-id/{id}")]
+    [HttpGet("{id:int}")]
     public async Task<IActionResult> GetById(int id)
     {
-        var payment = await repo.GetByIdAsync(id);
-        if (payment is null)
-            return NotFound($"Payment with ID {id} not found.");
-
-        return Ok(payment);
+        var result = await service.GetByIdAsync(id);
+        if (!result.Success)
+            return NotFound(result.Message);
+        return Ok(result);
     }
-
-    [HttpPost("create")]
-    public async Task<IActionResult> Create([FromBody] PaymentDto dto)
+    [HttpPost]
+    public async Task<IActionResult> Create([FromBody] PaymentCreateDto dto)
     {
-        var payment = new Payment
-        {
-            StudentId = dto.StudentId,
-            Amount = dto.Amount,
-            PaymentDate = dto.PaymentDate,
-            PaymentType = dto.PaymentType,
-        };
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+        var result = await service.CreateAsync(dto);
+        if (!result.Success)
+            return BadRequest(result.Message);
 
-        await repo.AddAsync(payment);
-        await repo.SaveChangesAsync();
-
-        return Ok(payment.Id);
+        return Ok(result);
+        /*
+        return CreatedAtAction(nameof(GetById), new { id = result.Data }, result);*/
     }
-
-    [HttpPut("update/{id}")]
-    public async Task<IActionResult> Update(int id, [FromBody] PaymentDto dto)
+    [HttpPut("{id:int}")]
+    public async Task<IActionResult> Update(int id, [FromBody] PaymentUpdateDto dto)
     {
-        var payment = await repo.GetByIdAsync(id);
-        if (payment is null)
-            return NotFound($"Payment with ID {id} not found.");
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
 
         payment.StudentId = dto.StudentId;
         payment.Amount = dto.Amount;
         payment.PaymentDate = dto.PaymentDate;
         payment.PaymentType = dto.PaymentType;
+        payment.Note = dto.Note;
 
-        repo.Update(payment);
-        await repo.SaveChangesAsync();
+        if (!result.Success)
+            return NotFound(result.Message);
 
-        return Ok("Updated successfully.");
+        return Ok(result);
     }
-
-    [HttpDelete("delete/{id}")]
+    [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete(int id)
     {
-        var payment = await repo.GetByIdAsync(id);
-        if (payment is null)
-            return NotFound($"Payment with ID {id} not found.");
-
-        repo.Delete(payment);
-        await repo.SaveChangesAsync();
-
-        return Ok("Deleted successfully.");
+        var result = await service.DeleteAsync(id);
+        if (!result.Success)
+            return NotFound(result.Message);
+        return Ok(result);
     }
 }

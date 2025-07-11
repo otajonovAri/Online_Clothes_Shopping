@@ -1,88 +1,64 @@
-using EducationApp.Application.Repositories.Interfaces;
-using EducationApp.Core.DTOs;
-using EducationApp.Core.Entities;
-using EducationApp.Core.Enums;
+﻿using EducationApp.Application.DTOs.UserDto;
+using EducationApp.Application.Service.UserServices;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EducationApp.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class UserController(IUserRepository repo) : ControllerBase
+public class UserController(IUserService service) : ControllerBase
 {
-    [HttpGet("get-all-users")]
-    public IActionResult GetAllUsers()
+    [HttpGet]
+    public async Task<IActionResult> GetAllAsync()
+        => Ok(await service.GetAllAsync());
+
+    [HttpGet("{id:int}")]
+    public async Task<IActionResult> GetByIdAsync(int id)
     {
-        return Ok(repo.GetAll());
-    }
-    
-    [HttpGet("get-user-by-id/{id}")]
-    public async Task<IActionResult> GetUserById(int id)
-    {
-        var user = await repo.GetByIdAsync(id);
-        if (user is null)
-            return NotFound($"User with ID {id} not found");
+        var result = await service.GetByIdAsync(id);
 
-        return Ok(user);
-    }
-    
-    [HttpPost("create-user")]
-    public async Task<IActionResult> CreateUser([FromBody] UserDto dto)
-    {
-        if (!Enum.TryParse<Gender>(dto.Gender, true, out var gender))
-            return BadRequest("Invalid gender value. Use: Male or Female");
+        if (!result.Success)
+            return NotFound(result.Message);
 
-        var user = new User
-        {
-            FirstName = dto.FirstName,
-            LastName = dto.LastName,
-            PhoneNumber = dto.PhoneNumber,
-            Email = dto.Email,
-            Password = dto.Password,
-            BirthDate = dto.BirthDate,
-            Gender = gender
-        };
-
-        await repo.AddAsync(user);
-        await repo.SaveChangesAsync();
-
-        return Ok(user.Id);
-    }
-    
-    [HttpPut("update-user/{id}")]
-    public async Task<IActionResult> UpdateUser(int id, [FromBody] UserDto dto)
-    {
-        var user = await repo.GetByIdAsync(id);
-        if (user is null)
-            return NotFound($"User with ID {id} not found");
-
-        if (!Enum.TryParse<Gender>(dto.Gender, true, out var gender))
-            return BadRequest("Invalid gender value. Use: Male or Female");
-
-        user.FirstName = dto.FirstName;
-        user.LastName = dto.LastName;
-        user.PhoneNumber = dto.PhoneNumber;
-        user.Email = dto.Email;
-        user.Password = dto.Password;
-        user.BirthDate = dto.BirthDate;
-        user.Gender = gender;
-
-        repo.Update(user);
-        await repo.SaveChangesAsync();
-
-        return Ok("User updated successfully");
+        return Ok(result);
     }
 
-    [HttpDelete("delete-user/{id}")]
-    public async Task<IActionResult> DeleteUser(int id)
+    [HttpPost]
+    public async Task<IActionResult> CreateAsync([FromBody] UserCreateDto dto)
     {
-        var user = await repo.GetByIdAsync(id);
-        if (user is null)
-            return NotFound($"User with ID {id} not found");
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
 
-        repo.Delete(user);
-        await repo.SaveChangesAsync();
+        var result = await service.CreateAsync(dto);
 
-        return Ok("User deleted successfully");
+        if (!result.Success)
+            return BadRequest(result.Message);
+
+        return Ok(result);
+        //return CreatedAtAction(nameof(GetByIdAsync), new { id = result.Data }, result);
+    }
+
+    [HttpPut("{id:int}")]
+    public async Task<IActionResult> UpdateAsync(int id, [FromBody] UserUpdateDto dto)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
+        var result = await service.UpdateAsync(id, dto);
+        if (!result.Success)
+            return NotFound(result.Message);
+
+        return Ok(result);
+    }
+
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> DeleteAsync(int id)
+    {
+        var result = await service.DeleteAsync(id);
+
+        if (!result.Success)
+            return NotFound(result.Message);
+
+        return Ok(result);
     }
 }

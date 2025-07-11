@@ -1,12 +1,14 @@
-﻿namespace EducationApp.Core.Entities;
+﻿using System.ComponentModel.DataAnnotations;
+using EducationApp.Core.Common;
 
-public class Role
+namespace EducationApp.Core.Entities;
+
+public class Role : BaseEntity
 {
-	public int Id { get; set; }
+    
+    public string? Name { get; set; }
 
-	public string Name { get; set; }
-
-    public ICollection<RolePermission> RolePermissions { get; set; }
-
-    public ICollection<UserRole> UserRoles { get; set; }
+    // navigation properties
+    public ICollection<RolePermission> RolePermissions { get; set; } = new HashSet<RolePermission>();
+    public ICollection<UserRole> UserRoles { get; set; } = new HashSet<UserRole>();
 }

@@ -1,10 +1,11 @@
-namespace EducationApp.Core.Enums
+namespace EducationApp.Core.Enums;
+
+public enum Status
 {
-    public enum Status
-    {
-        Active,
-        Inactive,
-        Ended,
-        Moved
-    }
+    Active , 
+    Inactive,
+    Suspended,
+    Graduated,
+    DroppedOut,
+    Pending
 }

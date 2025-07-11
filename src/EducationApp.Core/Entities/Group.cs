@@ -1,15 +1,23 @@
-﻿namespace EducationApp.Core.Entities;
+﻿using System.ComponentModel.DataAnnotations;
+using EducationApp.Core.Common;
 
-public class Group
+namespace EducationApp.Core.Entities;
+
+public class Group : BaseEntity
 {
-    public int Id { get; set; }
-    public string Name { get; set; }
-    public int SubjectId { get; set; }
+    public string Name { get; set; } = null!;
+
+    // relationships
+    public int StaffId { get; set; }
+    public Staff Staff { get; set; } = null!;
+
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
-    public Subject Subject { get; set; }
-    public string Schedule { get; set; }
 
-    public ICollection<GroupSubject> GroupSubjects { get; set; } 
-    public ICollection<Attendance> Attendances { get; set; }
+    public string? Description { get; set; }
+
+    // navigation properties
+    public ICollection<GroupSubject> GroupSubjects { get; set; } = new HashSet<GroupSubject>();
+    public ICollection<Attendance> Attendances { get; set; } = new HashSet<Attendance>();
+    public ICollection<ScheduleSlot> ScheduleSlots { get; set; } = new HashSet<ScheduleSlot>();
 }

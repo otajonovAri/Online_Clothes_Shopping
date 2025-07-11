@@ -1,83 +1,55 @@
-using EducationApp.Application.Repositories.Interfaces;
-using EducationApp.Core.DTOs;
-using EducationApp.Core.Entities;
+﻿using EducationApp.Application.DTOs.StaffDto;
+using EducationApp.Application.Service.StaffServices;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EducationApp.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class StaffController(IStaffRepository repo) : ControllerBase
+public class StaffController(IStaffService service) : ControllerBase
 {
-    [HttpGet("get-all")]
-    public IActionResult GetAll()
-    {
-        var staffs = repo.GetAll();
-        return Ok(staffs);
-    }
-    
-    [HttpGet("get-by-id/{id}")]
-    public async Task<IActionResult> GetById([FromRoute] int id)
-    {
-        var staff = await repo.GetByIdAsync(id);
-        if (staff is null)
-            return NotFound($"Staff with ID {id} not found.");
+    [HttpGet]
+    public async Task<IActionResult> GetAll() => Ok(await service.GetAllAsync());
 
-        return Ok(staff);
-    }
-    [HttpPost("create")]
-    public async Task<IActionResult> Create([FromBody] StaffDto dto)
+    [HttpGet("{id:int}")]
+    public async Task<IActionResult> GetById(int id)
     {
-        var staff = new Staff
-        {
-            UserId = dto.UserId,
-            FullName = dto.FullName,
-            Position = dto.Position,
-            PhoneNumber = dto.PhoneNumber,
-            Address = dto.Address,
-            BirthDate = dto.BirthDate,
-            Gender = dto.Gender,
-            Salary = dto.Salary
-        };
-
-        await repo.AddAsync(staff);
-        await repo.SaveChangesAsync();
-
-        return Ok(staff.Id);
+        var result = await service.GetByIdAsync(id);
+        if (!result.Success)
+            return NotFound(result.Message);
+        return Ok(result);
     }
 
-    [HttpPut("update/{id}")]
-    public async Task<IActionResult> Update([FromRoute] int id, [FromBody] StaffDto dto)
+    [HttpPost]
+    public async Task<IActionResult> Create([FromBody] StaffCreateDto dto)
     {
-        var staff = await repo.GetByIdAsync(id);
-        if (staff is null)
-            return NotFound($"Staff with ID {id} not found.");
-
-        staff.UserId = dto.UserId;
-        staff.FullName = dto.FullName;
-        staff.Position = dto.Position;
-        staff.PhoneNumber = dto.PhoneNumber;
-        staff.Address = dto.Address;
-        staff.BirthDate = dto.BirthDate;
-        staff.Gender = dto.Gender;
-        staff.Salary = dto.Salary;
-
-        repo.Update(staff);
-        await repo.SaveChangesAsync();
-
-        return Ok("Updated successfully");
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+        var result = await service.CreateAsync(dto);
+        if (!result.Success)
+            return BadRequest(result.Message);
+        return Ok(result);
+        //return CreatedAtAction(nameof(GetById), new { id = result.Data }, result);
     }
 
-    [HttpDelete("delete/{id}")]
-    public async Task<IActionResult> Delete([FromRoute] int id)
+    [HttpPut("{id:int}")]
+    public async Task<IActionResult> Update(int id, [FromBody] StaffUpdateDto dto)
     {
-        var staff = await repo.GetByIdAsync(id);
-        if (staff is null)
-            return NotFound($"Staff with ID {id} not found.");
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+        var result = await service.UpdateAsync(id, dto);
+        if (!result.Success)
+            return NotFound(result.Message);
+        return Ok(result);
+    }
 
-        repo.Delete(staff);
-        await repo.SaveChangesAsync();
-
-        return Ok("Deleted successfully");
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var result = await service.DeleteAsync(id);
+        if (!result.Success)
+            return NotFound(result.Message);
+        return Ok(result);
     }
 }

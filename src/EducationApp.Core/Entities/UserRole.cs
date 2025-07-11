@@ -1,11 +1,15 @@
-﻿namespace EducationApp.Core.Entities;
+﻿using System.ComponentModel.DataAnnotations;
+using EducationApp.Core.Common;
 
-public class UserRole
+namespace EducationApp.Core.Entities;
+
+public class UserRole : BaseEntity
 {
-    public int Id { get; set; }
-	public int UserId { get; set; }
-    public User User { get; set; }
+    // relationships
+    public int UserId { get; set; }
+    public User User { get; set; } = null!;
 
+     // relationships
     public int RoleId { get; set; }
-    public Role Role { get; set; }
+    public Role Role { get; set; } = null!;
 }

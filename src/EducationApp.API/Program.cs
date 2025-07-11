@@ -4,6 +4,7 @@ using EducationApp.Application.Helpers.GenerateJwt;
 using EducationApp.Application.Helpers.Seeder;
 using EducationApp.Application.Services.Interfaces;
 using EducationApp.Application.Services;
+using EducationApp.Application.MappingProfiles;
 using EducationApp.DataAccess.Database;
 using EducationApp.DataAccess.DependencyInjection;
 using Microsoft.OpenApi.Models;
@@ -11,6 +12,8 @@ using EducationApp.Application.Settings;
 using Microsoft.Extensions.Options;
 using Minio;
 using System.Configuration;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,19 +23,21 @@ builder.Services.AddDatabase(builder.Configuration)
     .ServiceContainer()
     .AddJwtOption(builder.Configuration)
     .AddAuth(builder.Configuration);
+    .ServiceContainer();
 
-// Json Ignore
-//builder.Services.AddControllers()
-//    .AddJsonOptions(x =>
-//    {
-//        x.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
-//        x.JsonSerializerOptions.WriteIndented = true;
-//    });
+builder.Services.AddAutoMapper(typeof(AttendanceProfile).Assembly);
+
+builder.Services.AddControllers()
+    .AddNewtonsoftJson(opt =>
+        opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
+
 builder.Services.AddControllers()
     .AddNewtonsoftJson(options =>
     {
         options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
     });
+
+
 
 // Allow Frontend CORS
 builder.Services.AddCors(options =>
@@ -110,6 +115,8 @@ builder.Services.AddSwaggerGen(c =>
     });
 
 });
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(); 
 
 var app = builder.Build();
 
@@ -124,17 +131,19 @@ using (var scope = app.Services.CreateScope())
     var db = scope.ServiceProvider.GetRequiredService<EduDbContext>();
     await PermissionSeeder.SeedPermissionsAsync(db);
 }
+var scope = app.Services.CreateScope();
+var context = scope.ServiceProvider.GetRequiredService<EduDbContext>();
+await context.Database.MigrateAsync();
 
 app.UseSwagger();
 app.UseSwaggerUI();
 
+
+
+// Allow CORS for all origins, methods, and headers
 app.UseCors("AllowAll");
 
 app.UseHttpsRedirection();
-
-app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();

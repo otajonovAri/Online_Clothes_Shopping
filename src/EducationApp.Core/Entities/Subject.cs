@@ -1,13 +1,15 @@
-﻿namespace EducationApp.Core.Entities;
+﻿using System.ComponentModel.DataAnnotations;
+using EducationApp.Core.Common;
 
-public class Subject
+namespace EducationApp.Core.Entities;
+
+public class Subject : BaseEntity
 {
-    public int Id { get; set; }
-    public int StaffId { get; set; }
-    public string Name { get; set; }
-    public string Description { get; set; }
+    public string Name { get; set; } = null!;
+    public string? Description { get; set; }
 
-    public Staff Staff { get; set; }
-    public ICollection<GroupSubject> GroupSubjects { get; set; } 
-    public ICollection<Attendance> Attendances { get; set; }
+    // navigation properties
+    public ICollection<Attendance> Attendances { get; set; } = new HashSet<Attendance>();
+    public ICollection<GroupSubject> GroupSubjects { get; set; } = new HashSet<GroupSubject>();
+    public ICollection<StaffSubject> StaffSubjects { get; set; } = new HashSet<StaffSubject>();
 }

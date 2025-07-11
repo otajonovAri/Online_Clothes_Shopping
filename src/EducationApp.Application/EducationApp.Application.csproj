@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.17" />
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.17">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -18,8 +19,26 @@
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.12.1" />
   </ItemGroup>
 
+
+	
+	
+
   <ItemGroup>
     <ProjectReference Include="..\EducationApp.DataAccess\EducationApp.DataAccess.csproj" />
+  </ItemGroup>
+
+
+	
+	
+
+  <ItemGroup>
+    <Folder Include="Repositories\PaymentDocumentRepository\" />
+    <Folder Include="Repositories\StaffRepository\" />
+    <Folder Include="Repositories\RolePermissionRepository\" />
+    <Folder Include="Service\AttendanceServices\" />
+    <Folder Include="Service\StaffSubjectServices\" />
+    <Folder Include="Service\RoomServices\" />
+    <Folder Include="Service\PaymentServices\" />
   </ItemGroup>
 
 </Project>

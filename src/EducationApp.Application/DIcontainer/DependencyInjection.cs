@@ -1,4 +1,26 @@
-﻿using EducationApp.Application.Helpers.GenerateJwt;
+﻿using EducationApp.Application.Repositories.AttendanceRepository;
+using EducationApp.Application.Repositories.GroupRepository;
+using EducationApp.Application.Repositories.GroupSubjectRepository;
+using EducationApp.Application.Repositories.PaymentDocumentRepository;
+using EducationApp.Application.Repositories.PaymentRepository;
+using EducationApp.Application.Repositories.RoomRepository;
+using EducationApp.Application.Repositories.StaffRepository;
+using EducationApp.Application.Repositories.StaffSubjectRepository;
+using EducationApp.Application.Repositories.StudentRepository;
+using EducationApp.Application.Repositories.SubjectRepository;
+using EducationApp.Application.Repositories.UserRepository;
+using EducationApp.Application.Service.AttendanceServices;
+using EducationApp.Application.Service.GroupServices;
+using EducationApp.Application.Service.GroupSubjectServices;
+using EducationApp.Application.Service.PaymentDocumentServices;
+using EducationApp.Application.Service.PaymentServices;
+using EducationApp.Application.Service.RoomServices;
+using EducationApp.Application.Service.StaffServices;
+using EducationApp.Application.Service.StaffSubjectServices;
+using EducationApp.Application.Service.StudentServices;
+using EducationApp.Application.Service.SubjectServices;
+using EducationApp.Application.Service.UserServices;
+using EducationApp.Application.Helpers.GenerateJwt;
 using EducationApp.Application.Helpers.PasswordHasher;
 using EducationApp.Application.Repositories;
 using EducationApp.Application.Repositories.Interfaces;
@@ -13,29 +35,49 @@ public static class DependencyInjection
 {
     public static IServiceCollection ServiceContainer(this IServiceCollection services)
     {
-        services.AddScoped<IGroupRepository , GroupRepository>();
+        // Attendance
+        services.AddScoped<IAttendanceRepository, AttendanceRepo>();
+        services.AddScoped<IAttendanceService, AttendanceService>();
 
-        services.AddScoped<IGroupSubjectRepository , GroupSubjectRepository>();
+        // Group
+        services.AddScoped<IGroupRepository, GroupRepository>();
+        services.AddScoped<IGroupService, GroupService>();
 
-        services.AddScoped<IPaymentRepository , PaymentRepository>();
+        // GroupSubject
+        services.AddScoped<IGroupSubjectRepository, GroupSubjectRepo>();
+        services.AddScoped<IGroupSubjectService, GroupSubjectService>();
 
-        services.AddScoped<IStudentRepository , StudentRepository>();
+        // PaymentDocument
+        services.AddScoped<IPaymentDocumentRepository, PaymentDocumentRepo>();
+        services.AddScoped<IPaymentDocumentService, PaymentDocumentService>();
 
-        services.AddScoped<ISubjectRepository , SubjectRepository>();
+        // Payment
+        services.AddScoped<IPaymentRepository, PaymentRepo>();
+        services.AddScoped<IPaymentService, PaymentService>();
 
-        services.AddScoped<IUserRoleRepository , UserRoleRepository>();
+        // Room
+        services.AddScoped<IRoomRepository, RoomRepo>();
+        services.AddScoped<IRoomService, RoomService>();
 
-        services.AddScoped<IStaffRepository , StaffRepository>();
+        // Staff
+        services.AddScoped<IStaffRepository, StaffRepo>();
+        services.AddScoped<IStaffService, StaffService>();
 
-        services.AddScoped<IUserRepository , UserRepository>();
+        // StaffSubject
+        services.AddScoped<IStaffSubjectRepository, StaffSubjectRepo>();
+        services.AddScoped<IStaffSubjectService, StaffSubjectService>();
 
-        services.AddScoped<IRoleRepository , RoleRepository>();
+        // Student
+        services.AddScoped<IStudentRepository, StudentRepo>();
+        services.AddScoped<IStudentService, StudentService>();
 
-        services.AddScoped<IPermissionRepository , PermissionRepository>();
+        // Subject
+        services.AddScoped<ISubjectRepository, SubjectRepo>();
+        services.AddScoped<ISubjectService, SubjectService>();
 
-        services.AddScoped<IRolePermissionRepository , RolePermissionRepository>();
-
-        services.AddScoped<IStaffSubjectRepository, StaffSubjectRepository>();
+        // User
+        services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IUserService, UserService>();
 
         services.AddScoped<IJwtTokenHandler, JwtTokenHandler>();
         services.AddScoped<IPasswordHasher, PasswordHasher>();

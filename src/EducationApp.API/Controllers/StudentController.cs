@@ -1,53 +1,44 @@
-using EducationApp.Application.Repositories.Interfaces;
-using EducationApp.Core.DTOs;
-using EducationApp.Core.Entities;
+﻿using EducationApp.Application.DTOs.StudentDto;
+using EducationApp.Application.Responses;
+using EducationApp.Application.Service.StudentServices;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EducationApp.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class StudentController(IStudentRepository repo) : ControllerBase
+public class StudentController(IStudentService service) : ControllerBase
 {
-    [HttpGet("get-all-students")]
-    public IActionResult GetAllStudents()
-    {
-        var students = repo.GetAll();
-        return Ok(students);
-    }
-    
-    [HttpGet("get-student-by-id/{id}")]
-    public async Task<IActionResult> GetStudentById([FromRoute] int id)
-    {
-        var student = await repo.GetByIdAsync(id);
-        if (student is null)
-            return NotFound($"Student with id {id} not found");
+    [HttpGet]
+    public async Task<IActionResult> GetAllAsync()
+        => Ok(await service.GetAllAsync());
 
-        return Ok(student);
+    [HttpGet("{id:int}")]
+    public async Task<IActionResult> GetByIdAsync(int id)
+    {
+        var result = await service.GetByIdAsync(id);
+
+        if (!result.Success)
+            return NotFound(result.Message);
+
+        return Ok(result);
     }
 
-    [HttpPost("create-student")]
-    public async Task<IActionResult> CreateStudent([FromBody] StudentDto dto)
+    [HttpPost]
+    public async Task<IActionResult> CreateAsync([FromBody] StudentCreateDto dto)
     {
-        var student = new Student
-        {
-            UserId = dto.UserId,
-            FirstName = dto.FirstName,
-            LastName = dto.LastName,
-            Email = dto.Email,
-            Status = dto.Status,
-            JoinDate = dto.JoinDate,
-            Gender = dto.Gender,
-        };
-
-        await repo.AddAsync(student);
-        await repo.SaveChangesAsync();
-
-        return Ok(student.Id);
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+        var result = await service.CreateAsync(dto);
+        if (!result.Success)
+            return BadRequest(result.Message);
+        return Ok(result);
+        //return CreatedAtAction(nameof(GetByIdAsync), new { id = result.Data }, result);
     }
 
-    [HttpPut("update-student/{id}")]
-    public async Task<IActionResult> UpdateStudent([FromRoute] int id, [FromBody] StudentDto dto)
+    [HttpPut("{id:int}")]
+    public async Task<IActionResult> UpdateAsync(int id, [FromBody] StudentUpdateDto dto)
     {
         var student = await repo.GetByIdAsync(id);
         if (student == null)
@@ -56,9 +47,10 @@ public class StudentController(IStudentRepository repo) : ControllerBase
         student.UserId = dto.UserId;
         student.FirstName = dto.FirstName;
         student.LastName = dto.LastName;
-        student.Email = dto.Email;
+        student.Address = dto.Address;
         student.Status = dto.Status;
         student.JoinDate = dto.JoinDate;
+        student.Note = dto.Note;
 
         repo.Update(student);
         await repo.SaveChangesAsync();
@@ -66,16 +58,14 @@ public class StudentController(IStudentRepository repo) : ControllerBase
         return Ok("Updated successfully");
     }
 
-    [HttpDelete("delete-student/{id}")]
-    public async Task<IActionResult> DeleteStudent([FromRoute] int id)
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> DeleteAsync(int id)
     {
-        var student = await repo.GetByIdAsync(id);
-        if (student is null)
-            return NotFound($"Student with id {id} not found");
+        var result = await service.DeleteAsync(id);
 
-        repo.Delete(student);
-        await repo.SaveChangesAsync();
+        if (!result.Success)
+            return NotFound(result.Message);
 
-        return Ok("Deleted successfully");
+        return Ok(result);
     }
 }

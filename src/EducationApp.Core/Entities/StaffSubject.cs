@@ -1,11 +1,15 @@
-﻿namespace EducationApp.Core.Entities;
+﻿using System.ComponentModel.DataAnnotations;
+using EducationApp.Core.Common;
 
-public class StaffSubject
+namespace EducationApp.Core.Entities;
+
+public class StaffSubject : BaseEntity
 {
-    public int Id { get; set; }
+    // relationships
     public int StaffId { get; set; }
-    public int SubjectId { get; set; }
+    public Staff Staff { get; set; } = null!;
 
-    public Staff Staff { get; set; } 
-    public ICollection<Subject> Subjects { get; set; } 
-}   
+    // relationships
+    public int SubjectId { get; set; }
+    public Subject Subject { get; set; } = null!;
+}
