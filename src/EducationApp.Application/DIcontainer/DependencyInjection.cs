@@ -22,8 +22,6 @@ using EducationApp.Application.Service.SubjectServices;
 using EducationApp.Application.Service.UserServices;
 using EducationApp.Application.Helpers.GenerateJwt;
 using EducationApp.Application.Helpers.PasswordHasher;
-using EducationApp.Application.Repositories;
-using EducationApp.Application.Repositories.Interfaces;
 using EducationApp.Application.Services.Interfaces;
 using EducationApp.Application.Services;
 using Microsoft.Extensions.DependencyInjection;

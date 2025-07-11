@@ -1,6 +1,5 @@
-﻿using EducationApp.Application.Repositories.Interfaces;
-using EducationApp.Core.DTOs;
-using EducationApp.Core.Entities;
+﻿using EducationApp.Application.DTOs.GroupDto;
+using EducationApp.Application.Service.GroupServices;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EducationApp.API.Controllers;

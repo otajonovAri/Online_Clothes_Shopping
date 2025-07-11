@@ -22,6 +22,66 @@ namespace EducationApp.DataAccess.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("EducationApp.Core.Entities.Attendance", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("AttendanceDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("AttendanceStatus")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int?>("GroupId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("GroupSubjectId")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsPresent")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Note")
+                        .HasColumnType("text");
+
+                    b.Property<int?>("Participation")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("Preparedness")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("StudentId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("SubjectId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GroupId");
+
+                    b.HasIndex("GroupSubjectId");
+
+                    b.HasIndex("StudentId");
+
+                    b.HasIndex("SubjectId");
+
+                    b.ToTable("Attendances");
+                });
+
             modelBuilder.Entity("EducationApp.Core.Entities.Group", b =>
                 {
                     b.Property<int>("Id")
@@ -124,7 +184,10 @@ namespace EducationApp.DataAccess.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("numeric");
 
-                    b.Property<string>("Note")
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Description")
                         .HasColumnType("text");
 
                     b.Property<bool>("IsDeleted")
@@ -132,6 +195,9 @@ namespace EducationApp.DataAccess.Migrations
 
                     b.Property<DateTime>("PaymentDate")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("PaymentImgUrl")
+                        .HasColumnType("text");
 
                     b.Property<int>("PaymentType")
                         .HasColumnType("integer");
@@ -339,42 +405,16 @@ namespace EducationApp.DataAccess.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("JoinDate")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
 
-                    b.Property<string>("Note")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("StaffId")
+                        .HasColumnType("integer");
 
-                    b.Property<string>("PasswordHas")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("PasswordSold")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("RefreshToken")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("UserId")
+                    b.Property<int>("SubjectId")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -469,6 +509,12 @@ namespace EducationApp.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("RefreshToken")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.HasKey("Id");
 
                     b.ToTable("Users");
@@ -508,6 +554,59 @@ namespace EducationApp.DataAccess.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("UserRoles");
+                });
+
+            modelBuilder.Entity("EducationApp.Core.Entities.Staff", b =>
+                {
+                    b.HasBaseType("EducationApp.Core.Entities.User");
+
+                    b.Property<int>("Position")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("Salary")
+                        .HasColumnType("numeric");
+
+                    b.HasDiscriminator().HasValue("Staff");
+                });
+
+            modelBuilder.Entity("EducationApp.Core.Entities.Student", b =>
+                {
+                    b.HasBaseType("EducationApp.Core.Entities.User");
+
+                    b.Property<DateTime>("JoinDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.HasDiscriminator().HasValue("Student");
+                });
+
+            modelBuilder.Entity("EducationApp.Core.Entities.Attendance", b =>
+                {
+                    b.HasOne("EducationApp.Core.Entities.Group", null)
+                        .WithMany("Attendances")
+                        .HasForeignKey("GroupId");
+
+                    b.HasOne("EducationApp.Core.Entities.GroupSubject", "GroupSubject")
+                        .WithMany()
+                        .HasForeignKey("GroupSubjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EducationApp.Core.Entities.Student", "Student")
+                        .WithMany("Attendances")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EducationApp.Core.Entities.Subject", null)
+                        .WithMany("Attendances")
+                        .HasForeignKey("SubjectId");
+
+                    b.Navigation("GroupSubject");
+
+                    b.Navigation("Student");
                 });
 
             modelBuilder.Entity("EducationApp.Core.Entities.Group", b =>
@@ -688,13 +787,11 @@ namespace EducationApp.DataAccess.Migrations
 
             modelBuilder.Entity("EducationApp.Core.Entities.User", b =>
                 {
-                    b.Navigation("Payments");
+                    b.Navigation("UserRoles");
                 });
 
             modelBuilder.Entity("EducationApp.Core.Entities.Staff", b =>
                 {
-                    b.Navigation("Attendances");
-
                     b.Navigation("GroupSubjects");
 
                     b.Navigation("Groups");
@@ -704,7 +801,9 @@ namespace EducationApp.DataAccess.Migrations
 
             modelBuilder.Entity("EducationApp.Core.Entities.Student", b =>
                 {
-                    b.Navigation("Students");
+                    b.Navigation("Attendances");
+
+                    b.Navigation("Payments");
                 });
 #pragma warning restore 612, 618
         }

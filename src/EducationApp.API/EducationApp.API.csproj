@@ -32,8 +32,6 @@
 
   <ItemGroup>
 	  <ProjectReference Include="..\EducationApp.Application\EducationApp.Application.csproj" />
-	  <ProjectReference Include="..\EducationApp.Core\EducationApp.Core.csproj" />
-	  <ProjectReference Include="..\EducationApp.DataAccess\EducationApp.DataAccess.csproj" />
   </ItemGroup>
 
 </Project>

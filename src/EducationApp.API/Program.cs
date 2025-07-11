@@ -1,18 +1,16 @@
 using EducationApp.Application.DIContainer;
 using EducationApp.Application.Helpers;
 using EducationApp.Application.Helpers.GenerateJwt;
-using EducationApp.Application.Helpers.Seeder;
-using EducationApp.Application.Services.Interfaces;
-using EducationApp.Application.Services;
 using EducationApp.Application.MappingProfiles;
+using EducationApp.Application.Services;
+using EducationApp.Application.Services.Interfaces;
+using EducationApp.Application.Settings;
 using EducationApp.DataAccess.Database;
 using EducationApp.DataAccess.DependencyInjection;
-using Microsoft.OpenApi.Models;
-using EducationApp.Application.Settings;
-using Microsoft.Extensions.Options;
-using Minio;
-using System.Configuration;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using Microsoft.OpenApi.Models;
+using Minio;
 using Newtonsoft.Json;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,21 +21,12 @@ builder.Services.AddDatabase(builder.Configuration)
     .ServiceContainer()
     .AddJwtOption(builder.Configuration)
     .AddAuth(builder.Configuration);
-    .ServiceContainer();
 
 builder.Services.AddAutoMapper(typeof(AttendanceProfile).Assembly);
 
 builder.Services.AddControllers()
     .AddNewtonsoftJson(opt =>
         opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
-
-builder.Services.AddControllers()
-    .AddNewtonsoftJson(options =>
-    {
-        options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
-    });
-
-
 
 // Allow Frontend CORS
 builder.Services.AddCors(options =>
@@ -126,11 +115,12 @@ if (builder.Environment.IsProduction() && builder.Configuration.GetValue<int?>("
 //var context = app.Services.CreateScope().ServiceProvider.GetRequiredService<EduDbContext>();
 //await context.Database.MigrateAsync();
 
-using (var scope = app.Services.CreateScope())
+/*using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<EduDbContext>();
     await PermissionSeeder.SeedPermissionsAsync(db);
-}
+}*/
+
 var scope = app.Services.CreateScope();
 var context = scope.ServiceProvider.GetRequiredService<EduDbContext>();
 await context.Database.MigrateAsync();

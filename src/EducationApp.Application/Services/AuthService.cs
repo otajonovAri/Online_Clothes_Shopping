@@ -72,7 +72,7 @@ namespace EducationApp.Application.Services
                 PasswordSolt = salt,
                 Password = requestDto.Password,
                 PhoneNumber = requestDto.PhoneNumber,
-                BirthDate = requestDto.BirthDate,
+                
                 Gender = requestDto.Gender,
                 //CreatedAt = DateTime.Now,
                 //IsVerified = false // Yangi foydalanuvchilar odatda tasdiqlanmagan holda boshlanadi

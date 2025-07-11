@@ -41,16 +41,9 @@ public class PaymentController(IPaymentService service) : ControllerBase
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
-
-        payment.StudentId = dto.StudentId;
-        payment.Amount = dto.Amount;
-        payment.PaymentDate = dto.PaymentDate;
-        payment.PaymentType = dto.PaymentType;
-        payment.Note = dto.Note;
-
+        var result = await service.UpdateAsync(id, dto);
         if (!result.Success)
             return NotFound(result.Message);
-
         return Ok(result);
     }
     [HttpDelete("{id:int}")]
