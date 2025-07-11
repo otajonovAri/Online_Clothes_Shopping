@@ -1,5 +1,5 @@
-﻿using EducationApp.Application.Service.Interface;
-using EducationApp.Core.DTOs;
+﻿using EducationApp.Application.DTOs.Room;
+using EducationApp.Application.Service.RoomServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,58 +10,46 @@ namespace EducationApp.API.Controllers;
 public class RoomController(IRoomService service) : ControllerBase
 {
     [HttpGet]
-    public async Task<IActionResult> GetAll()
-        => Ok(await service.GetAllRoom());
+    public async Task<IActionResult> GetAllAsync() 
+        => Ok(await service.GetAllAsync());
 
-
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetById(int id)
+    [HttpGet("{id:int}")]
+    public async Task<IActionResult> GetByIdAsync(int id)
     {
         var result = await service.GetByIdAsync(id);
         if (!result.Success)
             return NotFound(result.Message);
-
         return Ok(result);
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] RoomDto dto)
+    public async Task<IActionResult> CreateAsync([FromBody] RoomCreateDto dto)
     {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
         var result = await service.CreateAsync(dto);
-
         if (!result.Success)
             return BadRequest(result.Message);
 
         return Ok(result);
+        //return CreatedAtAction(nameof(GetByIdAsync), new { id = result.Data }, result);
     }
 
-
-    [HttpPut("{id}")]
-    public async Task<IActionResult> Update(int id, [FromBody] RoomDto dto)
+    [HttpPut("{id:int}")]
+    public async Task<IActionResult> UpdateAsync(int id, [FromBody] RoomUpdateDto dto)
     {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
         var result = await service.UpdateAsync(id, dto);
-
         if (!result.Success)
             return NotFound(result.Message);
-
         return Ok(result);
     }
 
-
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(int id)
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> DeleteAsync(int id)
     {
         var result = await service.DeleteAsync(id);
-
-        if (!result.Success)
-            return NotFound(result.Message);
-        return Ok(result);
-    }
-
-    [HttpGet("search")]
-    public async Task<IActionResult> GetCondition(string query)
-    {
-        var result = await service.GetByCondition(query);
         if (!result.Success)
             return NotFound(result.Message);
         return Ok(result);

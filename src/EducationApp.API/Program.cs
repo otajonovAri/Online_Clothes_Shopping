@@ -7,44 +7,29 @@ using Newtonsoft.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
 builder.Services.AddDatabase(builder.Configuration)
     .ServiceContainer();
 
+builder.Services.AddAutoMapper(typeof(AttendanceProfile).Assembly);
 
-// Json Ignore Reference Loop Handling
 builder.Services.AddControllers()
-    .AddNewtonsoftJson(options =>
-    {
-        options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
-    });
-
-
-// Add services to the container.
-builder.Services.AddAutoMapper(typeof(MappingProfile));
-
-
-
+    .AddNewtonsoftJson(opt =>
+        opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(); 
 
 var app = builder.Build();
 
-if(builder.Environment.IsProduction() && builder.Configuration.GetValue<int?>("PORT") is not null)
-    builder.WebHost.UseUrls($"http://*:{builder.Configuration.GetValue<int>("PORT")}");
-
-var context = app.Services.CreateScope().ServiceProvider.GetRequiredService<EduDbContext>();
+var scope = app.Services.CreateScope();
+var context = scope.ServiceProvider.GetRequiredService<EduDbContext>();
 await context.Database.MigrateAsync();
-// Configure the HTTP request pipeline.
 
 app.UseSwagger();
-    app.UseSwaggerUI();
-
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();

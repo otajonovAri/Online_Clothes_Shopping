@@ -5,7 +5,7 @@ namespace EducationApp.Core.Entities;
 
 public class PaymentDocument : BaseEntity
 {
-    [StringLength(200)] public string? FileUrl { get; set; }
-    [Required] public int PaymentId { get; set; }
-    [Required] public Payment Payment { get; set; } = null!;
+    public string? FileUrl { get; set; }
+    public int PaymentId { get; set; }
+    public Payment Payment { get; set; } = null!;
 }

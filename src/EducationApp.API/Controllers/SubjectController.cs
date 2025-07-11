@@ -1,51 +1,60 @@
-﻿using EducationApp.Application.Service.Interface;
-using EducationApp.Core.DTOs;
-using Microsoft.AspNetCore.Http;
+﻿using EducationApp.Application.DTOs.GroupSubjectDto;
+using EducationApp.Application.DTOs.SubjectDto;
+using EducationApp.Application.Service.SubjectServices;
 using Microsoft.AspNetCore.Mvc;
 
-namespace EducationApp.API.Controllers
+namespace EducationApp.API.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class SubjectController(ISubjectService service) : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class SubjectController(ISubjectService service) : ControllerBase
+    [HttpGet]
+    public async Task<IActionResult> GetAllAsync()
+        => Ok(await service.GetAllAsync());
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetByIdAsync(int id)
     {
-        [HttpGet]
-        public async Task<IActionResult> GetAll() => Ok(await service.GetAll());
+        var result = await service.GetByIdAsync(id);
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetByIdAsync(int id)
-        {
-            var result = await service.GetByIdAsync(id);
-            if (!result.Success)
-                return NotFound(result.Message);
-            return Ok(result);
-        }
+        if (!result.Success)
+            return NotFound(result.Message);
 
-        [HttpPost]
-        public async Task<IActionResult> CreateAsync([FromBody] SubjectDto dto)
-        {
-            var result = await service.CreateAsync(dto);
-            if (!result.Success)
-                return BadRequest(result.Message);
-            return Ok(result);
-        }
+        return Ok(result);
+    }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateAsync(int id, [FromBody] SubjectDto dto)
-        {
-            var result = await service.UpdateAsync(id, dto);
-            if (!result.Success)
-                return NotFound(result.Message);
-            return Ok(result);
-        }
+    [HttpPost]
+    public async Task<IActionResult> CreateAsync([FromBody] CreateSubjectDto dto)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+        var result = await service.CreateAsync(dto);
+        if (!result.Success)
+            return BadRequest(result.Message);
+        return Ok(result);
+    }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAsync(int id)
-        {
-            var result = await service.DeleteAsync(id);
-            if (!result.Success)
-                return NotFound(result.Message);
-            return Ok(result);
-        }
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateAsync([FromBody] SubjectUpdateDto dto , int id)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
+        var result = await service.UpdateAsync(id, dto);
+
+        if (!result.Success)
+            return NotFound(result.Message);
+
+        return Ok(result);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteAsync(int id)
+    {
+        var result = await service.DeleteAsync(id);
+        if (!result.Success)
+            return NotFound(result.Message);
+        return Ok(result);
     }
 }

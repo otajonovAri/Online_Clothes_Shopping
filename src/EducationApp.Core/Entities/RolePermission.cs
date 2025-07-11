@@ -5,11 +5,11 @@ namespace EducationApp.Core.Entities;
 
 public class RolePermission : BaseEntity
 {
-    //(Parent class) Role
-    [Required] public int RoleId { get; set; }
-    [Required] public Role Role { get; set; } = null!;
+     // relationships
+     public int RoleId { get; set; }
+     public Role Role { get; set; } = null!;
 
-    //(Parent class) Permission
-    [Required] public int PermissionId { get; set; }
-    [Required] public Permission Permission { get; set; } = null!;
+     // relationships
+     public int PermissionId { get; set; }
+     public Permission Permission { get; set; } = null!;
 }

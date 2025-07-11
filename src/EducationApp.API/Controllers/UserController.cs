@@ -1,69 +1,64 @@
-﻿using EducationApp.Application.Service.Interface;
-using EducationApp.Core.DTOs;
-using Microsoft.AspNetCore.Http;
+﻿using EducationApp.Application.DTOs.UserDto;
+using EducationApp.Application.Service.UserServices;
 using Microsoft.AspNetCore.Mvc;
 
-namespace EducationApp.API.Controllers
+namespace EducationApp.API.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class UserController(IUserService service) : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class UserController(IUserService service) : ControllerBase
+    [HttpGet]
+    public async Task<IActionResult> GetAllAsync()
+        => Ok(await service.GetAllAsync());
+
+    [HttpGet("{id:int}")]
+    public async Task<IActionResult> GetByIdAsync(int id)
     {
-        [HttpGet]
-        public async Task<IActionResult> GetAll()
-            => Ok(await service.GetAllAsync());
+        var result = await service.GetByIdAsync(id);
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
-        {
-            var result = await service.GetByIdAsync(id);
-            if (!result.Success)
-                return NotFound(result.Message);
+        if (!result.Success)
+            return NotFound(result.Message);
 
-            return Ok(result);
-        }
+        return Ok(result);
+    }
 
-        [HttpPost]
-        public async Task<IActionResult> Create([FromBody] UserDto dto)
-        {
-            var result = await service.CreateAsync(dto);
+    [HttpPost]
+    public async Task<IActionResult> CreateAsync([FromBody] UserCreateDto dto)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
 
-            if (!result.Success)
-                return BadRequest(result.Message);
+        var result = await service.CreateAsync(dto);
 
-            return Ok(result);
-        }
+        if (!result.Success)
+            return BadRequest(result.Message);
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] UserDto dto)
-        {
-            var result = await service.UpdateAsync(id, dto);
+        return Ok(result);
+        //return CreatedAtAction(nameof(GetByIdAsync), new { id = result.Data }, result);
+    }
 
-            if (!result.Success)
-                return NotFound(result.Message);
+    [HttpPut("{id:int}")]
+    public async Task<IActionResult> UpdateAsync(int id, [FromBody] UserUpdateDto dto)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
 
-            return Ok(result);
-        }
+        var result = await service.UpdateAsync(id, dto);
+        if (!result.Success)
+            return NotFound(result.Message);
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
-        {
-            var result = await service.DeleteAsync(id);
+        return Ok(result);
+    }
 
-            if (!result.Success)
-                return NotFound(result.Message);
-            return Ok(result);
-        }
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> DeleteAsync(int id)
+    {
+        var result = await service.DeleteAsync(id);
 
-        [HttpGet("search")]
-        public async Task<IActionResult> GetGender()
-        {
-            var result = await service.GetByUserGender(); 
+        if (!result.Success)
+            return NotFound(result.Message);
 
-            if (!result.Success)
-                return NotFound(result.Message);
-
-            return Ok(result);
-        }
+        return Ok(result);
     }
 }

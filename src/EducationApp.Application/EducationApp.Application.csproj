@@ -23,4 +23,18 @@
     <ProjectReference Include="..\EducationApp.DataAccess\EducationApp.DataAccess.csproj" />
   </ItemGroup>
 
+
+	
+	
+
+  <ItemGroup>
+    <Folder Include="Repositories\PaymentDocumentRepository\" />
+    <Folder Include="Repositories\StaffRepository\" />
+    <Folder Include="Repositories\RolePermissionRepository\" />
+    <Folder Include="Service\AttendanceServices\" />
+    <Folder Include="Service\StaffSubjectServices\" />
+    <Folder Include="Service\RoomServices\" />
+    <Folder Include="Service\PaymentServices\" />
+  </ItemGroup>
+
 </Project>

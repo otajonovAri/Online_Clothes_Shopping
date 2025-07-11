@@ -1,59 +1,59 @@
-﻿using EducationApp.Application.Service.Interface;
-using EducationApp.Core.DTOs;
+﻿using EducationApp.Application.DTOs.GroupDto;
+using EducationApp.Application.Service.GroupServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace EducationApp.API.Controllers
+namespace EducationApp.API.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class GroupController(IGroupService service) : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class GroupController(IGroupService service) : ControllerBase
+    [HttpGet]
+    public async Task<IActionResult> GetAll()
     {
-        [HttpGet]
-        public async Task<IActionResult> GetAll()
-            => Ok(await service.GetAllAsync());
+        var result = await service.GetAllAsync();
+        return Ok(result);
+    }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
-        {
-            var result = await service.GetByIdAsync(id);
+    [HttpGet("{id:int}")]
+    public async Task<IActionResult> GetById(int id)
+    {
+        var result = await service.GetByIdAsync(id);
+        if (!result.Success)
+            return NotFound(result.Message);
+        return Ok(result);
+    }
 
-            if (!result.Success)
-                return NotFound(result.Message);
+    [HttpPost]
+    public async Task<IActionResult> Create([FromBody] GroupCreatedDto dto)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+        var result = await service.CreateAsync(dto);
+        if (!result.Success)
+            return BadRequest(result.Message);
+        return Ok(result);
+        /*return CreatedAtAction(nameof(GetById), new { id = result.Data.Id }, result);*/
+    }
 
-            return Ok(result);
-        }
+    [HttpPut("{id:int}")]
+    public async Task<IActionResult> Update(int id, [FromBody] GroupUpdateDto dto)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+        var result = await service.UpdateAsync(id, dto);
+        if (!result.Success)
+            return NotFound(result.Message);
+        return Ok(result);
+    }
 
-        [HttpPost]
-        public async Task<IActionResult> Create([FromBody] GroupDto dto)
-        {
-            var result = await service.CreateAsync(dto);
-
-            if (!result.Success)
-                return BadRequest(result.Message);
-
-            return Ok(result);
-        }
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] GroupDto dto)
-        {
-            var result = await service.UpdateAsync(id, dto);
-
-            if (!result.Success)
-                return NotFound(result.Message);
-
-            return Ok(result);
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
-        {
-            var result = await service.DeleteAsync(id);
-
-            if (!result.Success)
-                return NotFound(result.Message);
-            return Ok(result);
-        }
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var result = await service.DeleteAsync(id);
+        if (!result.Success)
+            return NotFound(result.Message);
+        return Ok(result);
     }
 }

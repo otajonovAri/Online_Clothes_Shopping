@@ -5,11 +5,11 @@ namespace EducationApp.Core.Entities;
 
 public class StaffSubject : BaseEntity
 {
-    // (Child Class) Staff
-    [Required] public int StaffId { get; set; }
-    [Required] public Staff Staff { get; set; } = null!;
+    // relationships
+    public int StaffId { get; set; }
+    public Staff Staff { get; set; } = null!;
 
-    // (Child Class) Subject
-    [Required] public int SubjectId { get; set; }
-    [Required] public Subject Subject { get; set; } = null!;
+    // relationships
+    public int SubjectId { get; set; }
+    public Subject Subject { get; set; } = null!;
 }
