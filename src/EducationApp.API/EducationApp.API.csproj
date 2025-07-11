@@ -25,13 +25,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EducationApp.Application\EducationApp.Application.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Include="..\..\.dockerignore">
       <Link>.dockerignore</Link>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+	  <ProjectReference Include="..\EducationApp.Application\EducationApp.Application.csproj" />
+	  <ProjectReference Include="..\EducationApp.Core\EducationApp.Core.csproj" />
+	  <ProjectReference Include="..\EducationApp.DataAccess\EducationApp.DataAccess.csproj" />
   </ItemGroup>
 
 </Project>
