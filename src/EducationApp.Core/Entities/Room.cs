@@ -10,5 +10,5 @@ public class Room : BaseEntity
     public string? Description { get; set; }
 
     // Navigation properties
-    public ICollection<GroupSubject> GroupSubjects { get; set; }
+    public ICollection<GroupSubject> GroupSubjects { get; set; } = new HashSet<GroupSubject>();
 }

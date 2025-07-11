@@ -1,4 +1,5 @@
 ﻿using EducationApp.Application.DTOs.StudentDto;
+using EducationApp.Application.Responses;
 using EducationApp.Application.Service.StudentServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -39,25 +40,12 @@ public class StudentController(IStudentService service) : ControllerBase
     [HttpPut("{id:int}")]
     public async Task<IActionResult> UpdateAsync(int id, [FromBody] StudentUpdateDto dto)
     {
-        var student = await repo.GetByIdAsync(id);
-        if (student == null)
-            return NotFound($"Student with id {id} not found");
-
-        student.UserId = dto.UserId;
-        student.FirstName = dto.FirstName;
-        student.LastName = dto.LastName;
-        student.Address = dto.Address;
-        student.Status = dto.Status;
-        student.JoinDate = dto.JoinDate;
-        student.Note = dto.Note;
-        student.PasswordHas = dto.PasswordHas;
-        student.PasswordSold = dto.PasswordSold;
-        student.RefreshToken = dto.RefreshToken;
-
-        repo.Update(student);
-        await repo.SaveChangesAsync();
-
-        return Ok("Updated successfully");
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+        var result = await service.UpdateAsync(id, dto);
+        if (!result.Success)
+            return NotFound(result.Message);
+        return Ok(result);
     }
 
     [HttpDelete("{id:int}")]
