@@ -9,10 +9,10 @@ namespace EducationApp.API.Controllers;
 [ApiController]
 public class GroupSubjectController(IGroupSubjectService service) : ControllerBase
 {
-    [HttpGet]
+    [HttpGet("get-all-groupsubject")]
     public async Task<IActionResult> GetAll() => Ok(await service.GetAllAsync());
 
-    [HttpGet("{id:int}")]
+    [HttpGet("get-by-id/{id:int}")]
     public async Task<IActionResult> GetById(int id)
     {
         var result = await service.GetByIdAsync(id);
@@ -21,7 +21,7 @@ public class GroupSubjectController(IGroupSubjectService service) : ControllerBa
         return Ok(result);
     }
 
-    [HttpPost]
+    [HttpPost("create-groupsubject")]
     public async Task<IActionResult> Create([FromBody] GroupSubjectCreateDto dto)
     {
         if (!ModelState.IsValid)
@@ -33,7 +33,7 @@ public class GroupSubjectController(IGroupSubjectService service) : ControllerBa
         //return CreatedAtAction(nameof(GetById), new { id = result.Data }, result);
     }
 
-    [HttpPut("{id:int}")]
+    [HttpPut("update-groupsubject-by-id/{id:int}")]
     public async Task<IActionResult> Update(int id, [FromBody] GroupSubjectUpdateDto dto)
     {
         if (!ModelState.IsValid)
@@ -44,7 +44,7 @@ public class GroupSubjectController(IGroupSubjectService service) : ControllerBa
         return Ok(result);
     }
 
-    [HttpDelete("{id:int}")]
+    [HttpDelete("delete-groupsubject-by-id/{id:int}")]
     public async Task<IActionResult> Delete(int id)
     {
         var result = await service.DeleteAsync(id);
