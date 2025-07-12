@@ -15,7 +15,7 @@ public class GroupController(IGroupService service) : ControllerBase
         return Ok(result);
     }
 
-    [HttpGet("get-by-id/{id:int}")]
+    [HttpGet("get-by-id-group/{id:int}")]
     public async Task<IActionResult> GetById(int id)
     {
         var result = await service.GetByIdAsync(id);

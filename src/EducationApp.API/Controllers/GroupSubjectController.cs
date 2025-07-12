@@ -12,7 +12,7 @@ public class GroupSubjectController(IGroupSubjectService service) : ControllerBa
     [HttpGet("get-all-groupsubject")]
     public async Task<IActionResult> GetAll() => Ok(await service.GetAllAsync());
 
-    [HttpGet("get-by-id/{id:int}")]
+    [HttpGet("get-by-id-groupsubject/{id:int}")]
     public async Task<IActionResult> GetById(int id)
     {
         var result = await service.GetByIdAsync(id);

@@ -15,7 +15,7 @@ public class PaymentController(IPaymentService service) : ControllerBase
         var result = await service.GetAllAsync();
         return Ok(result);
     }
-    [HttpGet("get-by-id/{id:int}")]
+    [HttpGet("get-by-id-payment/{id:int}")]
     public async Task<IActionResult> GetById(int id)
     {
         var result = await service.GetByIdAsync(id);

@@ -13,7 +13,7 @@ public class AttendanceController(IAttendanceService service) : ControllerBase
     public async Task<IActionResult> GetAllAsync()
         => Ok(await service.GetAllAsync());
 
-    [HttpGet("get-by-id/{id}")]
+    [HttpGet("get-by-id-attendance/{id}")]
     public async Task<IActionResult> GetByIdAsync(int id)
     {
         var result = await service.GetByIdAsync(id);
