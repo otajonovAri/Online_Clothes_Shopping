@@ -56,6 +56,27 @@ namespace EducationApp.DataAccess.Migrations
                     b.ToTable("Attendance");
                 });
 
+            modelBuilder.Entity("EducationApp.Core.Entities.File", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Files");
+                });
+
             modelBuilder.Entity("EducationApp.Core.Entities.Group", b =>
                 {
                     b.Property<int>("Id")

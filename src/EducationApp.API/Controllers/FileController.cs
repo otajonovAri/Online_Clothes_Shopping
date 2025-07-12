@@ -1,4 +1,6 @@
-﻿using EducationApp.Application.Services.Interfaces;
+﻿using EducationApp.Application.Repositories.Interfaces;
+using EducationApp.Application.Services.Interfaces;
+using EducationApp.Core.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EducationApp.API.Controllers;
@@ -8,11 +10,13 @@ namespace EducationApp.API.Controllers;
 public class FileController : ControllerBase
 {
 	private readonly IFileStorageService _fileStorageService;
+	private readonly IFileRepository _repo;
 
 	// Dependency Injection orqali IFileStorageService ni oladi
-	public FileController(IFileStorageService fileStorageService)
+	public FileController(IFileStorageService fileStorageService , IFileRepository repo)
 	{
 		_fileStorageService = fileStorageService;
+		_repo = repo;
 	}
 
 	[HttpPost("upload")]
@@ -28,9 +32,19 @@ public class FileController : ControllerBase
 		var fileExtension = Path.GetExtension(file.FileName);
 		var objectName = $"{Guid.NewGuid()}{fileExtension}"; // Minio'da saqlanadigan fayl nomi
 
+		
+
 		using (var stream = file.OpenReadStream()) // Fayl streamini ochish
 		{
 			var fileUrl = await _fileStorageService.UploadFileAsync(bucketName, objectName, stream, file.ContentType);
+			var fileOy = Path.GetFileName(fileUrl);
+			var fileBek = new Core.Entities.File
+			{
+				Name = bucketName,
+				Url = fileOy
+			};
+			await _repo.AddAsync(fileBek);
+			await _repo.SaveChangesAsync();
 			return Ok(new { Message = "Fayl muvaffaqiyatli yuklandi.", FileUrl = fileUrl });
 		}
 	}
@@ -82,5 +96,11 @@ public class FileController : ControllerBase
 		{
 			return StatusCode(500, "Faylni o'chirishda kutilmagan xatolik yuz berdi.");
 		}
+	}
+
+	[HttpGet("get-all-files")]
+	public async Task<IActionResult> GetAllFiles()
+	{
+		return Ok(_repo.GetAll());
 	}
 }

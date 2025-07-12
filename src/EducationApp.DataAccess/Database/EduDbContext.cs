@@ -18,5 +18,14 @@ namespace EducationApp.DataAccess.Database
         public DbSet<Subject> Subjects { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
-    }
+        public DbSet<Core.Entities.File> Files { get; set; }
+
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
+		{
+            modelBuilder.Entity<Core.Entities.File>(builder =>
+            {
+                builder.HasKey(u => u.Id);
+            });
+		}
+	}
 }

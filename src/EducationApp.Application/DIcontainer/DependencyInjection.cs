@@ -13,6 +13,8 @@ public static class DependencyInjection
 {
     public static IServiceCollection ServiceContainer(this IServiceCollection services)
     {
+        services.AddScoped<IFileRepository, FileRepository>();
+
         services.AddScoped<IGroupRepository , GroupRepository>();
 
         services.AddScoped<IGroupSubjectRepository , GroupSubjectRepository>();
