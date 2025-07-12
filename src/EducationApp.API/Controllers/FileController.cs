@@ -1,4 +1,4 @@
-﻿using EducationApp.Application.Services.Interfaces;
+﻿using EducationApp.Application.Service.FileStorageServices;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EducationApp.API.Controllers;

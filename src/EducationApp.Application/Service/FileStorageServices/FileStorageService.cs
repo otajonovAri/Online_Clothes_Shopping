@@ -1,11 +1,10 @@
-﻿using EducationApp.Application.Services.Interfaces;
-using EducationApp.Application.Settings;
+﻿using EducationApp.Application.Settings;
 using Microsoft.Extensions.Options;
 using Minio;
 using Minio.DataModel.Args;
 using Minio.Exceptions;
 
-namespace EducationApp.Application.Services;
+namespace EducationApp.Application.Service.FileStorageServices;
 
 
 public class MinioFileStorageService : IFileStorageService

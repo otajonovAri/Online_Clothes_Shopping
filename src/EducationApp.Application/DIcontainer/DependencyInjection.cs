@@ -22,10 +22,11 @@ using EducationApp.Application.Service.SubjectServices;
 using EducationApp.Application.Service.UserServices;
 using EducationApp.Application.Helpers.GenerateJwt;
 using EducationApp.Application.Helpers.PasswordHasher;
-using EducationApp.Application.Services.Interfaces;
 using EducationApp.Application.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
+using EducationApp.Application.Service.IAuthServices;
+using EducationApp.Application.Service.PermissionServices;
 
 namespace EducationApp.Application.DIContainer;
 

@@ -1,7 +1,7 @@
 ﻿using EducationApp.Core.DTOs;
 using EducationApp.Core.Entities;
 
-namespace EducationApp.Application.Services.Interfaces;
+namespace EducationApp.Application.Service.PermissionServices;
 
 public interface IPermissionService
 {

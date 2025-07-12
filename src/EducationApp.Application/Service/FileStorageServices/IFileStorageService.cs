@@ -1,4 +1,4 @@
-﻿namespace EducationApp.Application.Services.Interfaces;
+﻿namespace EducationApp.Application.Service.FileStorageServices;
 public interface IFileStorageService
 {
 	// Faylni Minio'ga yuklash

@@ -2,7 +2,7 @@
 using EducationApp.Application.Helpers.PasswordHasher;
 using EducationApp.Application.Models;
 using EducationApp.Application.Models.Dtos;
-using EducationApp.Application.Services.Interfaces;
+using EducationApp.Application.Service.IAuthServices;
 using EducationApp.Core.Entities;
 using EducationApp.DataAccess.Database;
 using Microsoft.EntityFrameworkCore;

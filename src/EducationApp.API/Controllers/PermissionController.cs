@@ -1,4 +1,4 @@
-﻿using EducationApp.Application.Services.Interfaces;
+﻿using EducationApp.Application.Service.PermissionServices;
 using EducationApp.Core.DTOs;
 using Microsoft.AspNetCore.Mvc;
 

@@ -1,6 +1,6 @@
 ﻿using EducationApp.Application.Models;
 using EducationApp.Application.Models.Dtos;
-using EducationApp.Application.Services.Interfaces;
+using EducationApp.Application.Service.IAuthServices;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EducationApp.API.Controllers

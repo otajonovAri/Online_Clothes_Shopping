@@ -1,10 +1,9 @@
-﻿using EducationApp.Application.Services.Interfaces;
-using EducationApp.Core.DTOs;
+﻿using EducationApp.Core.DTOs;
 using EducationApp.Core.Entities;
 using EducationApp.DataAccess.Database;
 using Microsoft.EntityFrameworkCore;
 
-namespace EducationApp.Application.Services;
+namespace EducationApp.Application.Service.PermissionServices;
 
 public class PermissionService : IPermissionService
 {

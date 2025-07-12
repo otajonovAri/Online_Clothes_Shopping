@@ -1,6 +1,6 @@
 ﻿using EducationApp.Core.DTOs;
 
-namespace EducationApp.Application.Services.Interfaces;
+namespace EducationApp.Application.Service.UserRoleServices;
 
 public  interface IUserRoleService
 {

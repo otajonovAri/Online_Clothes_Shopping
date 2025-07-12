@@ -1,7 +1,7 @@
 ﻿using EducationApp.Application.Models;
 using EducationApp.Application.Models.Dtos;
 
-namespace EducationApp.Application.Services.Interfaces
+namespace EducationApp.Application.Service.IAuthServices
 {
     public interface IAuthService
     {
