@@ -1,6 +1,5 @@
-﻿using EducationApp.Application.Repositories.Interfaces;
-using EducationApp.Application.Services.Interfaces;
-using EducationApp.Core.Entities;
+﻿using EducationApp.Application.Repositories.FileRepository;
+using EducationApp.Application.Service.FileStorageServices;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EducationApp.API.Controllers;

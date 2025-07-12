@@ -91,6 +91,4 @@ public static class DependencyInjection
         services.Configure<JwtOption>(configuration.GetSection("JwtOption"));
         return services;
     }
-
-   
 }
