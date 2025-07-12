@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EducationApp.DataAccess.Migrations
 {
     [DbContext(typeof(EduDbContext))]
-    [Migration("20250711224251_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20250712155209_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -274,6 +274,16 @@ namespace EducationApp.DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Permissions");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(2025, 7, 12, 15, 52, 8, 609, DateTimeKind.Utc).AddTicks(3724),
+                            IsDeleted = false,
+                            Name = "AdminPermission",
+                            UpdatedAt = new DateTime(2025, 7, 12, 15, 52, 8, 609, DateTimeKind.Utc).AddTicks(3725)
+                        });
                 });
 
             modelBuilder.Entity("EducationApp.Core.Entities.Role", b =>
@@ -299,6 +309,24 @@ namespace EducationApp.DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Roles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(2025, 7, 12, 15, 52, 8, 609, DateTimeKind.Utc).AddTicks(3852),
+                            IsDeleted = false,
+                            Name = "Admin",
+                            UpdatedAt = new DateTime(2025, 7, 12, 15, 52, 8, 609, DateTimeKind.Utc).AddTicks(3853)
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedAt = new DateTime(2025, 7, 12, 15, 52, 8, 609, DateTimeKind.Utc).AddTicks(3855),
+                            IsDeleted = false,
+                            Name = "User",
+                            UpdatedAt = new DateTime(2025, 7, 12, 15, 52, 8, 609, DateTimeKind.Utc).AddTicks(3855)
+                        });
                 });
 
             modelBuilder.Entity("EducationApp.Core.Entities.RolePermission", b =>
@@ -331,6 +359,17 @@ namespace EducationApp.DataAccess.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("RolePermissions");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(2025, 7, 12, 15, 52, 8, 609, DateTimeKind.Utc).AddTicks(3873),
+                            IsDeleted = false,
+                            PermissionId = 1,
+                            RoleId = 1,
+                            UpdatedAt = new DateTime(2025, 7, 12, 15, 52, 8, 609, DateTimeKind.Utc).AddTicks(3874)
+                        });
                 });
 
             modelBuilder.Entity("EducationApp.Core.Entities.Room", b =>

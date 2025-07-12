@@ -1,6 +1,6 @@
-﻿using EducationApp.Application.DTOs.GroupSubjectDto;
+﻿using EducationApp.Application.Auth;
+using EducationApp.Application.DTOs.GroupSubjectDto;
 using EducationApp.Application.Service.GroupSubjectServices;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EducationApp.API.Controllers;
@@ -10,9 +10,11 @@ namespace EducationApp.API.Controllers;
 public class GroupSubjectController(IGroupSubjectService service) : ControllerBase
 {
     [HttpGet]
+    [PermissionAuthorize(Core.Permission.GetAllGroupSubjectPermission)]
     public async Task<IActionResult> GetAll() => Ok(await service.GetAllAsync());
 
     [HttpGet("{id:int}")]
+    [PermissionAuthorize(Core.Permission.GetByIdGroupSubjectPermission)]
     public async Task<IActionResult> GetById(int id)
     {
         var result = await service.GetByIdAsync(id);
@@ -22,6 +24,7 @@ public class GroupSubjectController(IGroupSubjectService service) : ControllerBa
     }
 
     [HttpPost]
+    [PermissionAuthorize(Core.Permission.CreateGroupSubjectPermission)]
     public async Task<IActionResult> Create([FromBody] GroupSubjectCreateDto dto)
     {
         if (!ModelState.IsValid)
@@ -34,6 +37,7 @@ public class GroupSubjectController(IGroupSubjectService service) : ControllerBa
     }
 
     [HttpPut("{id:int}")]
+    [PermissionAuthorize(Core.Permission.UpdateGroupSubjectPermission)]
     public async Task<IActionResult> Update(int id, [FromBody] GroupSubjectUpdateDto dto)
     {
         if (!ModelState.IsValid)
@@ -45,6 +49,7 @@ public class GroupSubjectController(IGroupSubjectService service) : ControllerBa
     }
 
     [HttpDelete("{id:int}")]
+    [PermissionAuthorize(Core.Permission.DeleteGroupSubjectPermission)]
     public async Task<IActionResult> Delete(int id)
     {
         var result = await service.DeleteAsync(id);

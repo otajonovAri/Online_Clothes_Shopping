@@ -31,7 +31,7 @@ namespace EducationApp.Application.Helpers.GenerateJwt
             {
                 foreach (var userRole in user.UserRoles)
                 {
-                    claims.Add(new Claim(ClaimTypes.Role, userRole.Role.Name));
+                    claims.Add(new Claim(CustomClaimNames.Role, userRole.Role.Name));
 
                     if (userRole.Role.RolePermissions != null)
                     {

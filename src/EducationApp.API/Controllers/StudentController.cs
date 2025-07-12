@@ -1,4 +1,5 @@
-﻿using EducationApp.Application.DTOs.StudentDto;
+﻿using EducationApp.Application.Auth;
+using EducationApp.Application.DTOs.StudentDto;
 using EducationApp.Application.Service.StudentServices;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,10 +10,12 @@ namespace EducationApp.API.Controllers;
 public class StudentController(IStudentService service) : ControllerBase
 {
     [HttpGet]
+    [PermissionAuthorize(Core.Permission.GetAllStudentPermission)]  
     public async Task<IActionResult> GetAllAsync()
         => Ok(await service.GetAllAsync());
 
     [HttpGet("{id:int}")]
+    [PermissionAuthorize(Core.Permission.GetByIdStudentPermission)]
     public async Task<IActionResult> GetByIdAsync(int id)
     {
         var result = await service.GetByIdAsync(id);
@@ -24,6 +27,7 @@ public class StudentController(IStudentService service) : ControllerBase
     }
 
     [HttpPost]
+    [PermissionAuthorize(Core.Permission.CreateStudentPermission)]
     public async Task<IActionResult> CreateAsync([FromBody] StudentCreateDto dto)
     {
         if (!ModelState.IsValid)
@@ -36,6 +40,7 @@ public class StudentController(IStudentService service) : ControllerBase
     }
 
     [HttpPut("{id:int}")]
+    [PermissionAuthorize(Core.Permission.UpdateStudentPermission)]
     public async Task<IActionResult> UpdateAsync(int id, [FromBody] StudentUpdateDto dto)
     {
         if (!ModelState.IsValid)
@@ -47,6 +52,7 @@ public class StudentController(IStudentService service) : ControllerBase
     }
 
     [HttpDelete("{id:int}")]
+    [PermissionAuthorize(Core.Permission.DeleteStudentPermission)]
     public async Task<IActionResult> DeleteAsync(int id)
     {
         var result = await service.DeleteAsync(id);

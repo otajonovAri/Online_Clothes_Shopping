@@ -79,7 +79,7 @@ namespace EducationApp.DataAccess.Migrations
 
                     b.HasIndex("SubjectId");
 
-                    b.ToTable("Attendances");
+                    b.ToTable("Attendances", (string)null);
                 });
 
             modelBuilder.Entity("EducationApp.Core.Entities.Group", b =>
@@ -119,7 +119,7 @@ namespace EducationApp.DataAccess.Migrations
 
                     b.HasIndex("StaffId");
 
-                    b.ToTable("Groups");
+                    b.ToTable("Groups", (string)null);
                 });
 
             modelBuilder.Entity("EducationApp.Core.Entities.GroupSubject", b =>
@@ -170,7 +170,7 @@ namespace EducationApp.DataAccess.Migrations
 
                     b.HasIndex("SubjectId");
 
-                    b.ToTable("GroupSubjects");
+                    b.ToTable("GroupSubjects", (string)null);
                 });
 
             modelBuilder.Entity("EducationApp.Core.Entities.Payment", b =>
@@ -212,7 +212,7 @@ namespace EducationApp.DataAccess.Migrations
 
                     b.HasIndex("StudentId");
 
-                    b.ToTable("Payments");
+                    b.ToTable("Payments", (string)null);
                 });
 
             modelBuilder.Entity("EducationApp.Core.Entities.PaymentDocument", b =>
@@ -242,7 +242,7 @@ namespace EducationApp.DataAccess.Migrations
 
                     b.HasIndex("PaymentId");
 
-                    b.ToTable("PaymentDocument");
+                    b.ToTable("PaymentDocument", (string)null);
                 });
 
             modelBuilder.Entity("EducationApp.Core.Entities.Permission", b =>
@@ -270,7 +270,17 @@ namespace EducationApp.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Permissions");
+                    b.ToTable("Permissions", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(2025, 7, 12, 15, 52, 8, 609, DateTimeKind.Utc).AddTicks(3724),
+                            IsDeleted = false,
+                            Name = "AdminPermission",
+                            UpdatedAt = new DateTime(2025, 7, 12, 15, 52, 8, 609, DateTimeKind.Utc).AddTicks(3725)
+                        });
                 });
 
             modelBuilder.Entity("EducationApp.Core.Entities.Role", b =>
@@ -295,7 +305,25 @@ namespace EducationApp.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles");
+                    b.ToTable("Roles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(2025, 7, 12, 15, 52, 8, 609, DateTimeKind.Utc).AddTicks(3852),
+                            IsDeleted = false,
+                            Name = "Admin",
+                            UpdatedAt = new DateTime(2025, 7, 12, 15, 52, 8, 609, DateTimeKind.Utc).AddTicks(3853)
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedAt = new DateTime(2025, 7, 12, 15, 52, 8, 609, DateTimeKind.Utc).AddTicks(3855),
+                            IsDeleted = false,
+                            Name = "User",
+                            UpdatedAt = new DateTime(2025, 7, 12, 15, 52, 8, 609, DateTimeKind.Utc).AddTicks(3855)
+                        });
                 });
 
             modelBuilder.Entity("EducationApp.Core.Entities.RolePermission", b =>
@@ -327,7 +355,18 @@ namespace EducationApp.DataAccess.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("RolePermissions");
+                    b.ToTable("RolePermissions", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(2025, 7, 12, 15, 52, 8, 609, DateTimeKind.Utc).AddTicks(3873),
+                            IsDeleted = false,
+                            PermissionId = 1,
+                            RoleId = 1,
+                            UpdatedAt = new DateTime(2025, 7, 12, 15, 52, 8, 609, DateTimeKind.Utc).AddTicks(3874)
+                        });
                 });
 
             modelBuilder.Entity("EducationApp.Core.Entities.Room", b =>
@@ -358,7 +397,7 @@ namespace EducationApp.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Rooms");
+                    b.ToTable("Rooms", (string)null);
                 });
 
             modelBuilder.Entity("EducationApp.Core.Entities.ScheduleSlot", b =>
@@ -394,7 +433,7 @@ namespace EducationApp.DataAccess.Migrations
 
                     b.HasIndex("GroupId");
 
-                    b.ToTable("ScheduleSlot");
+                    b.ToTable("ScheduleSlot", (string)null);
                 });
 
             modelBuilder.Entity("EducationApp.Core.Entities.StaffSubject", b =>
@@ -426,7 +465,7 @@ namespace EducationApp.DataAccess.Migrations
 
                     b.HasIndex("SubjectId");
 
-                    b.ToTable("StaffSubjects");
+                    b.ToTable("StaffSubjects", (string)null);
                 });
 
             modelBuilder.Entity("EducationApp.Core.Entities.Subject", b =>
@@ -455,7 +494,7 @@ namespace EducationApp.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Subjects");
+                    b.ToTable("Subjects", (string)null);
                 });
 
             modelBuilder.Entity("EducationApp.Core.Entities.User", b =>
@@ -517,7 +556,7 @@ namespace EducationApp.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
 
                     b.HasDiscriminator().HasValue("User");
 
@@ -553,7 +592,7 @@ namespace EducationApp.DataAccess.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserRoles");
+                    b.ToTable("UserRoles", (string)null);
                 });
 
             modelBuilder.Entity("EducationApp.Core.Entities.Staff", b =>
