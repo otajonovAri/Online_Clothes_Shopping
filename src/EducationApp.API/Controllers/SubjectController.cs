@@ -9,11 +9,11 @@ namespace EducationApp.API.Controllers;
 [ApiController]
 public class SubjectController(ISubjectService service) : ControllerBase
 {
-    [HttpGet]
+    [HttpGet("get-all-subject")]
     public async Task<IActionResult> GetAllAsync()
         => Ok(await service.GetAllAsync());
 
-    [HttpGet("{id}")]
+    [HttpGet("get-by-id-subject/{id}")]
     public async Task<IActionResult> GetByIdAsync(int id)
     {
         var result = await service.GetByIdAsync(id);
@@ -24,7 +24,7 @@ public class SubjectController(ISubjectService service) : ControllerBase
         return Ok(result);
     }
 
-    [HttpPost]
+    [HttpPost("create-subject")]
     public async Task<IActionResult> CreateAsync([FromBody] CreateSubjectDto dto)
     {
         if (!ModelState.IsValid)
@@ -35,7 +35,7 @@ public class SubjectController(ISubjectService service) : ControllerBase
         return Ok(result);
     }
 
-    [HttpPut("{id}")]
+    [HttpPut("update-subject-by-id/{id}")]
     public async Task<IActionResult> UpdateAsync([FromBody] SubjectUpdateDto dto , int id)
     {
         if (!ModelState.IsValid)
@@ -49,7 +49,7 @@ public class SubjectController(ISubjectService service) : ControllerBase
         return Ok(result);
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete("delete-subject-by-id/{id}")]
     public async Task<IActionResult> DeleteAsync(int id)
     {
         var result = await service.DeleteAsync(id);

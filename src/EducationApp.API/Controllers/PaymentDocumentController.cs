@@ -9,11 +9,11 @@ namespace EducationApp.API.Controllers;
 [ApiController]
 public class PaymentDocumentController(IPaymentDocumentService service) : ControllerBase
 {
-    [HttpGet]
+    [HttpGet("get-all-paymentdocument")]
     public async Task<IActionResult> GetAllAsync()
     => Ok(await service.GetAllAsync());
 
-    [HttpGet("{id}")]
+    [HttpGet("get-by-id-paymentdocument/{id}")]
     public async Task<IActionResult> GetByIdAsync(int id)
     {
         var result = await service.GetByIdAsync(id);
@@ -23,7 +23,7 @@ public class PaymentDocumentController(IPaymentDocumentService service) : Contro
         return Ok(result);
     }
 
-    [HttpPost]
+    [HttpPost("create-paymentdocument")]
     public async Task<IActionResult> CreateAsync([FromBody] PaymentDocumentCreateDto dto)
     {
         if (!ModelState.IsValid)
@@ -34,7 +34,7 @@ public class PaymentDocumentController(IPaymentDocumentService service) : Contro
         return Ok(result);
     }
 
-    [HttpPut("{id}")]
+    [HttpPut("update-paymentdocument-by-id/{id}")]
     public async Task<IActionResult> UpdateAsync(int id ,[FromBody] PaymentDocumentUpdateDto dto)
     {
         if (!ModelState.IsValid)
@@ -48,7 +48,7 @@ public class PaymentDocumentController(IPaymentDocumentService service) : Contro
         return Ok(result);
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete("delete-paymentdocument-by-id/{id}")]
     public async Task<IActionResult> DeleteAsync(int id)
     {
         var result = await service.DeleteAsync(id);
