@@ -101,6 +101,6 @@ public class FileController : ControllerBase
 	[HttpGet("get-all-files")]
 	public async Task<IActionResult> GetAllFiles()
 	{
-		return Ok(_repo.GetAll());
+		return Ok( _repo.GetAll());
 	}
 }
