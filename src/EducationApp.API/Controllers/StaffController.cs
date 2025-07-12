@@ -9,10 +9,10 @@ namespace EducationApp.API.Controllers;
 [ApiController]
 public class StaffController(IStaffService service) : ControllerBase
 {
-    [HttpGet]
+    [HttpGet("get-all-staff")]
     public async Task<IActionResult> GetAll() => Ok(await service.GetAllAsync());
 
-    [HttpGet("{id:int}")]
+    [HttpGet("get-by-id-staff/{id:int}")]
     public async Task<IActionResult> GetById(int id)
     {
         var result = await service.GetByIdAsync(id);
@@ -21,7 +21,7 @@ public class StaffController(IStaffService service) : ControllerBase
         return Ok(result);
     }
 
-    [HttpPost]
+    [HttpPost("create-staff")]
     public async Task<IActionResult> Create([FromBody] StaffCreateDto dto)
     {
         if (!ModelState.IsValid)
@@ -33,7 +33,7 @@ public class StaffController(IStaffService service) : ControllerBase
         //return CreatedAtAction(nameof(GetById), new { id = result.Data }, result);
     }
 
-    [HttpPut("{id:int}")]
+    [HttpPut("update-staff-by-id/{id:int}")]
     public async Task<IActionResult> Update(int id, [FromBody] StaffUpdateDto dto)
     {
         if (!ModelState.IsValid)
@@ -44,7 +44,7 @@ public class StaffController(IStaffService service) : ControllerBase
         return Ok(result);
     }
 
-    [HttpDelete("{id:int}")]
+    [HttpDelete("delete-staff-by-id/{id:int}")]
     public async Task<IActionResult> Delete(int id)
     {
         var result = await service.DeleteAsync(id);
