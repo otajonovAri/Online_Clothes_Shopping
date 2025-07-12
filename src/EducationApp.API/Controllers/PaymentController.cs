@@ -9,13 +9,13 @@ namespace EducationApp.API.Controllers;
 [ApiController]
 public class PaymentController(IPaymentService service) : ControllerBase
 {
-    [HttpGet]
+    [HttpGet("get-all-payment")]
     public async Task<IActionResult> GetAll()
     {
         var result = await service.GetAllAsync();
         return Ok(result);
     }
-    [HttpGet("{id:int}")]
+    [HttpGet("get-by-id/{id:int}")]
     public async Task<IActionResult> GetById(int id)
     {
         var result = await service.GetByIdAsync(id);
@@ -23,7 +23,7 @@ public class PaymentController(IPaymentService service) : ControllerBase
             return NotFound(result.Message);
         return Ok(result);
     }
-    [HttpPost]
+    [HttpPost("create-payment")]
     public async Task<IActionResult> Create([FromBody] PaymentCreateDto dto)
     {
         if (!ModelState.IsValid)
@@ -36,7 +36,7 @@ public class PaymentController(IPaymentService service) : ControllerBase
         /*
         return CreatedAtAction(nameof(GetById), new { id = result.Data }, result);*/
     }
-    [HttpPut("{id:int}")]
+    [HttpPut("update-payment-by-id/{id:int}")]
     public async Task<IActionResult> Update(int id, [FromBody] PaymentUpdateDto dto)
     {
         if (!ModelState.IsValid)
@@ -46,7 +46,7 @@ public class PaymentController(IPaymentService service) : ControllerBase
             return NotFound(result.Message);
         return Ok(result);
     }
-    [HttpDelete("{id:int}")]
+    [HttpDelete("delete-payment-by-id/{id:int}")]
     public async Task<IActionResult> Delete(int id)
     {
         var result = await service.DeleteAsync(id);
