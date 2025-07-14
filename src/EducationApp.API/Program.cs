@@ -2,6 +2,7 @@ using EducationApp.Application.DIContainer;
 using EducationApp.Application.Helpers;
 using EducationApp.Application.Helpers.GenerateJwt;
 using EducationApp.Application.MappingProfiles;
+using EducationApp.Application.Middleware;
 using EducationApp.Application.Service.FileStorageServices;
 using EducationApp.Application.Settings;
 using EducationApp.DataAccess.Database;
@@ -11,8 +12,26 @@ using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Minio;
 using Newtonsoft.Json;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Serilog 
+var fileName = "logs/log";
+
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Information()
+    .WriteTo.Debug()
+    .WriteTo.Console()
+    .WriteTo.File(path: $"{fileName}-.txt",
+        restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Information,
+        outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}",
+        rollingInterval: RollingInterval.Day)
+    .CreateLogger();
+
+builder.Host.UseSerilog();
+
+// Serilog End
 
 var configuration = builder.Configuration;
 
@@ -127,6 +146,8 @@ await context.Database.MigrateAsync();
 app.UseSwagger();
 app.UseSwaggerUI();
 
+// GlobalException
+app.UseMiddleware<GlobalException>();
 
 
 // Allow CORS for all origins, methods, and headers
@@ -136,3 +157,11 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
 app.Run();
+
+
+
+
+// Connection String :)
+/*
+ *  "DefaultConnection": "Host=switchback.proxy.rlwy.net;Port=57276;Username=postgres;Password=ducPUjbwfBICWaKaHRefZiBkCPmIWRTO;Database=railway"
+ */
