@@ -10,13 +10,11 @@ namespace EducationApp.API.Controllers;
 public class SubjectController(ISubjectService service) : ControllerBase
 {
     [HttpGet("get-all-subject")]
-    [HttpGet]
     [PermissionAuthorize(Core.Permission.GetAllSubjectPermission)]
     public async Task<IActionResult> GetAllAsync()
         => Ok(await service.GetAllAsync());
 
-    [HttpGet("get-by-id-subject/{id}")]
-    [HttpGet("{id}")]
+    [HttpGet("get-by-id-subject/{id:int}")]
     [PermissionAuthorize(Core.Permission.GetByIdSubjectPermission)]
     public async Task<IActionResult> GetByIdAsync(int id)
     {
@@ -29,7 +27,6 @@ public class SubjectController(ISubjectService service) : ControllerBase
     }
 
     [HttpPost("create-subject")]
-    [HttpPost]
     [PermissionAuthorize(Core.Permission.CreateSubjectPermission)]
     public async Task<IActionResult> CreateAsync([FromBody] CreateSubjectDto dto)
     {
@@ -41,8 +38,7 @@ public class SubjectController(ISubjectService service) : ControllerBase
         return Ok(result);
     }
 
-    [HttpPut("update-subject-by-id/{id}")]
-    [HttpPut("{id}")]
+    [HttpPut("update-subject-by-id/{id:int}")]
     [PermissionAuthorize(Core.Permission.UpdateSubjectPermission)]
     public async Task<IActionResult> UpdateAsync([FromBody] SubjectUpdateDto dto , int id)
     {
@@ -57,8 +53,7 @@ public class SubjectController(ISubjectService service) : ControllerBase
         return Ok(result);
     }
 
-    [HttpDelete("delete-subject-by-id/{id}")]
-    [HttpDelete("{id}")]
+    [HttpDelete("delete-subject-by-id/{id:int}")]
     [PermissionAuthorize(Core.Permission.DeleteSubjectPermission)]
     public async Task<IActionResult> DeleteAsync(int id)
     {

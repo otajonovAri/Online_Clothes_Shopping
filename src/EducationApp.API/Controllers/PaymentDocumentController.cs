@@ -10,14 +10,12 @@ namespace EducationApp.API.Controllers;
 [ApiController]
 public class PaymentDocumentController(IPaymentDocumentService service) : ControllerBase
 {
-    [HttpGet("get-all-paymentdocument")]
-    [HttpGet]
+    [HttpGet("get-all-payment-document")]
     [PermissionAuthorize(Core.Permission.GetAllPaymentDocumentPermission)]
     public async Task<IActionResult> GetAllAsync()
     => Ok(await service.GetAllAsync());
 
-    [HttpGet("get-by-id-paymentdocument/{id}")]
-    [HttpGet("{id}")]
+    [HttpGet("get-by-id-payment-document/{id:int}")]
     [PermissionAuthorize(Core.Permission.GetByIdPaymentDocumentPermission)]
     public async Task<IActionResult> GetByIdAsync(int id)
     {
@@ -28,8 +26,7 @@ public class PaymentDocumentController(IPaymentDocumentService service) : Contro
         return Ok(result);
     }
 
-    [HttpPost("create-paymentdocument")]
-    [HttpPost]
+    [HttpPost("create-payment-document")]
     [PermissionAuthorize(Core.Permission.CreatePaymentDocumentPermission)]
     public async Task<IActionResult> CreateAsync([FromBody] PaymentDocumentCreateDto dto)
     {
@@ -41,8 +38,7 @@ public class PaymentDocumentController(IPaymentDocumentService service) : Contro
         return Ok(result);
     }
 
-    [HttpPut("update-paymentdocument-by-id/{id}")]
-    [HttpPut("{id}")]
+    [HttpPut("update-payment-document-by-id/{id:int}")]
     [PermissionAuthorize(Core.Permission.UpdatePaymentDocumentPermission)]
     public async Task<IActionResult> UpdateAsync(int id ,[FromBody] PaymentDocumentUpdateDto dto)
     {
@@ -57,8 +53,7 @@ public class PaymentDocumentController(IPaymentDocumentService service) : Contro
         return Ok(result);
     }
 
-    [HttpDelete("delete-paymentdocument-by-id/{id}")]
-    [HttpDelete("{id}")]
+    [HttpDelete("delete-payment-document-by-id/{id:int}")]
     [PermissionAuthorize(Core.Permission.DeletePaymentDocumentPermission)]
     public async Task<IActionResult> DeleteAsync(int id)
     {

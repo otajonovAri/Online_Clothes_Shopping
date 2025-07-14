@@ -22,6 +22,8 @@ using EducationApp.Application.Service.SubjectServices;
 using EducationApp.Application.Service.UserServices;
 using EducationApp.Application.Helpers.GenerateJwt;
 using EducationApp.Application.Helpers.PasswordHasher;
+using EducationApp.Application.Repositories.FileRepository;
+using EducationApp.Application.Service.FileStorageServices;
 using EducationApp.Application.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
@@ -77,6 +79,10 @@ public static class DependencyInjection
         // User
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IUserService, UserService>();
+
+        // Image Upload
+        services.AddScoped<IFileRepository , FileRepository>();
+        services.AddScoped<IFileStorageService, MinioFileStorageService>();
 
         services.AddScoped<IJwtTokenHandler, JwtTokenHandler>();
         services.AddScoped<IPasswordHasher, PasswordHasher>();

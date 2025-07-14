@@ -11,13 +11,11 @@ namespace EducationApp.API.Controllers;
 public class AttendanceController(IAttendanceService service) : ControllerBase
 {
     [HttpGet("get-all-attendance")]
-    [HttpGet]
     [PermissionAuthorize(Permission.GetAllAttendancePermission)]
     public async Task<IActionResult> GetAllAsync()
         => Ok(await service.GetAllAsync());
 
     [HttpGet("get-by-id-attendance/{id}")]
-    [HttpGet("{id}")]
     [PermissionAuthorize(Permission.GetByIdAttendancePermission)]
     public async Task<IActionResult> GetByIdAsync(int id)
     {
@@ -29,7 +27,6 @@ public class AttendanceController(IAttendanceService service) : ControllerBase
     }
 
     [HttpPost("create-attendance")]
-    [HttpPost]
     [PermissionAuthorize(Permission.CreateAttendancePermission)]
     public async Task<IActionResult> CreateAsync([FromBody] AttendanceCreateDto dto)
     {
@@ -41,9 +38,9 @@ public class AttendanceController(IAttendanceService service) : ControllerBase
         return Ok(result);
     }
 
-    [HttpPut("{id}")]
-    [PermissionAuthorize(Permission.UpdateAttendancePermission)]
+    
     [HttpPut("update-attendance-by-id/{id}")]
+    [PermissionAuthorize(Permission.UpdateAttendancePermission)]
     public async Task<IActionResult> UpdateAsync(int id, [FromBody] AttendanceUpdateDto dto)
     {
         if (!ModelState.IsValid)
@@ -57,9 +54,9 @@ public class AttendanceController(IAttendanceService service) : ControllerBase
         return Ok(result);
     }
 
-    [HttpDelete("{id}")]
-    [PermissionAuthorize(Permission.DeleteAttendancePermission)]
+
     [HttpDelete("delete-attendance-by-id/{id}")]
+    [PermissionAuthorize(Permission.DeleteAttendancePermission)]
     public async Task<IActionResult> DeleteAsync(int id)
     {
         var result = await service.DeleteAsync(id);

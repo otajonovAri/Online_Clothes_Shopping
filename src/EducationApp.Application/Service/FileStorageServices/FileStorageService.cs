@@ -12,7 +12,6 @@ public class MinioFileStorageService : IFileStorageService
 	private readonly IMinioClient _minioClient;
 	private readonly MinioSettings _minioSettings;
 
-	// Dependency Injection orqali IMinioClient va MinioSettings ni qabul qiladi
 	public MinioFileStorageService(IMinioClient minioClient, IOptions<MinioSettings> minioSettings)
 	{
 		_minioClient = minioClient;
@@ -23,7 +22,6 @@ public class MinioFileStorageService : IFileStorageService
 	{
 		try
 		{
-			// Agar bucket (saqlash joyi) mavjud bo'lmasa, uni yaratamiz
 			bool found = await _minioClient.BucketExistsAsync(
 			  new BucketExistsArgs().WithBucket(bucketName)
 			).ConfigureAwait(false);
@@ -35,7 +33,6 @@ public class MinioFileStorageService : IFileStorageService
 				).ConfigureAwait(false);
 			}
 
-			// Faylni Minio'ga yuklash
 			await _minioClient.PutObjectAsync(
 			  new PutObjectArgs()
 				.WithBucket(bucketName)

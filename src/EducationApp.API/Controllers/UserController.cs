@@ -11,13 +11,11 @@ namespace EducationApp.API.Controllers;
 public class UserController(IUserService service) : ControllerBase
 {
     [HttpGet("get-all-user")]
-    [HttpGet]
     [PermissionAuthorize(Permission.GetAllUserPermission)]
     public async Task<IActionResult> GetAllAsync()
         => Ok(await service.GetAllAsync());
 
     [HttpGet("get-by-id-user/{id:int}")]
-    [HttpGet("{id:int}")]
     [PermissionAuthorize(Permission.GetByIdUserPermission)]
     public async Task<IActionResult> GetByIdAsync(int id)
     {
@@ -30,7 +28,6 @@ public class UserController(IUserService service) : ControllerBase
     }
 
     [HttpPost("create-user")]
-    [HttpPost]
     [PermissionAuthorize(Permission.CreateUserPermission)]
     public async Task<IActionResult> CreateAsync([FromBody] UserCreateDto dto)
     {
@@ -46,7 +43,6 @@ public class UserController(IUserService service) : ControllerBase
     }
 
     [HttpPut("update-user-by-id/{id:int}")]
-    [HttpPut("{id:int}")]
     [PermissionAuthorize(Permission.UpdateUserPermission)]
     public async Task<IActionResult> UpdateAsync(int id, [FromBody] UserUpdateDto dto)
     {
@@ -61,7 +57,6 @@ public class UserController(IUserService service) : ControllerBase
     }
 
     [HttpDelete("delete-user-by-id/{id:int}")]
-    [HttpDelete("{id:int}")]
     [PermissionAuthorize(Permission.DeleteUserPermission)]
     public async Task<IActionResult> DeleteAsync(int id)
     {

@@ -1,27 +1,18 @@
-﻿using EducationApp.Application.Repositories.FileRepository;
+﻿using EducationApp.Application.Auth;
+using EducationApp.Application.Repositories.FileRepository;
 using EducationApp.Application.Service.FileStorageServices;
-using EducationApp.Application.Auth;
-using EducationApp.Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EducationApp.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class FileController : ControllerBase
+public class FileController(IFileStorageService fileStorageService, IFileRepository repo)
+    : ControllerBase
 {
-	private readonly IFileStorageService _fileStorageService;
-	private readonly IFileRepository _repo;
-
-	// Dependency Injection orqali IFileStorageService ni oladi
-	public FileController(IFileStorageService fileStorageService , IFileRepository repo)
-	{
-		_fileStorageService = fileStorageService;
-		_repo = repo;
-	}
-
-	[HttpPost("upload")]
-	[Consumes("multipart/form-data")] // Fayl yuklash uchun shart
+    
+    [HttpPost("upload")]
+	[Consumes("multipart/form-data")]
 	[PermissionAuthorize(Core.Permission.UploadFilePermission)]
 	public async Task<IActionResult> UploadFile(IFormFile file, [FromQuery] string bucketName = "my-test-bucket")
 	{
@@ -30,23 +21,20 @@ public class FileController : ControllerBase
 			return BadRequest("Fayl tanlanmagan yoki bo'sh.");
 		}
 
-		// Fayl nomini noyob qilish uchun Guid va original kengaytmadan foydalanamiz
 		var fileExtension = Path.GetExtension(file.FileName);
-		var objectName = $"{Guid.NewGuid()}{fileExtension}"; // Minio'da saqlanadigan fayl nomi
+		var objectName = $"{Guid.NewGuid()}{fileExtension}"; 
 
-		
-
-		using (var stream = file.OpenReadStream()) // Fayl streamini ochish
+		using (var stream = file.OpenReadStream()) 
 		{
-			var fileUrl = await _fileStorageService.UploadFileAsync(bucketName, objectName, stream, file.ContentType);
+			var fileUrl = await fileStorageService.UploadFileAsync(bucketName, objectName, stream, file.ContentType);
 			var fileOy = Path.GetFileName(fileUrl);
 			var fileBek = new Core.Entities.File
 			{
 				Name = bucketName,
 				Url = fileOy
 			};
-			await _repo.AddAsync(fileBek);
-			await _repo.SaveChangesAsync();
+			await repo.AddAsync(fileBek);
+			await repo.SaveChangesAsync();
 			return Ok(new { Message = "Fayl muvaffaqiyatli yuklandi.", FileUrl = fileUrl });
 		}
 	}
@@ -63,11 +51,10 @@ public class FileController : ControllerBase
 
 		try
 		{
-			var stream = await _fileStorageService.DownloadFileAsync(bucketName, objectName);
-			// Content-Type ni aniqlashga harakat qilish yoki universal qiymat berish
-			var contentType = "application/octet-stream"; // Fayl turi noma'lum bo'lsa
-														  // Agar siz fayl turini saqlagan bo'lsangiz, uni bazadan olib foydalansangiz yaxshi bo'ladi
-			return File(stream, contentType, objectName); // Faylni brauzerga jo'natish
+			var stream = await fileStorageService.DownloadFileAsync(bucketName, objectName);
+
+			var contentType = "application/octet-stream"; 
+			return File(stream, contentType, objectName); 
 		}
 		catch (Minio.Exceptions.MinioException e) when (e.Message.Contains("Object does not exist"))
 		{
@@ -90,7 +77,7 @@ public class FileController : ControllerBase
 
 		try
 		{
-			bool removed = await _fileStorageService.RemoveFileAsync(bucketName, objectName);
+			bool removed = await fileStorageService.RemoveFileAsync(bucketName, objectName);
 			if (removed)
 			{
 				return Ok("Fayl muvaffaqiyatli o'chirildi.");
@@ -106,6 +93,6 @@ public class FileController : ControllerBase
 	[HttpGet("get-all-files")]
 	public async Task<IActionResult> GetAllFiles()
 	{
-		return Ok( _repo.GetAll());
+		return Ok( repo.GetAll());
 	}
 }
