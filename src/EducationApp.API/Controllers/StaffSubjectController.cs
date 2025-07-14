@@ -1,6 +1,6 @@
-﻿using EducationApp.Application.DTOs.StaffSubjectDto;
+﻿using EducationApp.Application.Auth;
+using EducationApp.Application.DTOs.StaffSubjectDto;
 using EducationApp.Application.Service.StaffSubjectServices;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EducationApp.API.Controllers;
@@ -10,10 +10,14 @@ namespace EducationApp.API.Controllers;
 public class StaffSubjectController(IStaffSubjectService service) : ControllerBase
 {
     [HttpGet("get-all-staffsubject")]
+    [HttpGet]
+    [PermissionAuthorize(Core.Permission.GetAllStaffSubjectPermission)]
     public async Task<IActionResult> GetAllAsync()
         => Ok(await service.GetAllAsync());
 
     [HttpGet("get-by-id-staffsubject/{id:int}")]
+    [HttpGet("{id:int}")]
+    [PermissionAuthorize(Core.Permission.GetByIdStaffSubjectPermission)]
     public async Task<IActionResult> GetByIdAsync(int id)
     {
         var result = await service.GetByIdAsync(id);
@@ -23,6 +27,8 @@ public class StaffSubjectController(IStaffSubjectService service) : ControllerBa
     }
 
     [HttpPost("create-staffsubject")]
+    [HttpPost]
+    [PermissionAuthorize(Core.Permission.CreateStaffSubjectPermission)]
     public async Task<IActionResult> CreateAsync([FromBody] StaffSubjectCreateDto dto)
     {
         if (!ModelState.IsValid)
@@ -35,6 +41,8 @@ public class StaffSubjectController(IStaffSubjectService service) : ControllerBa
     }
 
     [HttpPut("update-staffsubject-by-id/{id:int}")]
+    [HttpPut("{id:int}")]
+    [PermissionAuthorize(Core.Permission.UpdateStaffSubjectPermission)]
     public async Task<IActionResult> UpdateAsync(int id, [FromBody] StaffSubjectUpdateDto dto)
     {
         if (!ModelState.IsValid)
@@ -46,6 +54,8 @@ public class StaffSubjectController(IStaffSubjectService service) : ControllerBa
     }
 
     [HttpDelete("delete-staffsubject-by-id/{id:int}")]
+    [HttpDelete("{id:int}")]
+    [PermissionAuthorize(Core.Permission.DeleteStaffSubjectPermission)]
     public async Task<IActionResult> DeleteAsync(int id)
     {
         var result = await service.DeleteAsync(id);

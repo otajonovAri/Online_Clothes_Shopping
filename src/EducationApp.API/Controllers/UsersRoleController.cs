@@ -1,4 +1,6 @@
 ﻿using EducationApp.Application.Service.UserRoleServices;
+using EducationApp.Application.Auth;
+using EducationApp.Application.Services.Interfaces;
 using EducationApp.Core.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,6 +12,16 @@ public class UsersRoleController(IUserRoleService userRoleService) : ControllerB
 {
     [HttpPost("{id}/roles")]
 	public async Task<IActionResult> AssignRoles(int id, List<int> roleIds)
+	private readonly IUserRoleService _userRoleService;
+
+	public UsersController(IUserRoleService userRoleService)
+	{
+		_userRoleService = userRoleService;
+	}
+
+	[HttpPost("{id}/roles")]
+	[PermissionAuthorize(Core.Permission.AssignRolesToUserPermission)]
+    public async Task<IActionResult> AssignRoles(int id, List<int> roleIds)
 	{
 		foreach (var roleId in roleIds)
 		{

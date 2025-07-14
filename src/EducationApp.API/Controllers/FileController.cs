@@ -1,5 +1,7 @@
 ﻿using EducationApp.Application.Repositories.FileRepository;
 using EducationApp.Application.Service.FileStorageServices;
+using EducationApp.Application.Auth;
+using EducationApp.Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EducationApp.API.Controllers;
@@ -20,6 +22,7 @@ public class FileController : ControllerBase
 
 	[HttpPost("upload")]
 	[Consumes("multipart/form-data")] // Fayl yuklash uchun shart
+	[PermissionAuthorize(Core.Permission.UploadFilePermission)]
 	public async Task<IActionResult> UploadFile(IFormFile file, [FromQuery] string bucketName = "my-test-bucket")
 	{
 		if (file == null || file.Length == 0)
@@ -49,7 +52,9 @@ public class FileController : ControllerBase
 	}
 
 	[HttpGet("download")]
-	public async Task<IActionResult> DownloadFile([FromQuery] string bucketName, [FromQuery] string objectName)
+    [PermissionAuthorize(Core.Permission.DownloadFilePermission)]
+
+    public async Task<IActionResult> DownloadFile([FromQuery] string bucketName, [FromQuery] string objectName)
 	{
 		if (string.IsNullOrEmpty(bucketName) || string.IsNullOrEmpty(objectName))
 		{
@@ -75,7 +80,8 @@ public class FileController : ControllerBase
 	}
 
 	[HttpDelete("delete")]
-	public async Task<IActionResult> DeleteFile([FromQuery] string bucketName, [FromQuery] string objectName)
+    [PermissionAuthorize(Core.Permission.DeleteFilePermission)]
+    public async Task<IActionResult> DeleteFile([FromQuery] string bucketName, [FromQuery] string objectName)
 	{
 		if (string.IsNullOrEmpty(bucketName) || string.IsNullOrEmpty(objectName))
 		{

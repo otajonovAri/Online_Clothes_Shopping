@@ -10,7 +10,7 @@ public class PermissionAuthorizationHandler : AuthorizationHandler<PermissionReq
     {
         var permissionClaims = context.User.FindAll("permissions").Select(c => c.Value);
 
-        if (permissionClaims.Contains(requirement.RequiredPermission.ToString()))
+        if (permissionClaims.Contains(requirement.RequiredPermission.ToString()) || permissionClaims.Contains("AdminPermission"))
         {
             context.Succeed(requirement);
         }

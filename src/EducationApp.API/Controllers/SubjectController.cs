@@ -1,4 +1,4 @@
-﻿using EducationApp.Application.DTOs.GroupSubjectDto;
+﻿using EducationApp.Application.Auth;
 using EducationApp.Application.DTOs.SubjectDto;
 using EducationApp.Application.Service.SubjectServices;
 using Microsoft.AspNetCore.Mvc;
@@ -10,10 +10,14 @@ namespace EducationApp.API.Controllers;
 public class SubjectController(ISubjectService service) : ControllerBase
 {
     [HttpGet("get-all-subject")]
+    [HttpGet]
+    [PermissionAuthorize(Core.Permission.GetAllSubjectPermission)]
     public async Task<IActionResult> GetAllAsync()
         => Ok(await service.GetAllAsync());
 
     [HttpGet("get-by-id-subject/{id}")]
+    [HttpGet("{id}")]
+    [PermissionAuthorize(Core.Permission.GetByIdSubjectPermission)]
     public async Task<IActionResult> GetByIdAsync(int id)
     {
         var result = await service.GetByIdAsync(id);
@@ -25,6 +29,8 @@ public class SubjectController(ISubjectService service) : ControllerBase
     }
 
     [HttpPost("create-subject")]
+    [HttpPost]
+    [PermissionAuthorize(Core.Permission.CreateSubjectPermission)]
     public async Task<IActionResult> CreateAsync([FromBody] CreateSubjectDto dto)
     {
         if (!ModelState.IsValid)
@@ -36,6 +42,8 @@ public class SubjectController(ISubjectService service) : ControllerBase
     }
 
     [HttpPut("update-subject-by-id/{id}")]
+    [HttpPut("{id}")]
+    [PermissionAuthorize(Core.Permission.UpdateSubjectPermission)]
     public async Task<IActionResult> UpdateAsync([FromBody] SubjectUpdateDto dto , int id)
     {
         if (!ModelState.IsValid)
@@ -50,6 +58,8 @@ public class SubjectController(ISubjectService service) : ControllerBase
     }
 
     [HttpDelete("delete-subject-by-id/{id}")]
+    [HttpDelete("{id}")]
+    [PermissionAuthorize(Core.Permission.DeleteSubjectPermission)]
     public async Task<IActionResult> DeleteAsync(int id)
     {
         var result = await service.DeleteAsync(id);

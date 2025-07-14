@@ -12,6 +12,9 @@ public static class PermissionSeeder
             {
                 Name = e.ToString(),
                 Description = e.ToString(),
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow,
+                IsDeleted = false,
             });
 
         var existingPermissions = await context.Permissions.ToListAsync();

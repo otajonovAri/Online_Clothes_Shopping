@@ -4,10 +4,12 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace EducationApp.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -404,6 +406,25 @@ namespace EducationApp.DataAccess.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.InsertData(
+                table: "Permissions",
+                columns: new[] { "Id", "CreatedAt", "Description", "IsDeleted", "Name", "UpdatedAt" },
+                values: new object[] { 1, new DateTime(2025, 7, 12, 15, 52, 8, 609, DateTimeKind.Utc).AddTicks(3724), null, false, "AdminPermission", new DateTime(2025, 7, 12, 15, 52, 8, 609, DateTimeKind.Utc).AddTicks(3725) });
+
+            migrationBuilder.InsertData(
+                table: "Roles",
+                columns: new[] { "Id", "CreatedAt", "IsDeleted", "Name", "UpdatedAt" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2025, 7, 12, 15, 52, 8, 609, DateTimeKind.Utc).AddTicks(3852), false, "Admin", new DateTime(2025, 7, 12, 15, 52, 8, 609, DateTimeKind.Utc).AddTicks(3853) },
+                    { 2, new DateTime(2025, 7, 12, 15, 52, 8, 609, DateTimeKind.Utc).AddTicks(3855), false, "User", new DateTime(2025, 7, 12, 15, 52, 8, 609, DateTimeKind.Utc).AddTicks(3855) }
+                });
+
+            migrationBuilder.InsertData(
+                table: "RolePermissions",
+                columns: new[] { "Id", "CreatedAt", "IsDeleted", "PermissionId", "RoleId", "UpdatedAt" },
+                values: new object[] { 1, new DateTime(2025, 7, 12, 15, 52, 8, 609, DateTimeKind.Utc).AddTicks(3873), false, 1, 1, new DateTime(2025, 7, 12, 15, 52, 8, 609, DateTimeKind.Utc).AddTicks(3874) });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Attendances_GroupId",

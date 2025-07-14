@@ -1,4 +1,6 @@
-﻿
+﻿using EducationApp.Application.Auth;
+using EducationApp.Application.Services.Interfaces;
+
 using EducationApp.Application.Service.RoleServices;
 using EducationApp.Core.DTOs;
 using Microsoft.AspNetCore.Mvc;
@@ -17,14 +19,16 @@ public class RoleController : ControllerBase
 	}
 
 	[HttpPost]
-	public async Task<IActionResult> Create(RoleDto dto)
+	[PermissionAuthorize(Core.Permission.CreateRolePermission)]
+    public async Task<IActionResult> Create(RoleDto dto)
 	{
 		await _roleService.CreateAsync(dto);
 		return Ok("Role created");
 	}
 
 	[HttpPost("{id}/permissions")]
-	public async Task<IActionResult> AssignPermission(int id, List<int> permissionIds)
+	[PermissionAuthorize(Core.Permission.AssignPermissionToRolePermission)]
+    public async Task<IActionResult> AssignPermission(int id, List<int> permissionIds)
 	{
 		foreach (var permissionId in permissionIds)
 		{
