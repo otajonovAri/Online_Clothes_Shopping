@@ -1,5 +1,6 @@
 ﻿using EducationApp.DataAccess.Database;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 namespace EducationApp.Application.Helpers.Seeder;
 
@@ -25,8 +26,19 @@ public static class PermissionSeeder
 
         if (newPermissions.Any())
         {
-            context.Permissions.AddRange(newPermissions);
-            await context.SaveChangesAsync();
+            foreach(var permission in newPermissions)
+            {
+                try
+                {
+                    context.Permissions.Add(permission);
+                    await context.SaveChangesAsync();
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex, ex.Message);
+                    continue;
+                }
+            }
         }
     }
 }
