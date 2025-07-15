@@ -3,6 +3,7 @@ using System;
 using EducationApp.DataAccess.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EducationApp.DataAccess.Migrations
 {
     [DbContext(typeof(EduDbContext))]
-    partial class EduDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250715142328_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -271,6 +274,17 @@ namespace EducationApp.DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Permissions");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(2025, 7, 15, 14, 23, 27, 821, DateTimeKind.Utc).AddTicks(920),
+                            Description = "AdminPermission",
+                            IsDeleted = false,
+                            Name = "AdminPermission",
+                            UpdatedAt = new DateTime(2025, 7, 15, 14, 23, 27, 821, DateTimeKind.Utc).AddTicks(921)
+                        });
                 });
 
             modelBuilder.Entity("EducationApp.Core.Entities.Role", b =>
@@ -296,6 +310,24 @@ namespace EducationApp.DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Roles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(2025, 7, 15, 14, 23, 27, 821, DateTimeKind.Utc).AddTicks(1031),
+                            IsDeleted = false,
+                            Name = "Admin",
+                            UpdatedAt = new DateTime(2025, 7, 15, 14, 23, 27, 821, DateTimeKind.Utc).AddTicks(1032)
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedAt = new DateTime(2025, 7, 15, 14, 23, 27, 821, DateTimeKind.Utc).AddTicks(1034),
+                            IsDeleted = false,
+                            Name = "User",
+                            UpdatedAt = new DateTime(2025, 7, 15, 14, 23, 27, 821, DateTimeKind.Utc).AddTicks(1034)
+                        });
                 });
 
             modelBuilder.Entity("EducationApp.Core.Entities.RolePermission", b =>
@@ -328,6 +360,17 @@ namespace EducationApp.DataAccess.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("RolePermissions");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(2025, 7, 15, 14, 23, 27, 821, DateTimeKind.Utc).AddTicks(1054),
+                            IsDeleted = false,
+                            PermissionId = 1,
+                            RoleId = 1,
+                            UpdatedAt = new DateTime(2025, 7, 15, 14, 23, 27, 821, DateTimeKind.Utc).AddTicks(1055)
+                        });
                 });
 
             modelBuilder.Entity("EducationApp.Core.Entities.Room", b =>
@@ -522,6 +565,25 @@ namespace EducationApp.DataAccess.Migrations
                     b.HasDiscriminator().HasValue("User");
 
                     b.UseTphMappingStrategy();
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(2025, 7, 15, 14, 23, 27, 821, DateTimeKind.Utc).AddTicks(1080),
+                            DateBirth = new DateTime(2025, 7, 15, 14, 23, 27, 821, DateTimeKind.Utc).AddTicks(1078),
+                            Email = "admin@example.com",
+                            FirstName = "admin",
+                            Gender = 0,
+                            IsDeleted = false,
+                            LastName = "admin",
+                            Password = "admin",
+                            PasswordHash = "8c6976e5b5410415bde908bd4dee15dfb16e0e7f6a46cabcde2a7e4af7f6f73e",
+                            PasswordSolt = "cf5392c2-0d03-4cc7-9eb5-4a4016b4a712",
+                            PhoneNumber = "admin",
+                            RefreshToken = "7Q+nHoS2n9yoKZwBQFq1k3eJZ4ppZjXsOiB7VoO9TisAuRY6fOHRAy2RLixz9Esnrz7HTSfqkWY+7KFkEKnTiw==",
+                            UpdatedAt = new DateTime(2025, 7, 15, 14, 23, 27, 821, DateTimeKind.Utc).AddTicks(1082)
+                        });
                 });
 
             modelBuilder.Entity("EducationApp.Core.Entities.UserRole", b =>
@@ -554,6 +616,17 @@ namespace EducationApp.DataAccess.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("UserRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(2025, 7, 15, 14, 23, 27, 821, DateTimeKind.Utc).AddTicks(1097),
+                            IsDeleted = false,
+                            RoleId = 1,
+                            UpdatedAt = new DateTime(2025, 7, 15, 14, 23, 27, 821, DateTimeKind.Utc).AddTicks(1098),
+                            UserId = 1
+                        });
                 });
 
             modelBuilder.Entity("EducationApp.Core.Entities.Staff", b =>

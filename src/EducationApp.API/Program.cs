@@ -1,6 +1,7 @@
 using EducationApp.Application.DIContainer;
 using EducationApp.Application.Helpers;
 using EducationApp.Application.Helpers.GenerateJwt;
+using EducationApp.Application.Helpers.PasswordHasher;
 using EducationApp.Application.Helpers.Seeder;
 using EducationApp.Application.MappingProfiles;
 using EducationApp.Application.Service.FileStorageServices;
@@ -104,7 +105,7 @@ builder.Services.AddSwaggerGen(c =>
 
     // JWT Bearer uchun global xavfsizlik talabini qo'shish
     c.AddSecurityRequirement(new OpenApiSecurityRequirement()
-    {
+{
         {
             new OpenApiSecurityScheme
             {
@@ -120,12 +121,23 @@ builder.Services.AddSwaggerGen(c =>
             new List<string>() // Bu yerda scope'lar bo'lishi mumkin, hozir bo'sh
         }
     });
-
 });
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+var scope = app.Services.CreateScope();
+if (app.Environment.IsDevelopment())
+{
+    var context = scope.ServiceProvider.GetRequiredService<EduDbContext>();
+    await context.Database.MigrateAsync();
+
+    var passwordHasher = scope.ServiceProvider.GetRequiredService<IPasswordHasher>();
+    var databaseSeeder = new DatabaseSeeder(passwordHasher, context);
+    databaseSeeder.SeedData();
+}
 
 if (builder.Environment.IsProduction() && builder.Configuration.GetValue<int?>("PORT") is not null)
     builder.WebHost.UseUrls($"http://*:{builder.Configuration.GetValue<int>("PORT")}");
@@ -135,10 +147,6 @@ using (var scopeSeeder = app.Services.CreateScope())
     var db = scopeSeeder.ServiceProvider.GetRequiredService<EduDbContext>();
     await PermissionSeeder.SeedPermissionsAsync(db);
 }
-
-var scope = app.Services.CreateScope();
-var context = scope.ServiceProvider.GetRequiredService<EduDbContext>();
-await context.Database.MigrateAsync();
 
 if (app.Environment.IsDevelopment())
 {
@@ -153,8 +161,6 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
 app.Run();
-
-
 
 
 // Connection String :)

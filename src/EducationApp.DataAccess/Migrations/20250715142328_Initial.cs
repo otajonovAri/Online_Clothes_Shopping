@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EducationApp.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class LoggerToJWTUpdate : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -396,21 +396,31 @@ namespace EducationApp.DataAccess.Migrations
             migrationBuilder.InsertData(
                 table: "Permissions",
                 columns: new[] { "Id", "CreatedAt", "Description", "IsDeleted", "Name", "UpdatedAt" },
-                values: new object[] { 1, new DateTime(2025, 7, 14, 20, 57, 59, 359, DateTimeKind.Utc).AddTicks(4482), "AdminPermission", false, "AdminPermission", new DateTime(2025, 7, 14, 20, 57, 59, 359, DateTimeKind.Utc).AddTicks(4483) });
+                values: new object[] { 1, new DateTime(2025, 7, 15, 14, 23, 27, 821, DateTimeKind.Utc).AddTicks(920), "AdminPermission", false, "AdminPermission", new DateTime(2025, 7, 15, 14, 23, 27, 821, DateTimeKind.Utc).AddTicks(921) });
 
             migrationBuilder.InsertData(
                 table: "Roles",
                 columns: new[] { "Id", "CreatedAt", "IsDeleted", "Name", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2025, 7, 14, 20, 57, 59, 359, DateTimeKind.Utc).AddTicks(4647), false, "Admin", new DateTime(2025, 7, 14, 20, 57, 59, 359, DateTimeKind.Utc).AddTicks(4648) },
-                    { 2, new DateTime(2025, 7, 14, 20, 57, 59, 359, DateTimeKind.Utc).AddTicks(4650), false, "User", new DateTime(2025, 7, 14, 20, 57, 59, 359, DateTimeKind.Utc).AddTicks(4650) }
+                    { 1, new DateTime(2025, 7, 15, 14, 23, 27, 821, DateTimeKind.Utc).AddTicks(1031), false, "Admin", new DateTime(2025, 7, 15, 14, 23, 27, 821, DateTimeKind.Utc).AddTicks(1032) },
+                    { 2, new DateTime(2025, 7, 15, 14, 23, 27, 821, DateTimeKind.Utc).AddTicks(1034), false, "User", new DateTime(2025, 7, 15, 14, 23, 27, 821, DateTimeKind.Utc).AddTicks(1034) }
                 });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "Id", "CreatedAt", "DateBirth", "Discriminator", "Email", "FirstName", "Gender", "IsDeleted", "LastName", "Password", "PasswordHash", "PasswordSolt", "PhoneNumber", "RefreshToken", "UpdatedAt" },
+                values: new object[] { 1, new DateTime(2025, 7, 15, 14, 23, 27, 821, DateTimeKind.Utc).AddTicks(1080), new DateTime(2025, 7, 15, 14, 23, 27, 821, DateTimeKind.Utc).AddTicks(1078), "User", "admin@example.com", "admin", 0, false, "admin", "admin", "8c6976e5b5410415bde908bd4dee15dfb16e0e7f6a46cabcde2a7e4af7f6f73e", "cf5392c2-0d03-4cc7-9eb5-4a4016b4a712", "admin", "7Q+nHoS2n9yoKZwBQFq1k3eJZ4ppZjXsOiB7VoO9TisAuRY6fOHRAy2RLixz9Esnrz7HTSfqkWY+7KFkEKnTiw==", new DateTime(2025, 7, 15, 14, 23, 27, 821, DateTimeKind.Utc).AddTicks(1082) });
 
             migrationBuilder.InsertData(
                 table: "RolePermissions",
                 columns: new[] { "Id", "CreatedAt", "IsDeleted", "PermissionId", "RoleId", "UpdatedAt" },
-                values: new object[] { 1, new DateTime(2025, 7, 14, 20, 57, 59, 359, DateTimeKind.Utc).AddTicks(4678), false, 1, 1, new DateTime(2025, 7, 14, 20, 57, 59, 359, DateTimeKind.Utc).AddTicks(4679) });
+                values: new object[] { 1, new DateTime(2025, 7, 15, 14, 23, 27, 821, DateTimeKind.Utc).AddTicks(1054), false, 1, 1, new DateTime(2025, 7, 15, 14, 23, 27, 821, DateTimeKind.Utc).AddTicks(1055) });
+
+            migrationBuilder.InsertData(
+                table: "UserRoles",
+                columns: new[] { "Id", "CreatedAt", "IsDeleted", "RoleId", "UpdatedAt", "UserId" },
+                values: new object[] { 1, new DateTime(2025, 7, 15, 14, 23, 27, 821, DateTimeKind.Utc).AddTicks(1097), false, 1, new DateTime(2025, 7, 15, 14, 23, 27, 821, DateTimeKind.Utc).AddTicks(1098), 1 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Attendances_GroupId",
