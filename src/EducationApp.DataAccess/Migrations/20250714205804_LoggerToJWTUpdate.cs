@@ -4,28 +4,16 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace EducationApp.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class LoggerToJWTUpdate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "Files",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    Url = table.Column<string>(type: "text", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Files", x => x.Id);
-                });
-
             migrationBuilder.CreateTable(
                 name: "Permissions",
                 columns: table => new
@@ -405,6 +393,25 @@ namespace EducationApp.DataAccess.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.InsertData(
+                table: "Permissions",
+                columns: new[] { "Id", "CreatedAt", "Description", "IsDeleted", "Name", "UpdatedAt" },
+                values: new object[] { 1, new DateTime(2025, 7, 14, 20, 57, 59, 359, DateTimeKind.Utc).AddTicks(4482), "AdminPermission", false, "AdminPermission", new DateTime(2025, 7, 14, 20, 57, 59, 359, DateTimeKind.Utc).AddTicks(4483) });
+
+            migrationBuilder.InsertData(
+                table: "Roles",
+                columns: new[] { "Id", "CreatedAt", "IsDeleted", "Name", "UpdatedAt" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2025, 7, 14, 20, 57, 59, 359, DateTimeKind.Utc).AddTicks(4647), false, "Admin", new DateTime(2025, 7, 14, 20, 57, 59, 359, DateTimeKind.Utc).AddTicks(4648) },
+                    { 2, new DateTime(2025, 7, 14, 20, 57, 59, 359, DateTimeKind.Utc).AddTicks(4650), false, "User", new DateTime(2025, 7, 14, 20, 57, 59, 359, DateTimeKind.Utc).AddTicks(4650) }
+                });
+
+            migrationBuilder.InsertData(
+                table: "RolePermissions",
+                columns: new[] { "Id", "CreatedAt", "IsDeleted", "PermissionId", "RoleId", "UpdatedAt" },
+                values: new object[] { 1, new DateTime(2025, 7, 14, 20, 57, 59, 359, DateTimeKind.Utc).AddTicks(4678), false, 1, 1, new DateTime(2025, 7, 14, 20, 57, 59, 359, DateTimeKind.Utc).AddTicks(4679) });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Attendances_GroupId",
                 table: "Attendances",
@@ -516,9 +523,6 @@ namespace EducationApp.DataAccess.Migrations
 
             migrationBuilder.DropTable(
                 name: "UserRoles");
-
-            migrationBuilder.DropTable(
-                name: "Files");
 
             migrationBuilder.DropTable(
                 name: "GroupSubjects");

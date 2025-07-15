@@ -1,4 +1,5 @@
-﻿using EducationApp.Application.Service.PermissionServices;
+﻿using EducationApp.Application.Auth;
+using EducationApp.Application.Service.PermissionServices;
 using EducationApp.Core.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,26 +7,21 @@ namespace EducationApp.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class PermissionController : ControllerBase
+public class PermissionController(IPermissionService permissionService) : ControllerBase
 {
-	private readonly IPermissionService _permissionService;
-
-	public PermissionController(IPermissionService permissionService)
+    [HttpPost]
+	[PermissionAuthorize(Core.Permission.CreatePermissionPermission)]
+    public async Task<IActionResult> Create(PermissionDto dto)
 	{
-		_permissionService = permissionService;
-	}
-
-	[HttpPost]
-	public async Task<IActionResult> Create(PermissionDto dto)
-	{
-		await _permissionService.CreateAsync(dto);
+		await permissionService.CreateAsync(dto);
 		return Ok("Permission created");
 	}
 
 	[HttpGet("get-all-permissions")]
-	public IActionResult GetAllPermissions()
+	[PermissionAuthorize(Core.Permission.GetAllPermissionPermission)]
+    public IActionResult GetAllPermissions()
 	{
-		var permissions = _permissionService.GetAll();
+		var permissions = permissionService.GetAll();
 		return Ok(permissions);
     }
 }

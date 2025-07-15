@@ -25,6 +25,6 @@ public class User : BaseEntity
         public string PasswordSalt { get; set; } = null!;
         public string RefreshToken { get; set; } = null!;*/
 
-        //(Navigation properties) 
+    //(Navigation properties) 
     public ICollection<UserRole> UserRoles  { get; set; } = new HashSet<UserRole>();
 }

@@ -1,6 +1,6 @@
-﻿using EducationApp.Application.DTOs.PaymentDto;
+﻿using EducationApp.Application.Auth;
+using EducationApp.Application.DTOs.PaymentDto;
 using EducationApp.Application.Service.PaymentServices;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EducationApp.API.Controllers;
@@ -9,13 +9,17 @@ namespace EducationApp.API.Controllers;
 [ApiController]
 public class PaymentController(IPaymentService service) : ControllerBase
 {
+
     [HttpGet("get-all-payment")]
+    [PermissionAuthorize(Core.Permission.GetAllPaymentPermission)]
     public async Task<IActionResult> GetAll()
     {
         var result = await service.GetAllAsync();
         return Ok(result);
     }
+
     [HttpGet("get-by-id-payment/{id:int}")]
+    [PermissionAuthorize(Core.Permission.GetByIdPaymentPermission)]
     public async Task<IActionResult> GetById(int id)
     {
         var result = await service.GetByIdAsync(id);
@@ -23,7 +27,9 @@ public class PaymentController(IPaymentService service) : ControllerBase
             return NotFound(result.Message);
         return Ok(result);
     }
+
     [HttpPost("create-payment")]
+    [PermissionAuthorize(Core.Permission.CreatePaymentPermission)]
     public async Task<IActionResult> Create([FromBody] PaymentCreateDto dto)
     {
         if (!ModelState.IsValid)
@@ -36,7 +42,9 @@ public class PaymentController(IPaymentService service) : ControllerBase
         /*
         return CreatedAtAction(nameof(GetById), new { id = result.Data }, result);*/
     }
+
     [HttpPut("update-payment-by-id/{id:int}")]
+    [PermissionAuthorize(Core.Permission.UpdatePaymentPermission)]
     public async Task<IActionResult> Update(int id, [FromBody] PaymentUpdateDto dto)
     {
         if (!ModelState.IsValid)
@@ -46,7 +54,9 @@ public class PaymentController(IPaymentService service) : ControllerBase
             return NotFound(result.Message);
         return Ok(result);
     }
+
     [HttpDelete("delete-payment-by-id/{id:int}")]
+    [PermissionAuthorize(Core.Permission.DeletePaymentPermission)]
     public async Task<IActionResult> Delete(int id)
     {
         var result = await service.DeleteAsync(id);

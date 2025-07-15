@@ -1,6 +1,6 @@
-﻿using EducationApp.Application.DTOs.StaffSubjectDto;
+﻿using EducationApp.Application.Auth;
+using EducationApp.Application.DTOs.StaffSubjectDto;
 using EducationApp.Application.Service.StaffSubjectServices;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EducationApp.API.Controllers;
@@ -9,11 +9,13 @@ namespace EducationApp.API.Controllers;
 [ApiController]
 public class StaffSubjectController(IStaffSubjectService service) : ControllerBase
 {
-    [HttpGet("get-all-staffsubject")]
+    [HttpGet("get-all-staff-subject")]
+    [PermissionAuthorize(Core.Permission.GetAllStaffSubjectPermission)]
     public async Task<IActionResult> GetAllAsync()
         => Ok(await service.GetAllAsync());
 
-    [HttpGet("get-by-id-staffsubject/{id:int}")]
+    [HttpGet("get-by-id-staff-subject/{id:int}")]
+    [PermissionAuthorize(Core.Permission.GetByIdStaffSubjectPermission)]
     public async Task<IActionResult> GetByIdAsync(int id)
     {
         var result = await service.GetByIdAsync(id);
@@ -22,7 +24,8 @@ public class StaffSubjectController(IStaffSubjectService service) : ControllerBa
         return Ok(result);
     }
 
-    [HttpPost("create-staffsubject")]
+    [HttpPost("create-staff-subject")]
+    [PermissionAuthorize(Core.Permission.CreateStaffSubjectPermission)]
     public async Task<IActionResult> CreateAsync([FromBody] StaffSubjectCreateDto dto)
     {
         if (!ModelState.IsValid)
@@ -34,7 +37,8 @@ public class StaffSubjectController(IStaffSubjectService service) : ControllerBa
         //return CreatedAtAction(nameof(GetByIdAsync), new { id = result.Data }, result);
     }
 
-    [HttpPut("update-staffsubject-by-id/{id:int}")]
+    [HttpPut("update-staff-subject-by-id/{id:int}")]
+    [PermissionAuthorize(Core.Permission.UpdateStaffSubjectPermission)]
     public async Task<IActionResult> UpdateAsync(int id, [FromBody] StaffSubjectUpdateDto dto)
     {
         if (!ModelState.IsValid)
@@ -45,7 +49,8 @@ public class StaffSubjectController(IStaffSubjectService service) : ControllerBa
         return Ok(result);
     }
 
-    [HttpDelete("delete-staffsubject-by-id/{id:int}")]
+    [HttpDelete("delete-staff-subject-by-id/{id:int}")]
+    [PermissionAuthorize(Core.Permission.DeleteStaffSubjectPermission)]
     public async Task<IActionResult> DeleteAsync(int id)
     {
         var result = await service.DeleteAsync(id);
