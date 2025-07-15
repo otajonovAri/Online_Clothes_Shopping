@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using EducationApp.Application.DTOs.UserDto;
+using EducationApp.Application.Helpers.PasswordHasher;
 using EducationApp.Application.Repositories.UserRepository;
 using EducationApp.Application.Responses;
 using EducationApp.Core.Entities;

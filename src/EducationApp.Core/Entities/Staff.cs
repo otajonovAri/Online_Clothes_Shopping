@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using EducationApp.Core.Common;
-using EducationApp.Core.Enums;
+﻿using EducationApp.Core.Enums;
 
 namespace EducationApp.Core.Entities;
 

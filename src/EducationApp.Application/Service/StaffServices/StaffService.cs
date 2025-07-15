@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using EducationApp.Application.DTOs.StaffDto;
+using EducationApp.Application.Helpers.PasswordHasher;
 using EducationApp.Application.Repositories.StaffRepository;
 using EducationApp.Application.Responses;
 using Microsoft.EntityFrameworkCore;
@@ -31,6 +32,10 @@ public class StaffService(IStaffRepository repo, IMapper mapper) : IStaffService
     public async Task<ApiResult<object>> CreateAsync(StaffCreateDto dto)
     {
         var entity = mapper.Map<Core.Entities.Staff>(dto);
+        var passwordHasher = new PasswordHasher();
+        var solt = passwordHasher.GenerateSalt();
+        entity.PasswordHash = passwordHasher.Encrypt(dto.Password, solt);
+        entity.PasswordSolt = solt;
         await repo.AddAsync(entity);
         await repo.SaveChangesAsync();
         return new ApiResult<object>("Staff Created", true, $"{entity.Id}");
