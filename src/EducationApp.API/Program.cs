@@ -140,8 +140,11 @@ var scope = app.Services.CreateScope();
 var context = scope.ServiceProvider.GetRequiredService<EduDbContext>();
 await context.Database.MigrateAsync();
 
-app.UseSwagger();
-app.UseSwaggerUI();
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
 // Allow CORS for all origins, methods, and headers
 app.UseCors("AllowAll");
