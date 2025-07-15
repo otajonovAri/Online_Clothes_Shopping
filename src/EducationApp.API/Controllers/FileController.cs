@@ -93,6 +93,6 @@ public class FileController(IFileStorageService fileStorageService, IFileReposit
 	[HttpGet("get-all-files")]
 	public async Task<IActionResult> GetAllFiles()
 	{
-		return Ok( repo.GetAll());
+		return Ok(repo.GetAll());
 	}
 }

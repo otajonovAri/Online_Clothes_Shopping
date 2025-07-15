@@ -3,11 +3,11 @@ using EducationApp.Application.Helpers;
 using EducationApp.Application.Helpers.GenerateJwt;
 using EducationApp.Application.Helpers.Seeder;
 using EducationApp.Application.MappingProfiles;
-using EducationApp.Application.Middleware;
 using EducationApp.Application.Service.FileStorageServices;
 using EducationApp.Application.Settings;
 using EducationApp.DataAccess.Database;
 using EducationApp.DataAccess.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Minio;
@@ -130,18 +130,15 @@ var app = builder.Build();
 if (builder.Environment.IsProduction() && builder.Configuration.GetValue<int?>("PORT") is not null)
     builder.WebHost.UseUrls($"http://*:{builder.Configuration.GetValue<int>("PORT")}");
 
-//var context = app.Services.CreateScope().ServiceProvider.GetRequiredService<EduDbContext>();
-//await context.Database.MigrateAsync();
-
 using (var scopeSeeder = app.Services.CreateScope())
 {
     var db = scopeSeeder.ServiceProvider.GetRequiredService<EduDbContext>();
     await PermissionSeeder.SeedPermissionsAsync(db);
 }
 
-//var scope = app.Services.CreateScope();
-//var context = scope.ServiceProvider.GetRequiredService<EduDbContext>();
-//await context.Database.MigrateAsync();
+var scope = app.Services.CreateScope();
+var context = scope.ServiceProvider.GetRequiredService<EduDbContext>();
+await context.Database.MigrateAsync();
 
 app.UseSwagger();
 app.UseSwaggerUI();
