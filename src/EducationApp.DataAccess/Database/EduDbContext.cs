@@ -37,6 +37,40 @@ namespace EducationApp.DataAccess.Database
             modelBuilder.Entity<RolePermission>().HasData(
                 new RolePermission { Id = 1, RoleId = 1, PermissionId = 1, IsDeleted = false, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow }
             );
+
+            // Seed super admin user
+            modelBuilder.Entity<User>().HasData(
+                new User
+                {
+                    Id = 1,
+                    DateBirth = DateTime.UtcNow,
+                    CreatedAt = DateTime.UtcNow,
+                    Email = "admin@example.com",
+                    FirstName = "admin",
+                    Gender = Core.Enums.Gender.Male,
+                    UpdatedAt = DateTime.UtcNow,
+                    IsDeleted = false,
+                    LastName = "admin",
+                    Password = "admin",
+                    PasswordHash = "8c6976e5b5410415bde908bd4dee15dfb16e0e7f6a46cabcde2a7e4af7f6f73e",
+                    PasswordSolt = "cf5392c2-0d03-4cc7-9eb5-4a4016b4a712",
+                    PhoneNumber = "admin",
+                    RefreshToken = "7Q+nHoS2n9yoKZwBQFq1k3eJZ4ppZjXsOiB7VoO9TisAuRY6fOHRAy2RLixz9Esnrz7HTSfqkWY+7KFkEKnTiw==",
+                }
+            );
+
+            // Seed UserRoles for super admin
+            modelBuilder.Entity<UserRole>().HasData(
+                new UserRole
+                {
+                    Id = 1,
+                    IsDeleted = false,
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow,
+                    RoleId = 1,
+                    UserId = 1
+                }
+            );
         }
     }
 }
