@@ -6,6 +6,7 @@ using EducationApp.Application.Service.IAuthServices;
 using EducationApp.Core.Entities;
 using EducationApp.DataAccess.Database;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace EducationApp.Application.Services
 {
@@ -59,6 +60,10 @@ namespace EducationApp.Application.Services
             var existingUser = await context.Users.FirstOrDefaultAsync(u => u.Email == requestDto.Email);
             if (existingUser != null)
                 return ApiResult<string>.Failure(new[] { "Email allaqachon mavjud" });
+
+            var emailValidator = new EmailAddressAttribute();
+            if (!emailValidator.IsValid(requestDto.Email))
+                return ApiResult<string>.Failure(new[] { "Email formati noto‘g‘ri" });
 
             var salt = Guid.NewGuid().ToString();
             var hash = passwordHasher.Encrypt(requestDto.Password, salt);
