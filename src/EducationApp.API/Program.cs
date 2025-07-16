@@ -154,11 +154,8 @@ if (builder.Environment.IsProduction() && builder.Configuration.GetValue<int?>("
     await PermissionSeeder.SeedPermissionsAsync(db);
 }*/
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 // Allow CORS for all origins, methods, and headers
 app.UseCors("AllowAll");
