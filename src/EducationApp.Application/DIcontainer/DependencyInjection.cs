@@ -1,4 +1,8 @@
-﻿using EducationApp.Application.Repositories.AttendanceRepository;
+﻿using EducationApp.Application.Helpers.GenerateJwt;
+using EducationApp.Application.Helpers.PasswordHasher;
+using EducationApp.Application.Helpers.Seeder;
+using EducationApp.Application.Repositories.AttendanceRepository;
+using EducationApp.Application.Repositories.FileRepository;
 using EducationApp.Application.Repositories.GroupRepository;
 using EducationApp.Application.Repositories.GroupSubjectRepository;
 using EducationApp.Application.Repositories.PaymentDocumentRepository;
@@ -10,25 +14,22 @@ using EducationApp.Application.Repositories.StudentRepository;
 using EducationApp.Application.Repositories.SubjectRepository;
 using EducationApp.Application.Repositories.UserRepository;
 using EducationApp.Application.Service.AttendanceServices;
+using EducationApp.Application.Service.FileStorageServices;
 using EducationApp.Application.Service.GroupServices;
 using EducationApp.Application.Service.GroupSubjectServices;
+using EducationApp.Application.Service.IAuthServices;
 using EducationApp.Application.Service.PaymentDocumentServices;
 using EducationApp.Application.Service.PaymentServices;
+using EducationApp.Application.Service.PermissionServices;
 using EducationApp.Application.Service.RoomServices;
 using EducationApp.Application.Service.StaffServices;
 using EducationApp.Application.Service.StaffSubjectServices;
 using EducationApp.Application.Service.StudentServices;
 using EducationApp.Application.Service.SubjectServices;
 using EducationApp.Application.Service.UserServices;
-using EducationApp.Application.Helpers.GenerateJwt;
-using EducationApp.Application.Helpers.PasswordHasher;
-using EducationApp.Application.Repositories.FileRepository;
-using EducationApp.Application.Service.FileStorageServices;
 using EducationApp.Application.Services;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
-using EducationApp.Application.Service.IAuthServices;
-using EducationApp.Application.Service.PermissionServices;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace EducationApp.Application.DIContainer;
 
@@ -88,6 +89,13 @@ public static class DependencyInjection
         services.AddScoped<IPasswordHasher, PasswordHasher>();
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IPermissionService, PermissionService>();
+
+        services.AddScoped<AppSeeder>();
+        services.AddScoped<PermissionSeeder>();
+        services.AddScoped<RoleSeeder>();
+        services.AddScoped<AdminUserSeeder>();
+        services.AddScoped<RolePermissionSeeder>();
+        services.AddScoped<UserRoleSeeder>();
 
         return services;
     }

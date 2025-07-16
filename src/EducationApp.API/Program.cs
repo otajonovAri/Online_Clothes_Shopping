@@ -128,7 +128,13 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-var scope = app.Services.CreateScope();
+
+/// seeed
+using var scope = app.Services.CreateScope();
+var seeder = scope.ServiceProvider.GetRequiredService<AppSeeder>();
+await seeder.SeedAsync();
+
+/*var scope = app.Services.CreateScope();
 if (app.Environment.IsDevelopment())
 {
     var context = scope.ServiceProvider.GetRequiredService<EduDbContext>();
@@ -137,16 +143,16 @@ if (app.Environment.IsDevelopment())
     var passwordHasher = scope.ServiceProvider.GetRequiredService<IPasswordHasher>();
     var databaseSeeder = new DatabaseSeeder(passwordHasher, context);
     databaseSeeder.SeedData();
-}
+}*/
 
 if (builder.Environment.IsProduction() && builder.Configuration.GetValue<int?>("PORT") is not null)
     builder.WebHost.UseUrls($"http://*:{builder.Configuration.GetValue<int>("PORT")}");
 
-using (var scopeSeeder = app.Services.CreateScope())
+/*using (var scopeSeeder = app.Services.CreateScope())
 {
     var db = scopeSeeder.ServiceProvider.GetRequiredService<EduDbContext>();
     await PermissionSeeder.SeedPermissionsAsync(db);
-}
+}*/
 
 if (app.Environment.IsDevelopment())
 {

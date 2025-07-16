@@ -1,44 +1,43 @@
-﻿using EducationApp.DataAccess.Database;
+﻿
+using EducationApp.Core.Entities;
+using EducationApp.DataAccess.Database;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
 namespace EducationApp.Application.Helpers.Seeder;
 
-public static class PermissionSeeder
+public class PermissionSeeder(EduDbContext context)
 {
-    public static async Task SeedPermissionsAsync(EduDbContext context)
+    public async Task SeedAsync()
     {
-        var enumValues = Enum.GetValues(typeof(Core.Permission)).Cast<Core.Permission>()
-            .Select(e => new Core.Entities.Permission
+        var existingNames = await context.Permissions
+            .Select(p => p.Name)
+            .ToListAsync();
+
+        var enumValues = Enum.GetValues(typeof(EducationApp.Core.Permission))
+            .Cast<EducationApp.Core.Permission>()
+            .Select(p => new Permission
             {
-                Name = e.ToString(),
-                Description = e.ToString(),
+                Name = p.ToString(),
+                Description = p.ToString(),
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow,
-                IsDeleted = false,
-            });
-
-        var existingPermissions = await context.Permissions.ToListAsync();
+                IsDeleted = false
+            }).ToList();
 
         var newPermissions = enumValues
-            .Where(p => !existingPermissions.Any(ep => ep.Name == p.Name))
+            .Where(p => !existingNames.Contains(p.Name))
             .ToList();
 
         if (newPermissions.Any())
         {
-            foreach(var permission in newPermissions)
-            {
-                try
-                {
-                    context.Permissions.Add(permission);
-                    await context.SaveChangesAsync();
-                }
-                catch (Exception ex)
-                {
-                    Log.Error(ex, ex.Message);
-                    continue;
-                }
-            }
+            context.Permissions.AddRange(newPermissions);
+            await context.SaveChangesAsync();
+            Log.Information($"{newPermissions.Count} new permissions.");
+        }
+        else
+        {
+            Log.Information("Permissions already seeded.");
         }
     }
 }
