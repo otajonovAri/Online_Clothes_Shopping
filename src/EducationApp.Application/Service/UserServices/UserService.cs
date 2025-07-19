@@ -5,11 +5,15 @@ using EducationApp.Application.Helpers.PasswordHasher;
 using EducationApp.Application.Repositories.UserRepository;
 using EducationApp.Application.Responses;
 using EducationApp.Core.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace EducationApp.Application.Service.UserServices;
 
-public class UserService(IUserRepository repo , IMapper mapper) : IUserService
+public class UserService(
+    IUserRepository repo, 
+    IMapper mapper,
+    IPasswordHasher passwordHasher) : IUserService
 {
     public async Task<ApiResult<List<UserResponseDto>>> GetAllAsync()
     {
@@ -34,6 +38,19 @@ public class UserService(IUserRepository repo , IMapper mapper) : IUserService
     public async Task<ApiResult<object>> CreateAsync(UserCreateDto dto)
     {
         var entity = mapper.Map<User>(dto);
+
+        var exisstingUser = await repo.GetByCondition(u => u.Email == dto.Email).FirstOrDefaultAsync();
+        if(exisstingUser is null)
+        {
+            return new ApiResult<object>("Email already exists", false, null!);
+        }
+
+        var salt = Guid.NewGuid().ToString();
+        var hash = passwordHasher.Encrypt(dto.Password, salt);
+
+        entity.PasswordHash = hash;
+        entity.PasswordSolt = salt;
+
         await repo.AddAsync(entity);
         await repo.SaveChangesAsync();
 
