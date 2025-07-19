@@ -40,7 +40,7 @@ public class UserService(
         var entity = mapper.Map<User>(dto);
 
         var exisstingUser = await repo.GetByCondition(u => u.Email == dto.Email).FirstOrDefaultAsync();
-        if(exisstingUser is null)
+        if(exisstingUser is not null)
         {
             return new ApiResult<object>("Email already exists", false, null!);
         }
