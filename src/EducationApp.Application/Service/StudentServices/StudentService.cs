@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using EducationApp.Application.DTOs.StudentDto;
+using EducationApp.Application.Helpers.PasswordHasher;
 using EducationApp.Application.Repositories.StudentRepository;
 using EducationApp.Application.Responses;
 using EducationApp.Core.Entities;
@@ -8,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EducationApp.Application.Service.StudentServices;
 
-public class StudentService(IStudentRepository repo , IMapper mapper) : IStudentService
+public class StudentService(IStudentRepository repo , IMapper mapper, IPasswordHasher passwordHasher) : IStudentService
 {
     public async Task<ApiResult<List<StudentResponseDto>>> GetAllAsync()
     {
@@ -34,6 +35,12 @@ public class StudentService(IStudentRepository repo , IMapper mapper) : IStudent
     public async Task<ApiResult<object>> CreateAsync(StudentCreateDto dto)
     {
         var entity = mapper.Map<Student>(dto);
+
+        var salt = Guid.NewGuid().ToString();
+        var hash = passwordHasher.Encrypt(dto.Password, salt);
+
+        entity.PasswordHash = hash;
+        entity.PasswordSolt = salt;
 
         await repo.AddAsync(entity);
         await repo.SaveChangesAsync();

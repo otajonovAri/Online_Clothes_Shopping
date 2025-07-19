@@ -7,6 +7,7 @@ using EducationApp.Application.Repositories.GroupRepository;
 using EducationApp.Application.Repositories.GroupSubjectRepository;
 using EducationApp.Application.Repositories.PaymentDocumentRepository;
 using EducationApp.Application.Repositories.PaymentRepository;
+using EducationApp.Application.Repositories.RoleRepository;
 using EducationApp.Application.Repositories.RoomRepository;
 using EducationApp.Application.Repositories.StaffRepository;
 using EducationApp.Application.Repositories.StaffSubjectRepository;
@@ -21,6 +22,7 @@ using EducationApp.Application.Service.IAuthServices;
 using EducationApp.Application.Service.PaymentDocumentServices;
 using EducationApp.Application.Service.PaymentServices;
 using EducationApp.Application.Service.PermissionServices;
+using EducationApp.Application.Service.RoleServices;
 using EducationApp.Application.Service.RoomServices;
 using EducationApp.Application.Service.StaffServices;
 using EducationApp.Application.Service.StaffSubjectServices;
@@ -80,6 +82,10 @@ public static class DependencyInjection
         // User
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IUserService, UserService>();
+
+        // Role
+        services.AddScoped<IRoleRepository, RoleRepo>();
+        services.AddScoped<IRoleService, RoleService>();
 
         // Image Upload
         services.AddScoped<IFileRepository , FileRepository>();
