@@ -26,6 +26,34 @@ public class StudentController(IStudentService service) : ControllerBase
         return Ok(result);
     }
 
+    [HttpGet("get-count-of-active-students")]
+    public async Task<IActionResult> GetCountActiveStudents()
+    {
+        var result = await service.GetCountOfActiveStudents();
+        return Ok(result);
+    }
+
+    [HttpGet("get-count-of-unpaid-students")]
+    public async Task<IActionResult> GetCountOfUnpaidStudents()
+    {
+        var result = await service.GetCountOfUnpaidStudents();
+        return Ok(result);
+    }
+
+    [HttpGet("get-count-of-paid-students-this-month")]
+    public async Task<IActionResult> GetCountOfPaidStudentsThisMonth()
+    {
+        var result = await service.GetCountOfPaidStudentsOnThisMonth();
+        return Ok(result);
+    }
+
+    [HttpGet("get-count-of-graduated-students")]
+    public async Task<IActionResult> GetCountOfGraduatedStudents()
+    {
+        var result = await service.GetCountOfGraduatedStudents();
+        return Ok(result);
+    }
+
     [HttpPost("create-student")]
     [PermissionAuthorize(Core.Permission.CreateStudentPermission)]
     public async Task<IActionResult> CreateAsync([FromBody] StudentCreateDto dto)

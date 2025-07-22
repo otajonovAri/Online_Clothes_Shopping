@@ -23,6 +23,13 @@ public class StaffController(IStaffService service) : ControllerBase
         return Ok(result);
     }
 
+    [HttpGet("get-staffcount")]
+    public async Task<IActionResult> GetStaffCount()
+    {
+        var result = await service.GetStaffCount();
+        return Ok(result);
+    }
+
     [HttpPost("create-staff")]
     [PermissionAuthorize(Core.Permission.CreateStaffPermission)]
     public async Task<IActionResult> Create([FromBody] StaffCreateDto dto)

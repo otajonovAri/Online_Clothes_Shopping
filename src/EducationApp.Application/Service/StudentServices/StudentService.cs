@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EducationApp.Application.Service.StudentServices;
 
-public class StudentService(IStudentRepository repo , IMapper mapper, IPasswordHasher passwordHasher) : IStudentService
+public class StudentService(IStudentRepository repo, IMapper mapper, IPasswordHasher passwordHasher) : IStudentService
 {
     public async Task<ApiResult<List<StudentResponseDto>>> GetAllAsync()
     {
@@ -73,5 +73,42 @@ public class StudentService(IStudentRepository repo , IMapper mapper, IPasswordH
         await repo.SaveChangesAsync();
 
         return new ApiResult<object>("Student Deleted SuccessFully", true, $"{existing.Id}");
+    }
+
+    public async Task<int> GetCountOfActiveStudents()
+    {
+        var studentCount = await repo.GetByCondition(s => 
+            s.Status == Core.Enums.Status.Active)
+            .CountAsync();
+
+        return studentCount;
+    }
+
+    public async Task<int> GetCountOfUnpaidStudents()
+    {
+       var unpaidStudentCount = await repo.GetByCondition(s =>
+            !s.Payments.Any() || s.Payments.Any(p => p.PaymentStatus == Core.Enums.PaymentStatus.Unpaid))
+            .CountAsync();
+
+        return unpaidStudentCount;
+    }
+
+    public async Task<int> GetCountOfPaidStudentsOnThisMonth()
+    { 
+        var paidStudentCount = await repo.GetByCondition(s =>
+            s.Payments.Any(p => p.PaymentStatus == Core.Enums.PaymentStatus.Paid &&
+                                p.PaymentDate.Month == DateTime.Now.Month &&
+                                p.PaymentDate.Year == DateTime.Now.Year))
+            .CountAsync();
+
+        return paidStudentCount;
+    }
+
+    public async Task<int> GetCountOfGraduatedStudents()
+    {
+        var graduatedStudentCount = await repo.GetByCondition(s => 
+            s.Status == Core.Enums.Status.Graduated)
+            .CountAsync();
+        return graduatedStudentCount;
     }
 }

@@ -27,6 +27,13 @@ public class GroupController(IGroupService service) : ControllerBase
         return Ok(result);
     }
 
+    [HttpGet("get-groupcount")]
+    public async Task<IActionResult> GetGroupCount()
+    {
+        var groupCount = await service.GetGroupCount();
+        return Ok(groupCount);
+    }
+
     [HttpPost("create-group")]
     [PermissionAuthorize(Core.Permission.CreateGroupPermission)]
     public async Task<IActionResult> Create([FromBody] GroupCreatedDto dto)

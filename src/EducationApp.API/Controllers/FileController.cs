@@ -2,6 +2,7 @@
 using EducationApp.Application.Repositories.FileRepository;
 using EducationApp.Application.Service.FileStorageServices;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace EducationApp.API.Controllers;
 
@@ -93,6 +94,7 @@ public class FileController(IFileStorageService fileStorageService, IFileReposit
 	[HttpGet("get-all-files")]
 	public async Task<IActionResult> GetAllFiles()
 	{
-		return Ok(repo.GetAll());
+		var files = await repo.GetAll().ToListAsync();
+		return Ok(files);
 	}
 }

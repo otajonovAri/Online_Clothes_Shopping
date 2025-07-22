@@ -3,6 +3,7 @@ using System;
 using EducationApp.DataAccess.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EducationApp.DataAccess.Migrations
 {
     [DbContext(typeof(EduDbContext))]
-    partial class EduDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250721220709_InitialMigration1")]
+    partial class InitialMigration1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

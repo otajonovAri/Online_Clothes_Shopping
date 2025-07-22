@@ -1,6 +1,5 @@
 ﻿using EducationApp.Core.Common;
 using EducationApp.Core.Enums;
-using System.ComponentModel.DataAnnotations;
 
 namespace EducationApp.Core.Entities;
 
@@ -14,6 +13,7 @@ public class Payment : BaseEntity
     public decimal Amount { get; set; }
     public DateTime PaymentDate { get; set; } = DateTime.UtcNow;
     public PaymentType PaymentType { get; set; }
+    public PaymentStatus PaymentStatus { get; set; }
     public string? PaymentImgUrl { get; set; }
     public string? Description { get; set; }
 

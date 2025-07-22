@@ -67,4 +67,10 @@ public class StaffService(IStaffRepository repo, IMapper mapper) : IStaffService
         
         return new ApiResult<object>("Staff Deleted SuccessFully", true, $"{existing.Id}");
     }
+
+    public async Task<int> GetStaffCount()
+    {
+        var staffCount = await repo.GetByCondition(s => true).CountAsync();
+        return staffCount;
+    }
 }
