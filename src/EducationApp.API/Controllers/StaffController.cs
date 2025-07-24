@@ -23,10 +23,10 @@ public class StaffController(IStaffService service) : ControllerBase
         return Ok(result);
     }
 
-    [HttpGet("get-staffcount")]
-    public async Task<IActionResult> GetStaffCount()
+    [HttpGet("get-by-condition-staff-count")]
+    public async Task<IActionResult> GetByConditionStaffCount()
     {
-        var result = await service.GetStaffCount();
+        var result = await service.GetByConditionStaffCount();
         return Ok(result);
     }
 

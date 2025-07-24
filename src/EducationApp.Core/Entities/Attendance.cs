@@ -17,7 +17,7 @@ public class Attendance : BaseEntity
     public GroupSubject GroupSubject { get; set; } = null!;
         
     public DateTime AttendanceDate { get; set; }
-        public AttendanceStatus AttendanceStatus { get; set; }
+    public AttendanceStatus AttendanceStatus { get; set; }
 
     public bool IsPresent { get; set; }
     public PreparednessLevel? Preparedness { get; set; }

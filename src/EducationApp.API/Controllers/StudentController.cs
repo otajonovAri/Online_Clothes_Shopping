@@ -26,31 +26,31 @@ public class StudentController(IStudentService service) : ControllerBase
         return Ok(result);
     }
 
-    [HttpGet("get-count-of-active-students")]
-    public async Task<IActionResult> GetCountActiveStudents()
+    [HttpGet("get-by-condition-count-active-students")]
+    public async Task<IActionResult> GetByConditionCountActiveStudents()
     {
-        var result = await service.GetCountOfActiveStudents();
+        var result = await service.GetByConditionCountActiveStudents();
         return Ok(result);
     }
 
-    [HttpGet("get-count-of-unpaid-students")]
-    public async Task<IActionResult> GetCountOfUnpaidStudents()
+    [HttpGet("get-by-condition-count-unpaid-students")]
+    public async Task<IActionResult> GetByConditionCountUnpaidStudents()
     {
-        var result = await service.GetCountOfUnpaidStudents();
+        var result = await service.GetByConditionCountUnpaidStudents();
         return Ok(result);
     }
 
-    [HttpGet("get-count-of-paid-students-this-month")]
-    public async Task<IActionResult> GetCountOfPaidStudentsThisMonth()
+    [HttpGet("get-by-condition-paid-students-on-this-month")]
+    public async Task<IActionResult> GetByConditionPaidStudentsOnThisMonth()
     {
-        var result = await service.GetCountOfPaidStudentsOnThisMonth();
+        var result = await service.GetByConditionPaidStudentsOnThisMonth();
         return Ok(result);
     }
 
-    [HttpGet("get-count-of-graduated-students")]
-    public async Task<IActionResult> GetCountOfGraduatedStudents()
+    [HttpGet("get-by-condition-count-droppedout-students-active-group")]
+    public async Task<IActionResult> GetByConditionCountDroppedOutStudentsActiveGroup()
     {
-        var result = await service.GetCountOfGraduatedStudents();
+        var result = await service.GetByConditionCountDroppedOutStudentsActiveGroup();
         return Ok(result);
     }
 

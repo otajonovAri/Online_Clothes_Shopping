@@ -27,10 +27,10 @@ public class GroupController(IGroupService service) : ControllerBase
         return Ok(result);
     }
 
-    [HttpGet("get-groupcount")]
-    public async Task<IActionResult> GetGroupCount()
+    [HttpGet("get-by-condition-group-count")]
+    public async Task<IActionResult> GetByConditionGroupCount()
     {
-        var groupCount = await service.GetGroupCount();
+        var groupCount = await service.GetByConditionGroupCount();
         return Ok(groupCount);
     }
 

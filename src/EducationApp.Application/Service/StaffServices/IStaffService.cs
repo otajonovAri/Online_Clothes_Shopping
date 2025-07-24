@@ -6,7 +6,7 @@ namespace EducationApp.Application.Service.StaffServices;
 public interface IStaffService
 {
     Task<ApiResult<List<StaffResponseDto>>> GetAllAsync();
-    Task<int> GetStaffCount();
+    Task<int> GetByConditionStaffCount();
     Task<ApiResult<StaffResponseDto>> GetByIdAsync(int id);
     Task<ApiResult<object>> CreateAsync(StaffCreateDto dto);
     Task<ApiResult<object>> UpdateAsync(int id, StaffUpdateDto dto);

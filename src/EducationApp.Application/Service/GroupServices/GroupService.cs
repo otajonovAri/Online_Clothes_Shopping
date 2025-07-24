@@ -64,7 +64,7 @@ public class GroupService(IGroupRepository repo , IMapper mapper) : IGroupServic
         return new ApiResult<object>("Group Deleted Successfully", true, $"{existing.Id}");
     }
 
-    public async Task<int> GetGroupCount()
+    public async Task<int> GetByConditionGroupCount()
     {
         var groupCount = await repo.GetByCondition(g => true).CountAsync();
         return groupCount;

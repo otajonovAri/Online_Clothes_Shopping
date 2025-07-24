@@ -7,7 +7,7 @@ public interface IGroupService
 {
     Task<ApiResult<List<GroupResponseDto>>> GetAllAsync();
     Task<ApiResult<GroupResponseDto>> GetByIdAsync(int id);
-    Task<int> GetGroupCount();
+    Task<int> GetByConditionGroupCount();
     Task<ApiResult<object>> CreateAsync(GroupCreatedDto dto);
     Task<ApiResult<object>> UpdateAsync(int id, GroupUpdateDto dto);
     Task<ApiResult<object>> DeleteAsync(int id);

@@ -8,10 +8,10 @@ public interface IStudentService
 {
     Task<ApiResult<List<StudentResponseDto>>> GetAllAsync();
     Task<ApiResult<StudentResponseDto>> GetByIdAsync(int id);
-    Task<int> GetCountOfActiveStudents();
-    Task<int> GetCountOfUnpaidStudents();
-    Task<int> GetCountOfPaidStudentsOnThisMonth();
-    Task<int> GetCountOfGraduatedStudents();
+    Task<int> GetByConditionCountActiveStudents();
+    Task<int> GetByConditionCountUnpaidStudents();
+    Task<int> GetByConditionPaidStudentsOnThisMonth();
+    Task<int> GetByConditionCountDroppedOutStudentsActiveGroup();
     Task<ApiResult<object>> CreateAsync(StudentCreateDto dto);
     Task<ApiResult<object>> UpdateAsync(int id, StudentUpdateDto dto);
     Task<ApiResult<object>> DeleteAsync(int id);

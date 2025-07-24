@@ -1,5 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-using EducationApp.Core.Common;
+﻿using EducationApp.Core.Common;
+using EducationApp.Core.Enums;
 
 namespace EducationApp.Core.Entities;
 
@@ -15,6 +15,9 @@ public class Group : BaseEntity
     public DateTime EndDate { get; set; }
 
     public string? Description { get; set; }
+
+    public GroupStatus GroupStatus { get; set; }
+    public GroupDays GroupDays { get; set; }
 
     // navigation properties
     public ICollection<GroupSubject> GroupSubjects { get; set; } = new HashSet<GroupSubject>();
