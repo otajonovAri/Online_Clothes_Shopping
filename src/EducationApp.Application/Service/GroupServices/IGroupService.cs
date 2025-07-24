@@ -8,8 +8,8 @@ public interface IGroupService
     Task<ApiResult<List<GroupResponseDto>>> GetAllAsync();
     Task<ApiResult<GroupResponseDto>> GetByIdAsync(int id);
     Task<int> GetByConditionGroupCount();
-    Task<List<GroupGetAllResponseDto>> GetByConditionAllActiveGroups();
-    Task<List<GroupGetAllResponseDto>> GetByConditionAllNoActiveGroups();
+    Task<ApiResult<List<GroupGetAllResponseDto>>> GetByConditionAllActiveGroups();
+    Task<ApiResult<List<GroupGetAllResponseDto>>> GetByConditionAllNoActiveGroups();
     Task<ApiResult<object>> CreateAsync(GroupCreatedDto dto);
     Task<ApiResult<object>> UpdateAsync(int id, GroupUpdateDto dto);
     Task<ApiResult<object>> DeleteAsync(int id);

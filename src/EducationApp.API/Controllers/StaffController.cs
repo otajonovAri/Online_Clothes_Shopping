@@ -30,6 +30,27 @@ public class StaffController(IStaffService service) : ControllerBase
         return Ok(result);
     }
 
+    [HttpGet("get-by-condition-all-active-staff")]
+    public async Task<IActionResult> GetByConditionAllActiveStaff()
+    {
+        var result = await service.GetByConditionAllActiveStaff();
+        return Ok(result);
+    }
+
+    [HttpGet("get-by-condition-all-teachers")]
+    public async Task<IActionResult> GetByConditionAllTeachers()
+    {
+        var result = await service.GetByConditionAllTeachers();
+        return Ok(result);
+    }
+
+    [HttpGet("get-by-condition-all-other-staff")]
+    public async Task<IActionResult> GetByConditionAllOtherStaff()
+    {
+        var result = await service.GetByConditionAllOtherStaff();
+        return Ok(result);
+    }
+
     [HttpPost("create-staff")]
     [PermissionAuthorize(Core.Permission.CreateStaffPermission)]
     public async Task<IActionResult> Create([FromBody] StaffCreateDto dto)

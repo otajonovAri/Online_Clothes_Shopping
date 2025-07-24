@@ -70,7 +70,7 @@ public class GroupService(IGroupRepository repo , IMapper mapper) : IGroupServic
         return groupCount;
     }
 
-    public async Task<List<GroupGetAllResponseDto>> GetByConditionAllActiveGroups()
+    public async Task<ApiResult<List<GroupGetAllResponseDto>>> GetByConditionAllActiveGroups()
     {
         var activeGroups = await repo.GetByCondition(
             g => g.GroupStatus == Core.Enums.GroupStatus.Active)
@@ -87,10 +87,10 @@ public class GroupService(IGroupRepository repo , IMapper mapper) : IGroupServic
                     }
             ).ToListAsync();
 
-        return activeGroups;
+        return new ApiResult<List<GroupGetAllResponseDto>>("Success", true, activeGroups);
     }
 
-    public async Task<List<GroupGetAllResponseDto>> GetByConditionAllNoActiveGroups()
+    public async Task<ApiResult<List<GroupGetAllResponseDto>>> GetByConditionAllNoActiveGroups()
     {
         var noactiveGroups = await repo.GetByCondition(
             g => g.GroupStatus == Core.Enums.GroupStatus.Noactive)
@@ -107,6 +107,6 @@ public class GroupService(IGroupRepository repo , IMapper mapper) : IGroupServic
                      }
             ).ToListAsync();
 
-        return noactiveGroups;
+        return new ApiResult<List<GroupGetAllResponseDto>>("Success", true, noactiveGroups);
     }
 }

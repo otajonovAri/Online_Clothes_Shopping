@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using EducationApp.Core.Common;
+﻿using EducationApp.Core.Common;
 using EducationApp.Core.Enums;
 
 namespace EducationApp.Core.Entities;
@@ -16,9 +15,9 @@ public class User : BaseEntity
     public DateTime DateBirth { get; set; } = DateTime.UtcNow;
 
     public Gender Gender { get; set; }
-    public string PasswordHash { get; set; }
-    public string PasswordSolt { get; set; }
-    public string? RefreshToken { get; set; }
+    public string PasswordHash { get; set; } = null!;
+    public string PasswordSolt { get; set; } = null!;
+    public string? RefreshToken { get; set; } = null!;
 
     //(JWt properties)
     /*    public string PasswordHash { get; set; } = null!;

@@ -73,4 +73,49 @@ public class StaffService(IStaffRepository repo, IMapper mapper) : IStaffService
         var staffCount = await repo.GetByCondition(s => true).CountAsync();
         return staffCount;
     }
+
+    public async Task<ApiResult<List<StaffGetAllResponseDto>>> GetByConditionAllActiveStaff()
+    {
+        var activeStaff = await repo.GetByCondition(s =>
+            s.StaffStatus == Core.Enums.StaffStatus.Active)
+            .Select(k => new StaffGetAllResponseDto
+            {
+                Id = k.Id,
+                FullName = $"{k.FirstName} {k.LastName}",
+                PhoneNumber = k.PhoneNumber,
+                Role = k.Position
+            }).ToListAsync();
+
+        return new ApiResult<List<StaffGetAllResponseDto>>("Success", true, activeStaff);
+    }
+
+    public async Task<ApiResult<List<StaffGetAllResponseDto>>> GetByConditionAllTeachers()
+    {
+        var teachers = await repo.GetByCondition(s =>
+           s.Position == Core.Enums.Position.Teacher)
+           .Select(k => new StaffGetAllResponseDto
+           {
+               Id = k.Id,
+               FullName = $"{k.FirstName} {k.LastName}",
+               PhoneNumber = k.PhoneNumber,
+               Role = k.Position
+           }).ToListAsync();
+        
+        return new ApiResult<List<StaffGetAllResponseDto>>("Success", true, teachers);
+    }
+
+    public async Task<ApiResult<List<StaffGetAllResponseDto>>> GetByConditionAllOtherStaff()
+    {
+        var others = await repo.GetByCondition(s =>
+          s.Position == Core.Enums.Position.Other)
+          .Select(k => new StaffGetAllResponseDto
+          {
+              Id = k.Id,
+              FullName = $"{k.FirstName} {k.LastName}",
+              PhoneNumber = k.PhoneNumber,
+              Role = k.Position
+          }).ToListAsync();
+
+        return new ApiResult<List<StaffGetAllResponseDto>>("Success", true, others);
+    }
 }
