@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using EducationApp.Core.Common;
+﻿using EducationApp.Core.Common;
 
 namespace EducationApp.Core.Entities;
 
