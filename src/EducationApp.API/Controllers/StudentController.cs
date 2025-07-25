@@ -54,6 +54,20 @@ public class StudentController(IStudentService service) : ControllerBase
         return Ok(result);
     }
 
+    [HttpGet("get-by-condition-all-active-students")]
+    public async Task<IActionResult> GetByConditionAllActiveStudents()
+    {
+        var result = await service.GetByConditionAllActiveStudents();
+        return Ok(result);
+    }
+
+    [HttpGet("get-by-condition-all-inactive-students")]
+    public async Task<IActionResult> GetByConditionAllInActiveStudents()
+    {
+        var result = await service.GetByConditionAllInActiveStudents();
+        return Ok(result);
+    }
+
     [HttpPost("create-student")]
     [PermissionAuthorize(Core.Permission.CreateStudentPermission)]
     public async Task<IActionResult> CreateAsync([FromBody] StudentCreateDto dto)

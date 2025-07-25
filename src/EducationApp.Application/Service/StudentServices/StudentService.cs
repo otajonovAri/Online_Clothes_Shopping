@@ -112,4 +112,34 @@ public class StudentService(IStudentRepository repo, IMapper mapper, IPasswordHa
             .CountAsync();
         return graduatedStudentCount;
     }
+
+    public async Task<ApiResult<List<StudentGetAllResponseDto>>> GetByConditionAllActiveStudents()
+    {
+        var activeStudents = await repo.GetByCondition(s => s.Status == Core.Enums.Status.Active)
+            .Select(k => new StudentGetAllResponseDto
+            {
+                Id = k.Id,
+                FullName = $"{k.FirstName} {k.LastName}",
+                PhoneNumber = k.PhoneNumber,
+                GroupName = k.Attendances.Select(r => r.GroupSubject.Group.Name).FirstOrDefault() ?? "No Group"
+            })
+            .ToListAsync();
+
+        return new ApiResult<List<StudentGetAllResponseDto>>("Success", true, activeStudents);
+    }
+
+    public async Task<ApiResult<List<StudentGetAllResponseDto>>> GetByConditionAllInActiveStudents()
+    {
+        var inActiveStudents = await repo.GetByCondition(s => s.Status == Core.Enums.Status.Inactive)
+             .Select(k => new StudentGetAllResponseDto
+             {
+                 Id = k.Id,
+                 FullName = $"{k.FirstName} {k.LastName}",
+                 PhoneNumber = k.PhoneNumber,
+                 GroupName = k.Attendances.Select(r => r.GroupSubject.Group.Name).FirstOrDefault() ?? "No Group"
+             })
+             .ToListAsync();
+
+        return new ApiResult<List<StudentGetAllResponseDto>>("Success", true, inActiveStudents);
+    }
 }

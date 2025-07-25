@@ -12,6 +12,8 @@ public interface IStudentService
     Task<int> GetByConditionCountUnpaidStudents();
     Task<int> GetByConditionPaidStudentsOnThisMonth();
     Task<int> GetByConditionCountDroppedOutStudentsActiveGroup();
+    Task<ApiResult<List<StudentGetAllResponseDto>>> GetByConditionAllActiveStudents();
+    Task<ApiResult<List<StudentGetAllResponseDto>>> GetByConditionAllInActiveStudents();
     Task<ApiResult<object>> CreateAsync(StudentCreateDto dto);
     Task<ApiResult<object>> UpdateAsync(int id, StudentUpdateDto dto);
     Task<ApiResult<object>> DeleteAsync(int id);
