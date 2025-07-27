@@ -112,4 +112,59 @@ public class StudentService(IStudentRepository repo, IMapper mapper, IPasswordHa
             .CountAsync();
         return graduatedStudentCount;
     }
+
+    public async Task<ApiResult<List<StudentGetAllResponseDto>>> GetByConditionAllActiveStudents()
+    {
+        var activeStudents = await repo.GetByCondition(s => s.Status == Core.Enums.Status.Active)
+            .Select(k => new StudentGetAllResponseDto
+            {
+                Id = k.Id,
+                FullName = $"{k.FirstName} {k.LastName}",
+                PhoneNumber = k.PhoneNumber,
+                GroupName = k.Attendances.Select(r => r.GroupSubject.Group.Name).FirstOrDefault() ?? "No Group"
+            })
+            .ToListAsync();
+
+        return new ApiResult<List<StudentGetAllResponseDto>>("Success", true, activeStudents);
+    }
+
+    public async Task<ApiResult<List<StudentGetAllResponseDto>>> GetByConditionAllInActiveStudents()
+    {
+        var inActiveStudents = await repo.GetByCondition(s => s.Status == Core.Enums.Status.Inactive)
+             .Select(k => new StudentGetAllResponseDto
+             {
+                 Id = k.Id,
+                 FullName = $"{k.FirstName} {k.LastName}",
+                 PhoneNumber = k.PhoneNumber,
+                 GroupName = k.Attendances.Select(r => r.GroupSubject.Group.Name).FirstOrDefault() ?? "No Group"
+             })
+             .ToListAsync();
+
+        return new ApiResult<List<StudentGetAllResponseDto>>("Success", true, inActiveStudents);
+    }
+
+    public async Task<ApiResult<bool>> GetByConditionReturnLastPayment(int studentId)
+    {
+        var student = await repo.GetByCondition(s => s.Id == studentId)
+            .Include(k => k.Payments)
+            .FirstOrDefaultAsync();
+
+        if(student is null)
+            return new ApiResult<bool>("Student not found", false, false);
+
+        var lastPayment =  student.Payments
+            .Where(p => !p.IsDeleted)
+            .OrderByDescending(p => p.Id)
+            .FirstOrDefault();
+
+        if (lastPayment is null)
+            return new ApiResult<bool>("No payments found for this student", false, false);
+
+        lastPayment.IsDeleted = true;
+
+        repo.Update(student);
+        await repo.SaveChangesAsync();
+
+        return new ApiResult<bool>("Last payment returned successfully", true, true);
+    }
 }

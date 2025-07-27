@@ -69,4 +69,44 @@ public class GroupService(IGroupRepository repo , IMapper mapper) : IGroupServic
         var groupCount = await repo.GetByCondition(g => true).CountAsync();
         return groupCount;
     }
+
+    public async Task<ApiResult<List<GroupGetAllResponseDto>>> GetByConditionAllActiveGroups()
+    {
+        var activeGroups = await repo.GetByCondition(
+            g => g.GroupStatus == Core.Enums.GroupStatus.Active)
+            .Select(
+                    k => new GroupGetAllResponseDto
+                    {
+                        Id = k.Id,
+                        GroupName = k.Name,
+                        TeacherName = $"{k.Staff.FirstName} {k.Staff.LastName}",
+                        StudentNumber = k.GroupSubjects.SelectMany(g => g.Attendances)
+                                        .Select(x => x.StudentId).Distinct().Count(),
+                        StartTime = k.GroupSubjects.Select(r => r.StartTime).FirstOrDefault(),
+                        Groupdays = k.GroupDays
+                    }
+            ).ToListAsync();
+
+        return new ApiResult<List<GroupGetAllResponseDto>>("Success", true, activeGroups);
+    }
+
+    public async Task<ApiResult<List<GroupGetAllResponseDto>>> GetByConditionAllNoActiveGroups()
+    {
+        var noactiveGroups = await repo.GetByCondition(
+            g => g.GroupStatus == Core.Enums.GroupStatus.Noactive)
+            .Select(
+                     k => new GroupGetAllResponseDto
+                     {
+                         Id = k.Id,
+                         GroupName = k.Name,
+                         TeacherName = $"{k.Staff.FirstName} {k.Staff.LastName}",
+                         StudentNumber = k.GroupSubjects.SelectMany(g => g.Attendances)
+                                        .Select(x => x.StudentId).Distinct().Count(),
+                         StartTime = k.GroupSubjects.Select(r => r.StartTime).FirstOrDefault(),
+                         Groupdays = k.GroupDays
+                     }
+            ).ToListAsync();
+
+        return new ApiResult<List<GroupGetAllResponseDto>>("Success", true, noactiveGroups);
+    }
 }

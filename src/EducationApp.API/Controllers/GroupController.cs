@@ -34,6 +34,20 @@ public class GroupController(IGroupService service) : ControllerBase
         return Ok(groupCount);
     }
 
+    [HttpGet("get-by-condition-all-active-groups")]
+    public async Task<IActionResult> GetByConditionAllActiveGroups()
+    {
+        var result = await service.GetByConditionAllActiveGroups();
+        return Ok(result);
+    }
+
+    [HttpGet("get-by-condition-all-no-active-groups")]
+    public async Task<IActionResult> GetByConditionAllNoActiveGroups()
+    {
+        var result = await service.GetByConditionAllNoActiveGroups();
+        return Ok(result);
+    }
+
     [HttpPost("create-group")]
     [PermissionAuthorize(Core.Permission.CreateGroupPermission)]
     public async Task<IActionResult> Create([FromBody] GroupCreatedDto dto)

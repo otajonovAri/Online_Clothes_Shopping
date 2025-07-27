@@ -5,6 +5,7 @@ namespace EducationApp.Core.Entities;
 public class Staff : User
 {
     public Position Position { get; set; } = Position.Other;
+    public StaffStatus StaffStatus { get; set; }
     public Decimal Salary { get; set; }
 
     // navigation properties

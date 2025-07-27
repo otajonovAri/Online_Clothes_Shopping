@@ -13,6 +13,8 @@ public class GroupSubject : BaseEntity
     public int SubjectId { get; set; }
     public Subject Subject { get; set; } = null!;
 
+    public ICollection<Attendance> Attendances { get; set; } = new HashSet<Attendance>();
+
     // relationships
     public int StaffId { get; set; }
     public Staff Staff { get; set; } = null!;

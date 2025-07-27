@@ -1,6 +1,4 @@
 ﻿using EducationApp.Core.Enums;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 
 namespace EducationApp.Application.DTOs.StudentDto;
 

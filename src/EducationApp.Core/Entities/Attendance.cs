@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-using System.Runtime.CompilerServices;
 using EducationApp.Core.Common;
 using EducationApp.Core.Enums;
 
@@ -10,6 +8,9 @@ public class Attendance : BaseEntity
     // relationships
     public int StudentId { get; set; }
     public Student Student { get; set; } = null!;
+
+    public int GroupId { get; set; }
+    public Group Group { get; set; } = null!;
 
 
     // relationships

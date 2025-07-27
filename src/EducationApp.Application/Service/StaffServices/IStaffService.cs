@@ -7,6 +7,9 @@ public interface IStaffService
 {
     Task<ApiResult<List<StaffResponseDto>>> GetAllAsync();
     Task<int> GetByConditionStaffCount();
+    Task<ApiResult<List<StaffGetAllResponseDto>>> GetByConditionAllActiveStaff();
+    Task<ApiResult<List<StaffGetAllResponseDto>>> GetByConditionAllTeachers();
+    Task<ApiResult<List<StaffGetAllResponseDto>>> GetByConditionAllOtherStaff();
     Task<ApiResult<StaffResponseDto>> GetByIdAsync(int id);
     Task<ApiResult<object>> CreateAsync(StaffCreateDto dto);
     Task<ApiResult<object>> UpdateAsync(int id, StaffUpdateDto dto);
