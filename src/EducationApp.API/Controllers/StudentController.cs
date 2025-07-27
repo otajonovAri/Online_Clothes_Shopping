@@ -68,6 +68,13 @@ public class StudentController(IStudentService service) : ControllerBase
         return Ok(result);
     }
 
+    [HttpPut("get-by-condition-return-last-payment")]
+    public async Task<IActionResult> GetByConditionReturnLastPayment([FromRoute]int studentId)
+    {
+        var result = await service.GetByConditionReturnLastPayment(studentId);
+        return Ok(result);
+    }
+
     [HttpPost("create-student")]
     [PermissionAuthorize(Core.Permission.CreateStudentPermission)]
     public async Task<IActionResult> CreateAsync([FromBody] StudentCreateDto dto)
