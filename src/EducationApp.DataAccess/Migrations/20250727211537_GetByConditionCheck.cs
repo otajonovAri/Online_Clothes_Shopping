@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EducationApp.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class GetByConditionApi : Migration
+    public partial class GetByConditionCheck : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -98,6 +98,7 @@ namespace EducationApp.DataAccess.Migrations
                     RefreshToken = table.Column<string>(type: "text", nullable: true),
                     Discriminator = table.Column<string>(type: "character varying(8)", maxLength: 8, nullable: false),
                     Position = table.Column<int>(type: "integer", nullable: true),
+                    StaffStatus = table.Column<int>(type: "integer", nullable: true),
                     Salary = table.Column<decimal>(type: "numeric", nullable: true),
                     Status = table.Column<int>(type: "integer", nullable: true),
                     JoinDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
@@ -354,6 +355,7 @@ namespace EducationApp.DataAccess.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     StudentId = table.Column<int>(type: "integer", nullable: false),
+                    GroupId = table.Column<int>(type: "integer", nullable: false),
                     GroupSubjectId = table.Column<int>(type: "integer", nullable: false),
                     AttendanceDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     AttendanceStatus = table.Column<int>(type: "integer", nullable: false),
@@ -361,7 +363,6 @@ namespace EducationApp.DataAccess.Migrations
                     Preparedness = table.Column<int>(type: "integer", nullable: true),
                     Participation = table.Column<int>(type: "integer", nullable: true),
                     Note = table.Column<string>(type: "text", nullable: true),
-                    GroupId = table.Column<int>(type: "integer", nullable: true),
                     SubjectId = table.Column<int>(type: "integer", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
@@ -380,7 +381,8 @@ namespace EducationApp.DataAccess.Migrations
                         name: "FK_Attendances_Groups_GroupId",
                         column: x => x.GroupId,
                         principalTable: "Groups",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Attendances_Subjects_SubjectId",
                         column: x => x.SubjectId,

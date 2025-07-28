@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EducationApp.DataAccess.Migrations
 {
     [DbContext(typeof(EduDbContext))]
-    [Migration("20250725120354_GetByConditionApi")]
-    partial class GetByConditionApi
+    [Migration("20250727211537_GetByConditionCheck")]
+    partial class GetByConditionCheck
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -42,7 +42,7 @@ namespace EducationApp.DataAccess.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int?>("GroupId")
+                    b.Property<int>("GroupId")
                         .HasColumnType("integer");
 
                     b.Property<int>("GroupSubjectId")
@@ -578,6 +578,9 @@ namespace EducationApp.DataAccess.Migrations
                     b.Property<decimal>("Salary")
                         .HasColumnType("numeric");
 
+                    b.Property<int>("StaffStatus")
+                        .HasColumnType("integer");
+
                     b.HasDiscriminator().HasValue("Staff");
                 });
 
@@ -596,12 +599,14 @@ namespace EducationApp.DataAccess.Migrations
 
             modelBuilder.Entity("EducationApp.Core.Entities.Attendance", b =>
                 {
-                    b.HasOne("EducationApp.Core.Entities.Group", null)
+                    b.HasOne("EducationApp.Core.Entities.Group", "Group")
                         .WithMany("Attendances")
-                        .HasForeignKey("GroupId");
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("EducationApp.Core.Entities.GroupSubject", "GroupSubject")
-                        .WithMany()
+                        .WithMany("Attendances")
                         .HasForeignKey("GroupSubjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -615,6 +620,8 @@ namespace EducationApp.DataAccess.Migrations
                     b.HasOne("EducationApp.Core.Entities.Subject", null)
                         .WithMany("Attendances")
                         .HasForeignKey("SubjectId");
+
+                    b.Navigation("Group");
 
                     b.Navigation("GroupSubject");
 
@@ -764,6 +771,11 @@ namespace EducationApp.DataAccess.Migrations
                     b.Navigation("GroupSubjects");
 
                     b.Navigation("ScheduleSlots");
+                });
+
+            modelBuilder.Entity("EducationApp.Core.Entities.GroupSubject", b =>
+                {
+                    b.Navigation("Attendances");
                 });
 
             modelBuilder.Entity("EducationApp.Core.Entities.Payment", b =>
