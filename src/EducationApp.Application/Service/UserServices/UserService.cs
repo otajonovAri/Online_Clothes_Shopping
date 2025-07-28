@@ -37,8 +37,8 @@ public class UserService(
             };
 
         var otp = await otpService.GetLatestOtpAsync(user.Id, model.Code);
-        if (otp is null || otp.ExpiredAt < DateTime.Now)
-            return new ApiResult<string> { Message = "Foydalanuvchi topilmadi", Success = false };
+        if (otp is null || otp.ExpiredAt > DateTime.Now)
+            return new ApiResult<string> { Message = "Kod notogri yoki muddati tugagan.", Success = false };
 
         user.IsVerified = true;
         await repo.SaveChangesAsync();
