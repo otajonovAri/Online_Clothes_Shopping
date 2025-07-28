@@ -1,4 +1,5 @@
-﻿using EducationApp.Application.Helpers.GenerateJwt;
+﻿using EducationApp.Application.Common;
+using EducationApp.Application.Helpers.GenerateJwt;
 using EducationApp.Application.Helpers.PasswordHasher;
 using EducationApp.Application.Helpers.Seeder;
 using EducationApp.Application.Repositories.AttendanceRepository;
@@ -15,6 +16,7 @@ using EducationApp.Application.Repositories.StudentRepository;
 using EducationApp.Application.Repositories.SubjectRepository;
 using EducationApp.Application.Repositories.UserRepository;
 using EducationApp.Application.Service.AttendanceServices;
+using EducationApp.Application.Service.EmailSendServices;
 using EducationApp.Application.Service.FileStorageServices;
 using EducationApp.Application.Service.GroupServices;
 using EducationApp.Application.Service.GroupSubjectServices;
@@ -91,17 +93,23 @@ public static class DependencyInjection
         services.AddScoped<IFileRepository , FileRepository>();
         services.AddScoped<IFileStorageService, MinioFileStorageService>();
 
+        // Jwt 
         services.AddScoped<IJwtTokenHandler, JwtTokenHandler>();
         services.AddScoped<IPasswordHasher, PasswordHasher>();
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IPermissionService, PermissionService>();
 
+        // Seeding 
         services.AddScoped<AppSeeder>();
         services.AddScoped<PermissionSeeder>();
         services.AddScoped<RoleSeeder>();
         services.AddScoped<AdminUserSeeder>();
         services.AddScoped<RolePermissionSeeder>();
         services.AddScoped<UserRoleSeeder>();
+
+        // Email Sending 
+        services.AddScoped<IEmailService, EmailService>();
+        services.AddScoped<IOtpService, OtpService>();
 
         return services;
     }
@@ -110,5 +118,13 @@ public static class DependencyInjection
     {
         services.Configure<JwtOption>(configuration.GetSection("JwtOption"));
         return services;
+    }
+
+    public static IServiceCollection AddEmailConfiguration(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.Configure<EmailConfiguration>(configuration.GetSection("EmailConfiguration"));
+
+        return services;
+
     }
 }

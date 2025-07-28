@@ -33,6 +33,7 @@
 	
 
   <ItemGroup>
+    <Folder Include="Common\" />
     <Folder Include="Repositories\PaymentDocumentRepository\" />
     <Folder Include="Repositories\StaffRepository\" />
     <Folder Include="Repositories\RolePermissionRepository\" />

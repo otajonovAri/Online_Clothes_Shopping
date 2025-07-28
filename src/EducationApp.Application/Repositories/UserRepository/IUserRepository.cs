@@ -5,4 +5,5 @@ namespace EducationApp.Application.Repositories.UserRepository;
 
 public interface IUserRepository : IRepository<User>
 {
+    Task<User> EmailFindAsync(string email);
 }
