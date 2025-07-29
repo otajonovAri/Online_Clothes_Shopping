@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EducationApp.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class GetByConditionCheck : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -96,6 +96,7 @@ namespace EducationApp.DataAccess.Migrations
                     PasswordHash = table.Column<string>(type: "text", nullable: false),
                     PasswordSolt = table.Column<string>(type: "text", nullable: false),
                     RefreshToken = table.Column<string>(type: "text", nullable: true),
+                    IsVerified = table.Column<bool>(type: "boolean", nullable: false),
                     Discriminator = table.Column<string>(type: "character varying(8)", maxLength: 8, nullable: false),
                     Position = table.Column<int>(type: "integer", nullable: true),
                     StaffStatus = table.Column<int>(type: "integer", nullable: true),
@@ -220,6 +221,36 @@ namespace EducationApp.DataAccess.Migrations
                     table.ForeignKey(
                         name: "FK_StaffSubjects_Users_StaffId",
                         column: x => x.StaffId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserOTPs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    UserId = table.Column<int>(type: "integer", nullable: false),
+                    Code = table.Column<string>(type: "text", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ExpiredAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    UserOTPsId = table.Column<int>(type: "integer", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserOTPs", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserOTPs_UserOTPs_UserOTPsId",
+                        column: x => x.UserOTPsId,
+                        principalTable: "UserOTPs",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_UserOTPs_Users_UserId",
+                        column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -477,6 +508,16 @@ namespace EducationApp.DataAccess.Migrations
                 column: "SubjectId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_UserOTPs_UserId",
+                table: "UserOTPs",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserOTPs_UserOTPsId",
+                table: "UserOTPs",
+                column: "UserOTPsId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_UserRoles_RoleId",
                 table: "UserRoles",
                 column: "RoleId");
@@ -504,6 +545,9 @@ namespace EducationApp.DataAccess.Migrations
 
             migrationBuilder.DropTable(
                 name: "StaffSubjects");
+
+            migrationBuilder.DropTable(
+                name: "UserOTPs");
 
             migrationBuilder.DropTable(
                 name: "UserRoles");

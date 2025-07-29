@@ -7,13 +7,15 @@ using EducationApp.Core.Entities;
 using EducationApp.DataAccess.Database;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using EducationApp.Application.Service.EmailSendServices;
 
 namespace EducationApp.Application.Services
 {
     public class AuthService(
         EduDbContext context,
         IPasswordHasher passwordHasher,
-        IJwtTokenHandler jwtTokenHandler
+        IJwtTokenHandler jwtTokenHandler,
+        IOtpService otpService
         ) : IAuthService
     {
         public async Task<ApiResult<LoginResponseDto>> LoginAsync(LoginRequestDto loginDto)
@@ -104,7 +106,7 @@ namespace EducationApp.Application.Services
             await context.SaveChangesAsync();
             //// --- Rolni belgilash qismi tugadi ---
 
-            //var otp = await _otpService.GenerateAndSaveOtpAsync(user.Id);
+            var otp = await otpService.GenerateAndSaveOtpAsync(user.Id);
             //await _emailService.SendOtpAsync(email, otp);
 
             return ApiResult<string>.Success("Ro'yxatdan o'tdingiz."); // Email orqali tasdiqlash qo'shish

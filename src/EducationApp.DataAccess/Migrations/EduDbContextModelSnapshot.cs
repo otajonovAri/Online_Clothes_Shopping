@@ -499,6 +499,9 @@ namespace EducationApp.DataAccess.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
+                    b.Property<bool>("IsVerified")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("LastName")
                         .HasColumnType("text");
 
@@ -531,6 +534,45 @@ namespace EducationApp.DataAccess.Migrations
                     b.HasDiscriminator().HasValue("User");
 
                     b.UseTphMappingStrategy();
+                });
+
+            modelBuilder.Entity("EducationApp.Core.Entities.UserOTPs", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("ExpiredAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("UserOTPsId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("UserOTPsId");
+
+                    b.ToTable("UserOTPs");
                 });
 
             modelBuilder.Entity("EducationApp.Core.Entities.UserRole", b =>
@@ -742,6 +784,21 @@ namespace EducationApp.DataAccess.Migrations
                     b.Navigation("Subject");
                 });
 
+            modelBuilder.Entity("EducationApp.Core.Entities.UserOTPs", b =>
+                {
+                    b.HasOne("EducationApp.Core.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EducationApp.Core.Entities.UserOTPs", null)
+                        .WithMany("OtpCodes")
+                        .HasForeignKey("UserOTPsId");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("EducationApp.Core.Entities.UserRole", b =>
                 {
                     b.HasOne("EducationApp.Core.Entities.Role", "Role")
@@ -809,6 +866,11 @@ namespace EducationApp.DataAccess.Migrations
             modelBuilder.Entity("EducationApp.Core.Entities.User", b =>
                 {
                     b.Navigation("UserRoles");
+                });
+
+            modelBuilder.Entity("EducationApp.Core.Entities.UserOTPs", b =>
+                {
+                    b.Navigation("OtpCodes");
                 });
 
             modelBuilder.Entity("EducationApp.Core.Entities.Staff", b =>

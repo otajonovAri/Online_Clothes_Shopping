@@ -39,7 +39,8 @@ var configuration = builder.Configuration;
 builder.Services.AddDatabase(builder.Configuration)
     .ServiceContainer()
     .AddJwtOption(builder.Configuration)
-    .AddAuth(builder.Configuration);
+    .AddAuth(builder.Configuration)
+    .AddEmailConfiguration(builder.Configuration);
 
 builder.Services.AddAutoMapper(typeof(AttendanceProfile).Assembly);
 

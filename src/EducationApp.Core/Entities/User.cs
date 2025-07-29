@@ -18,6 +18,7 @@ public class User : BaseEntity
     public string PasswordHash { get; set; } = null!;
     public string PasswordSolt { get; set; } = null!;
     public string? RefreshToken { get; set; } = null!;
+    public bool IsVerified { get; set; }
 
     //(JWt properties)
     /*    public string PasswordHash { get; set; } = null!;

@@ -4,8 +4,8 @@ using EducationApp.Application.DTOs.UserDto;
 using EducationApp.Application.Helpers.PasswordHasher;
 using EducationApp.Application.Repositories.UserRepository;
 using EducationApp.Application.Responses;
+using EducationApp.Application.Service.EmailSendServices;
 using EducationApp.Core.Entities;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace EducationApp.Application.Service.UserServices;
@@ -13,7 +13,8 @@ namespace EducationApp.Application.Service.UserServices;
 public class UserService(
     IUserRepository repo, 
     IMapper mapper,
-    IPasswordHasher passwordHasher) : IUserService
+    IPasswordHasher passwordHasher,
+    IOtpService otpService) : IUserService
 {
     public async Task<ApiResult<List<UserResponseDto>>> GetAllAsync()
     {
@@ -22,6 +23,35 @@ public class UserService(
 
        return new ApiResult<List<UserResponseDto>>("Success", true, users);
     }
+
+
+    public async Task<ApiResult<string>> VerifyOtpAsync(OtpVerificationModel model)
+    {
+        var user = await repo.EmailFindAsync(model.Email);
+        if (user is null)
+            return new ApiResult<string>
+            {
+                Message = "Foydalanuvchi topilmadi",
+                Success = false,
+                Data = null!
+            };
+
+        var otp = await otpService.GetLatestOtpAsync(user.Id, model.Code);
+        if (otp is null || otp.ExpiredAt > DateTime.Now)
+            return new ApiResult<string> { Message = "Kod notogri yoki muddati tugagan.", Success = false };
+
+        user.IsVerified = true;
+        await repo.SaveChangesAsync();
+
+        return new ApiResult<string>()
+        {
+            Message = "Email tasdiqlandi",
+            Success = true,
+        };
+
+    }
+
+
 
     public async Task<ApiResult<UserResponseDto>> GetByIdAsync(int id)
     {
